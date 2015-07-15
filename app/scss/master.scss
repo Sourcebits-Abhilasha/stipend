@@ -1,0 +1,45 @@
+/* -----------------------------------------------------------------------
+Version: 0.1
+
+SMACSS [Scalable Modular Architecture for CSS]
+Reference: http://smacss.com/
+
+Categorizing:
+1. Base  - Defaults elements, attribute selectors, pseudo-class selectors styling [example: body, form, a]
+2. Layout  - Divide the page into sections [example: header, footer] [prefix: l-]
+3. Modules - Reusable, Modular parts of design [example: sidebar, popup] [prefix: module-]
+4. State - How our module or layouts look in particular state [example: expanded, active] [prefix: is-]
+5. Theme - Look and feel of subcomponent based on theme [example: dark, light] [prefix: theme-]
+6. Pages   - Page specific styles. [prefix: page-]
+----------------------------------------------------------------------- */
+
+/*-------------------------------------------------
+MASTER: IMPORTING STYLESHEETS
+-------------------------------------------------*/
+
+@import "reset";
+@import "variables";
+@import "mixins";
+@import "base";
+@import "fonts";
+
+@import "layout";
+
+@import "modules/module";
+@import "pages/page-landing";
+@import "pages/page-login";
+@import "pages/page-dashboard";
+@import "pages/page-media-query";
+@import "pages/page-colleges";
+@import "pages/jqueryui";
+/*@import "pages/page-colleges";
+@import "pages/page-classes";*/
+/*@import "pages/page-students";*/
+/*@import "pages/page-lc";*/
+/*@import "pages/page-frozenpost";*/
+/*@import "pages/page-polls";*/
+/*ss@import "pages/page-import";*/
+
+
+
+

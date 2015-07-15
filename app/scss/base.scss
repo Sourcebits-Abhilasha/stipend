@@ -1,0 +1,24 @@
+/*-------------------------------------------------
+SMACSS: BASE
+-------------------------------------------------*/
+body {
+    background: #FFF;
+    color: #ced9e0;
+    font-family: $font-OpenSans;
+}
+
+a {
+    color: #000 !important;
+    &:focus {
+    	outline: 0px;
+  		outline-offset: 0px;
+  		text-decoration: none; 
+    }
+}
+a:hover {
+    color: #03C;
+}
+input[type=search]:focus{
+  box-shadow: 0 0 5px #ec7c5d;
+  /*border: 1px solid #ec7c5d;*/
+}

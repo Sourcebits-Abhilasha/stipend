@@ -1,0 +1,24 @@
+{
+  "name": "stipend",
+  "version": "0.0.1",
+  "dependencies": {
+    "angular": "1.2.6",
+    "angular-route": "1.2.6",
+    "angular-animate": "1.2.6",
+    "jquery": "*",
+    "modernizr": "*",
+    "bootstrap": "~3.0.0",
+    "eonasdan-bootstrap-datetimepicker": "~4.7.14",
+    "ng-file-upload": "~3.2.4",
+    "angular-ui-router": "~0.2.13",
+    "nprogress": "~0.1.6",
+    "ngprogress": "~1.0.7",
+    "moment": "~2.10.2",
+    "at-table": "~1.0.4",
+    "angular-smart-table": "~2.1.0",
+    "bootstrap-table": "~1.8.1",
+    "angular-chart.js": "~0.7.2"
+  },
+  "devDependencies": {},
+  "overrides": {}
+}

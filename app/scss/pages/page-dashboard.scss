@@ -1,0 +1,396 @@
+.sub-area {
+	/*background: $menu-BgColor;*/
+	min-height: 680px;
+	.side-menu-close {
+		right: -120%;
+		border: 1px solid #000;
+		width: 330px;
+		height: 680px;
+		position: fixed;
+	}
+	.side-menu-open {
+		right: 20%;
+		-webkit-transition: right 1s ease-in-out;
+	  	-moz-transition: right 1s ease-in-out;
+	  	-o-transition: right 1s ease-in-out;
+	  	transition: right 1s ease;
+		border: 1px solid #000;
+		width: 330px;
+		height: 680px;
+		z-index: 999;
+		position: fixed;
+		background: #fff;
+	}
+	.side-menu-open-wider {
+		right: 20%;
+		-webkit-transition: right 1s ease-in-out;
+	  	-moz-transition: right 1s ease-in-out;
+	  	-o-transition: right 1s ease-in-out;
+	  	transition: right 1s ease;
+		border: 1px solid #000;
+		width: 500px;
+		height: 680px;
+		z-index: 999;
+		position: fixed;
+		background: #fff;
+	}
+	/*---------------------------------------------
+				Dashboard
+	---------------------------------------------*/
+	.dashboard-row{
+		margin-top:25px;
+		.badge-margin{
+			text-align: center;
+ 			margin: 25px 0px 10px 0px;
+		}
+	}
+	.admin-edit-header {
+		background: #000;
+		height: em(50);
+		.admin-edit {
+			padding: 17px;
+  			color: #fff;
+  			display: inline-table;
+		}
+		.close-icon {
+			float: right;
+			margin-top: 17px;
+			margin-right: 17px;
+			background: url('../images/Icons-sprint.png') no-repeat -252px -523px;
+			width: 22px;
+			height: 20px;
+			cursor: pointer;
+		}
+	}
+	.edit-admin-form {
+		width : inherit;
+		padding-top: 15px;
+		margin-left: 24px;
+		.btn-class {
+          /*padding: 6px 150px;*/
+          height: em(46);
+          width: 100%;
+          background: $activeMenuColor;
+          border-color: $activeMenuColor;
+        } 
+        .btn-class-add {
+          /*padding: 6px 150px;*/
+          /*height: em(46);*/
+          border-radius: 25px;
+          background: $activeMenuColor;
+          border-color: $activeMenuColor;
+          float: right;
+        } 
+	}
+	.user-info {
+		background: #fff;
+		width: initial;
+  		height: 189px;
+  		margin: 21px;
+  	}
+	.admin-info-panel {
+		height: 121px;
+		/*background: #CAAE73;*/
+		/*border-right: thick solid #ccc;*/
+  		/*border-width: 1px;*/
+		.admin-image {
+			margin-top: 15px;
+			/*height: 93px;
+  			width: 98px;
+  			*/float: left;
+  			background: url('../images/Icons-sprint.png') no-repeat -52px -805px;
+			width: 88px;
+			height: 88px;
+		}
+		.admin-info {
+			margin-top: 32px;
+			margin-left: 118px;
+			h2 {
+				font-family : 'HelveticaNeue';
+				font-size: em(20);
+				color : $headingColor;
+			}
+			.admin-data {
+				font-family : 'HelveticaNeue-Light';
+				font-size: em(15);
+				color : $subHeaderColor;
+				margin-top: 12px;
+
+				.admin-email {
+					background: url('../images/Icons-sprint.png') no-repeat -53px -526px;
+					width: 19px;
+					height: 14px;
+					margin-right: 8px;
+					float: left;
+					/*margin-top: 14px;*/
+				}
+				.admin-no {
+					background: url('../images/Icons-sprint.png') no-repeat -103px -523px;
+					width: 19px;
+					height: 19px;
+					margin-right: 8px;
+					display: -webkit-inline-box;
+					margin-top: 8px;
+				}
+			}
+		}
+	}
+	.edit-img {
+		padding-top: 28px;
+	}
+	.admin-work-details {
+		width: inherit;
+		margin-top: 15px;
+		.work-structure {
+			height: em(150);
+			border: 1px solid $menu-BgColor;
+			padding-top: 52px;
+			/*padding-left: 14px;*/
+			padding-left: 50px;
+			span,p {
+				color: #000;
+				font-size: em(20);
+			}
+		}
+		.course-icon {
+			vertical-align: middle;
+		}
+
+	}
+}
+.overlay {
+	background: #000;
+	opacity: 0.5;
+	position: absolute;
+	width: 61%;
+	height: 680px;
+	z-index: 900;
+	}
+
+/*--------------------------------------------------
+					MENU ICONS 
+----------------------------------------------------*/
+
+.university-icon {
+	background: url('../images/Icons-sprint.png') no-repeat -150px -37px;
+	width: 25px;
+	height: 22px;
+	float: left;
+	margin-left: 62px;
+  	/*margin-top: 17px;*/
+}
+/*INACTIVE STATE*/
+.dashboard-icon {
+	background: url('../images/Icons-sprint.png') no-repeat -51px -39px;
+	width: 25px;
+	height: 22px;
+	float: left;
+	margin-left: 62px;
+  	/*margin-top: 17px;*/
+
+}
+/* DASHBOARD ACTIVE STATE*/
+.dashboard-icon-active {
+	background: url('../images/Icons-sprint.png') no-repeat -51px -151px;
+	width: 25px;
+	height: 22px;
+	float: left;
+	margin-left: 62px;
+  	/*margin-top: 17px;*/
+}
+/*INACTIVE FACULTY ICON*/
+.faculty-icon {
+	background: url('../images/Icons-sprint.png') no-repeat -102px -37px;
+	width: 25px;
+	height: 26px;
+	float: left;
+	margin-left: 62px;
+  	/*margin-top: 17px;*/
+}
+/*ACTIVE FACULTY ICON*/
+.faculty-icon-active {
+	background: url('../images/Icons-sprint.png') no-repeat -102px -149px;
+	width: 25px;
+	height: 26px;
+	float: left;
+	margin-left: 62px;
+  	/*margin-top: 17px;*/
+}
+/*INACTIVE COURSE ICON*/
+.course-icon {
+	background: url('../images/Icons-sprint.png') no-repeat -202px -37px;
+	width: 20px;
+	height: 25px;
+	float: left;
+	margin-left: 62px;
+  	/*margin-top: 17px;*/
+}
+/*ACTIVE COURSE ICON*/
+.course-icon-active {
+	background: url('../images/Icons-sprint.png') no-repeat -202px -149px;
+	width: 20px;
+	height: 25px;
+	float: left;
+	margin-left: 62px;
+  	/*margin-top: 17px;*/
+}
+/*INACTIVE CLASS ICON*/
+.classes-icon {
+	background: url('../images/Icons-sprint.png') no-repeat -51px -88px;
+	width: 25px;
+	height: 25px;
+	float: left;
+	margin-left: 62px;
+  	/*margin-top: 17px;*/
+}
+/*ACTIVE CLASS ICON*/
+.classes-icon-active {
+	background: url('../images/Icons-sprint.png') no-repeat -51px -200px;
+	width: 25px;
+	height: 25px;
+	float: left;
+	margin-left: 62px;
+  	/*margin-top: 17px;*/
+}
+/*INACTIVE STUDENT ICON*/
+.student-icon {
+	background: url('../images/Icons-sprint.png') no-repeat -247px -37px;
+	width: 25px;
+	height: 26px;
+	float: left;
+	margin-left: 62px;
+  	/*margin-top: 17px;*/
+}
+/*ACTIVE STUDENT ICON*/
+.student-icon-active {
+	background: url('../images/Icons-sprint.png') no-repeat -247px -149px;
+	width: 25px;
+	height: 26px;
+	float: left;
+	margin-left: 62px;
+  	/*margin-top: 17px;*/
+}
+/*INACTIVE LC ICON*/
+.lc-icon {
+	background: url('../images/Icons-sprint.png') no-repeat -101px -88px;
+	width: 25px;
+	height: 25px;
+	float: left;
+	margin-left: 62px;
+  	/*margin-top: 17px;*/
+}
+/*ACTIVE LC ICON*/
+.lc-icon-active {
+	background: url('../images/Icons-sprint.png') no-repeat -101px -200px;
+	width: 25px;
+	height: 25px;
+	float: left;
+	margin-left: 62px;
+  	/*margin-top: 17px;*/
+}
+/*INACTIVE FROZEN-POST ICON*/
+.frozen-post-icon {
+	background: url('../images/Icons-sprint.png') no-repeat -154px -88px;
+	width: 21px;
+	height: 25px;
+	float: left;
+	margin-left: 62px;
+ 	/*margin-top: 17px;*/
+}
+/*ACTIVE FROZEN-POST ICON*/
+.frozen-post-icon-active {
+	background: url('../images/Icons-sprint.png') no-repeat -154px -200px;
+	width: 21px;
+	height: 25px;
+	float: left;
+	margin-left: 62px;
+ 	/*margin-top: 17px;*/
+}
+/*INACTIVE POLLS ICON*/
+.polls-icon {
+	background: url('../images/Icons-sprint.png') no-repeat -199px -90px;
+	width: 26px;
+	height: 22px;
+	float: left;
+	margin-left: 62px;
+ 	/*margin-top: 17px;*/
+}
+/*ACTIVE POLLS ICON*/
+.polls-icon-active {
+	background: url('../images/Icons-sprint.png') no-repeat -199px -202px;
+	width: 26px;
+	height: 22px;
+	float: left;
+	margin-left: 62px;
+ 	/*margin-top: 17px;*/
+}
+
+/*--------------------------------------------------
+					DASHBOARD  ICONS 
+----------------------------------------------------*/
+
+.course-icon-dashboard {
+	background: url('../images/Icons-sprint.png') no-repeat -48px -252px;
+	width: 35px;
+	height: 45px;
+	vertical-align: middle;
+	float: left;
+	margin-right: 12px;
+}
+
+.class-icon-dashboard {
+	background: url('../images/Icons-sprint.png') no-repeat -135px -252px;
+	width: 45px;
+	height: 45px;
+	vertical-align: middle;
+	float: left;
+	margin-right: 12px;
+}
+.students-icon-dashboard {
+	background: url('../images/Icons-sprint.png') no-repeat -228px -254px;
+	width: 45px;
+	height: 45px;
+	vertical-align: middle;	
+	float: left;
+	margin-right: 12px;
+}
+.post-icon-dashboard {
+	background: url('../images/Icons-sprint.png') no-repeat -136px -324px;
+	width: 45px;
+	height: 45px;
+	vertical-align: middle;	
+	float: left;
+	margin-right: 12px;
+}
+.polls-icon-dashboard {
+	background: url('../images/Icons-sprint.png') no-repeat -44px -327px;
+	width: 44px;
+	height: 38px;
+	vertical-align: middle;	
+	float: left;
+	margin-right: 12px;
+}
+.notregistered-icon-dashboard {
+	background: url('../images/Icons-sprint.png') no-repeat -228px -324px;
+	width: 49px;
+	height: 49px;
+	vertical-align: middle;	
+	float: left;
+	margin-right: 12px;
+}
+.university-icon-dashboard {
+	background: url('../images/Icons-sprint.png') no-repeat -45px -400px;
+	width: 49px;
+	height: 49px;
+	vertical-align: middle;	
+	float: left;
+	margin-right: 12px;
+}
+.admin-icon-dashboard {
+	background: url('../images/Icons-sprint.png') no-repeat -137px -399px;
+	width: 49px;
+	height: 49px;
+	vertical-align: middle;	
+	float: left;
+	margin-right: 12px;
+}

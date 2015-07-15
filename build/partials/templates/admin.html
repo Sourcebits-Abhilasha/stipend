@@ -1,0 +1,135 @@
+<!--Edit faculty Profile View-->
+<div ng-controller="AdminCtrl">
+	<div class="side-menu-close" id="popup10">
+		<div class="admin-edit-header">
+			<p class="admin-edit">ADD FACULTY</p>
+			<div  ng-click="hideSideMenu()" class="close-icon"></div>
+		</div>
+		<div class="container edit-admin-form">
+			<form class="form-horizontal">
+				<div class="form-group">
+			        <div class="col-xs-10"> 
+			            <img src="../../images/faculty-avatar.png" >
+			        </div>
+			    </div>
+				
+				<div class="form-group">
+			        <div class="col-xs-10">
+			            <input type="file" class="form-control" id="profilePic" placeholder="Profile Image" ng-change="imageUpload()" ng-model="faculty.profilePic">
+			        </div>
+			    </div>
+				<div class="form-group">
+			        <div class="col-xs-10">
+			            <input type="text" class="form-control" id="username" placeholder="Enter Faculty Name">
+			        </div>
+			    </div>
+			    <div class="form-group">
+			        <div class="col-xs-10">
+			            <input type="text" class="form-control" id="id" placeholder="Enter Faculty Id">
+			        </div>
+			    </div>
+			    <div class="form-group">
+			        <div class="col-xs-10">
+			            <!-- <input type="text" class="form-control" id="id" placeholder="Enter Faculty Id"> -->
+			            <select class="drop-down-field"> 
+			            	<option>Select Gender</option>
+			            	<option value="1">Male</option>
+			            	<option value="2">Female</option>
+			            </select>
+			        </div>
+			    </div>
+			    <div class="form-group">
+			        <div class="col-xs-10">
+			            <input type="date" class="form-control" id="password" placeholder="Date of Birth">
+			        </div>
+			    </div>
+			    <div class="form-group">
+			        <div class="col-xs-10">
+			            <input type="number" class="form-control" id="password" placeholder="Enter Contact Number">
+			        </div>
+			    </div>
+			    <div class="form-group">
+			        <div class="col-xs-10">
+			            <input type="email" class="form-control" id="password" placeholder="Enter Email Address">
+			        </div>
+			    </div>
+			    <div class="form-group">
+			        <div class="col-xs-10">
+			            <input type="text" class="form-control" id="password" placeholder="Enter Qualification">
+			        </div>
+			    </div>
+			    <div class="form-group">
+			        <div class="col-xs-10">
+			            <input type="text" class="form-control" id="password" placeholder="Enter Address">
+			        </div>
+			    </div>
+			    <div class="form-group">
+			        <div class="col-xs-10">
+			            <button type="button" class="btn btn-primary" ng-click="submitForm()">SAVE</button>
+			        </div>
+			    </div>
+			</form>
+		</div>	
+	</div>
+	<!-- Faculty List Page View-->
+	<div class="row list-header">
+		<div class="col-xs-8">
+			<h2>Admin ({{adminCount}})</h2>
+		</div>
+		<!-- <div class="col-xs-1"> -->
+			<!-- <div  ng-click="getForm();" class="btn-position"></div> -->
+		<!-- </div> -->
+		<div class="col-xs-4">
+			
+			<input type="search" placeholder="Search For Faculty" class="form-control" ng-disabled="true">
+		</div>
+	</div>
+
+	<div class="container list-item">	
+
+		<!-- <ul class="list-group">
+		  	<li class="list-group-item" ng-repeat="item in facultydata">
+		  		<img  class="faculty-avatar">
+		  		<span class="custom-list-header-with-avatar" ng-bind="item.firstName + ' ' +item.lastName"> </span>
+		  		<span class="header-desc-with-avatar">
+					<div class="student-id" ></div><span ng-bind="item.id"> </span>
+		  			<div class="email-icon-list"></div><span ng-bind="item.userName"> </span>
+		  			<div class="course-icon-list"></div><span ng-bind="item.designation"> </span>
+		  		</span>
+		  		<div class="edit-custom-list">
+		  		<div ng-click="editFaculty()" class="edit-btn"></div>
+		  		<div  ng-click="editFaculty()" class="del-btn"></div>
+		  		</div>
+		  	</li>
+		</ul> -->
+		<table class="table table-striped">
+	        <thead>
+	            <tr class="success">
+	                <th><a href="" ng-click="predicate = 'firstName'; reverse=!reverse">Name</a></th>
+	                <th><a href="" ng-click="predicate = 'universityName'; reverse=!reverse">University</a></th>
+	                <th><a>Action</a></th>
+	            </tr>
+	        </thead>
+	        <tbody>
+	            <tr  ng-repeat="item in admin |  orderBy:predicate:reverse" > 
+	                <td data-toggle="tooltip" data-placement="top" title="Description : One year to challenge your thinking, change your outlook and choose your future ">{{item.firstName + ' ' +item.lastName}}</td>
+	                <td>{{item.universityName}}</td>
+	                <td class="disabled-row">
+	                	<div class="edit-custom-list-courses">
+					  		<div class="edit-btn" ng-click="editCourse()" ng-disabled="true"></div>
+					  		<div class="onoffswitch" ng-disabled="true">
+				                <input type="checkbox" name="connectfacebook" class="onoffswitch-checkbox" id="connectfacebook" ng-model="fb" ng-true-value="1" ng-false-value="0" ng-disabled="true">
+				                <label class="onoffswitch-label" for="connectfacebook">
+			                    <span class="onoffswitch-inner"></span>
+			                    <span class="onoffswitch-switch"></span>
+				                </label>
+              				</div>
+					  		<!-- <div class="del-btn" ng-click="editCourse()"></div> -->
+			  			</div>
+	                </td>
+	            </tr>
+	        </tbody>
+	    </table>
+	</div>
+</div>
+	

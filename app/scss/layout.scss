@@ -1,0 +1,60 @@
+/*-------------------------------------------------
+SMACSS: LAYOUT - COMMON
+-------------------------------------------------*/
+section,
+footer {
+  max-width: 800px;
+  margin: 50px auto;
+}
+/*-------------------------------------------------
+SMACSS: LAYOUT - HEADER
+-------------------------------------------------*/
+/*header {
+    width: 100%;
+    text-align: center;
+    background: #515151;
+    height: em(69);
+
+    .title {
+      font-size: em(30); // em to px convertor
+      display: inline-block;
+      vertical-align: middle;
+      margin: 13px;
+      padding: 0em;
+      line-height: normal;
+    }
+
+    .caption {
+      padding-top: 10px;
+      font-size: 14px;
+    }
+}*/
+
+/*-------------------------------------------------
+SMACSS: LAYOUT - SECTION
+-------------------------------------------------*/
+section {
+  padding: 40px 20px;
+  color: #fff;
+  font-size: em(70);
+  font-weight: 300;
+}
+
+/*-------------------------------------------------
+SMACSS: LAYOUT - FOOTER
+-------------------------------------------------*/
+footer {
+  color: #5A5F62;
+  font-size: 11px;
+  text-align: center;
+  padding: 10px;
+  width: 100%;
+
+  a {
+    color: #5A5F62;
+
+    &:hover {
+      color: #ced9e0;
+    }
+  }
+}

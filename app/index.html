@@ -1,0 +1,25 @@
+<!DOCTYPE HTML>
+<html ng-app="stipend">
+<head>
+    <meta charset="utf-8">
+    <title>stipend</title>
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- CSS files -->
+    <link rel="stylesheet" href="css/bower.css">
+    <link rel="stylesheet" href="css/master.css">
+    <!-- <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css"> -->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+</head>
+<body>
+    <!-- TODO: Remove gulp partials, as angular supports partials in default -->
+    <div id="appWrapper" ng-controller="MainCtrl">
+        <div ui-view></div>
+    </div>    
+    <script src="js/bower.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/application.js" type="text/javascript" charset="utf-8"></script>
+    <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    
+</body>
+</html>

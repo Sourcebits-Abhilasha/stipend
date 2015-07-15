@@ -1,0 +1,151 @@
+<header>
+     <div class="navbar">
+
+  <div class="container">
+
+    <div class="navbar-header">
+
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <i class="fa fa-cogs"></i>
+      </button>
+
+      <a class="navbar-brand navbar-brand-image" href="#">
+        <!-- <img src="./img/logo.png" alt="Site Logo"> -->
+        <h3>Stipend</h3>
+      </a>
+
+    </div> <!-- /.navbar-header -->
+
+    <div class="navbar-collapse collapse">
+      <ul class="nav navbar-nav navbar-right">   
+
+       <!--  <li>
+          <a href="javascript:;">About</a>
+        </li>    
+          
+        <li>
+          <a href="javascript:;">Resources</a>
+        </li>    --> 
+
+        <li class="dropdown navbar-profile">
+          <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:;">
+            <img src="./img/avatars/avatar-1-xs.jpg" class="navbar-profile-avatar" alt="">
+            <span class="navbar-profile-label">rod@rod.me &nbsp;</span>
+            <i class="fa fa-caret-down"></i>
+          </a>
+
+          <ul class="dropdown-menu" role="menu">
+
+            <li>
+              <a href="#">
+                <i class="fa fa-user"></i> 
+                &nbsp;&nbsp;My Profile
+              </a>
+            </li>
+            </li>
+
+            <li>
+              <a href="#">
+                <i class="fa fa-cogs"></i> 
+                &nbsp;&nbsp;Settings
+              </a>
+            </li>
+
+            <li class="divider"></li>
+
+            <li>
+              <a href="#">
+                <i class="fa fa-sign-out"></i> 
+                &nbsp;&nbsp;Logout
+              </a>
+            </li>
+
+          </ul>
+
+        </li>
+
+      </ul>
+
+       
+
+
+
+       
+
+    </div> <!--/.navbar-collapse -->
+
+  </div> <!-- /.container -->
+
+</div> <!-- /.navbar -->
+</header>
+<div class="container" ng-controller="DashboardCtrl">
+  <div class="content1">
+    <div class="content-container">
+	<div class="row">
+
+		<div id="overlay" ng-click="hideOverlay()" class="window"></div>
+		<div id="loading"></div>
+		<div class="col-xs-3 menu-list">
+			<!-- Local -->
+			<ul class="nav nav-pills nav-stacked" ng-hide="isSuperAdmin">	
+				<a href="/#/dashboard/home" active-menu>
+					<li role="presentation"  ><div class="dashboard-icon"></div><span class="menu-option">DASHBOARD</span></li>
+				</a>
+			   	<a href="/#/dashboard/colleges" active-menu>
+			   		<li role="presentation"  ><div class="course-icon"></div><span class="menu-option">COLLEGES</span></li>
+			   	</a>
+			    <a href="/#/dashboard/users" active-menu>
+			    	<li role="presentation" ><div class="faculty-icon" ></div><span class="menu-option">USERS</span></li>
+			    </a>
+			   	<a href="/#/dashboard/weather" active-menu> 	
+			    	<li role="presentation" ><div class="classes-icon"></div><span class="menu-option">WEATHER</span></li>
+			    </a>
+			</ul>
+			<!-- <ul class="nav nav-pills nav-stacked" ng-hide="isSuperAdmin">
+				<a href="/StipendWeb/#/dashboard/home" active-menu>
+					<li role="presentation"  ><div class="dashboard-icon"></div><span class="menu-option">DASHBOARD</span></li>
+				</a>
+			   	<a href="/StipendWeb/#/dashboard/colleges" active-menu>
+			   		<li role="presentation"  ><div class="course-icon"></div><span class="menu-option">COLLEGES</span></li>
+			   	</a>
+			    <a href="/StipendWeb/#/dashboard/users" active-menu>
+			    	<li role="presentation" ><div class="faculty-icon" ></div><span class="menu-option">USERS</span></li>
+			    </a>
+			   	<a href="/StipendWeb/#/dashboard/weather" active-menu> 	
+			    	<li role="presentation" ><div class="classes-icon"></div><span class="menu-option">WEATHER</span></li>
+			    </a>
+			</ul>
+ -->
+			
+
+			<!-- <ul class="nav nav-pills nav-stacked adminList" ng-hide="isAdmin">
+				<a href="/stipendadmin/#/dashboard/home">
+					<li role="presentation"  class="univ-logo"><div class="university-icon"></div><span class="menu-option">UNIVERSITY LOGO</span></li>
+				</a>
+				<a href="/stipendadmin/#/dashboard/home" >	
+					<li role="presentation"   active-menu ><div class="dashboard-icon"></div><span class="menu-option">DASHBOARD</span></li>
+				</a>
+				<a href="/stipendadmin/#/dashboard/university" >	
+					<li role="presentation"  active-menu><div class="faculty-icon"></div><span class="menu-option">UNIVERSITY</span></li>
+				</a>	
+				<a href="/stipendadmin/#/dashboard/admin" >
+					<li role="presentation"  active-menu><div class="faculty-icon"></div><span class="menu-option">ADMIN</span></li>
+				</a>
+				<a href="#" ng-click="logout()">
+					<li role="presentation" active-menu><div class="polls-icon"></div><span class="menu-option" ng-click="logout()">LOGOUT</a></li>
+				</a>	
+			</ul>  -->
+		</div>
+		<div class="col-xs-9 sub-area">
+		 <div class="content">
+    		<div class="content-container">
+				<div ui-view></div>
+			</div>
+			</div>
+		</div>
+	</div>	
+</div>
+</div>
+</div>
+
+

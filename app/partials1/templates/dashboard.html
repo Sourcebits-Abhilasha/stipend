@@ -1,0 +1,72 @@
+@@include('../_header.html')
+<div class="container" ng-controller="DashboardCtrl">
+  <div class="content1">
+    <div class="content-container">
+	<div class="row">
+
+		<div id="overlay" ng-click="hideOverlay()" class="window"></div>
+		<div id="loading"></div>
+		<div class="col-xs-3 menu-list">
+			<!-- Local -->
+			<ul class="nav nav-pills nav-stacked" ng-hide="isSuperAdmin">	
+				<a href="/#/dashboard/home" active-menu>
+					<li role="presentation"  ><div class="dashboard-icon"></div><span class="menu-option">DASHBOARD</span></li>
+				</a>
+			   	<a href="/#/dashboard/colleges" active-menu>
+			   		<li role="presentation"  ><div class="course-icon"></div><span class="menu-option">COLLEGES</span></li>
+			   	</a>
+			    <a href="/#/dashboard/users" active-menu>
+			    	<li role="presentation" ><div class="faculty-icon" ></div><span class="menu-option">USERS</span></li>
+			    </a>
+			   	<a href="/#/dashboard/weather" active-menu> 	
+			    	<li role="presentation" ><div class="classes-icon"></div><span class="menu-option">WEATHER</span></li>
+			    </a>
+			</ul>
+			<!-- <ul class="nav nav-pills nav-stacked" ng-hide="isSuperAdmin">
+				<a href="/StipendWeb/#/dashboard/home" active-menu>
+					<li role="presentation"  ><div class="dashboard-icon"></div><span class="menu-option">DASHBOARD</span></li>
+				</a>
+			   	<a href="/StipendWeb/#/dashboard/colleges" active-menu>
+			   		<li role="presentation"  ><div class="course-icon"></div><span class="menu-option">COLLEGES</span></li>
+			   	</a>
+			    <a href="/StipendWeb/#/dashboard/users" active-menu>
+			    	<li role="presentation" ><div class="faculty-icon" ></div><span class="menu-option">USERS</span></li>
+			    </a>
+			   	<a href="/StipendWeb/#/dashboard/weather" active-menu> 	
+			    	<li role="presentation" ><div class="classes-icon"></div><span class="menu-option">WEATHER</span></li>
+			    </a>
+			</ul>
+ -->
+			
+
+			<!-- <ul class="nav nav-pills nav-stacked adminList" ng-hide="isAdmin">
+				<a href="/stipendadmin/#/dashboard/home">
+					<li role="presentation"  class="univ-logo"><div class="university-icon"></div><span class="menu-option">UNIVERSITY LOGO</span></li>
+				</a>
+				<a href="/stipendadmin/#/dashboard/home" >	
+					<li role="presentation"   active-menu ><div class="dashboard-icon"></div><span class="menu-option">DASHBOARD</span></li>
+				</a>
+				<a href="/stipendadmin/#/dashboard/university" >	
+					<li role="presentation"  active-menu><div class="faculty-icon"></div><span class="menu-option">UNIVERSITY</span></li>
+				</a>	
+				<a href="/stipendadmin/#/dashboard/admin" >
+					<li role="presentation"  active-menu><div class="faculty-icon"></div><span class="menu-option">ADMIN</span></li>
+				</a>
+				<a href="#" ng-click="logout()">
+					<li role="presentation" active-menu><div class="polls-icon"></div><span class="menu-option" ng-click="logout()">LOGOUT</a></li>
+				</a>	
+			</ul>  -->
+		</div>
+		<div class="col-xs-9 sub-area">
+		 <div class="content">
+    		<div class="content-container">
+				<div ui-view></div>
+			</div>
+			</div>
+		</div>
+	</div>	
+</div>
+</div>
+</div>
+
+
