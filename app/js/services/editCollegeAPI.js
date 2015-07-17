@@ -336,6 +336,51 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', functio
         console.log('promise');
         return deferred.promise;
     };
+    this.uploadFileToUrl = function(file, uploadFile){
+        
+        var deferred = $q.defer();
+        var fd = new FormData();
+        fd.append('file', file);
+
+        var uploadUrl = appConfig.baseURL + '/' +uploadFile;
+        console.log('uploadFile',uploadFile);
+        $http.post(uploadUrl, fd, {
+            transformRequest: angular.identity,
+            headers: {'Content-Type': undefined}
+        })
+        .success(function (data){
+            console.log('success data',data);
+
+            alert(data.statusMsg);
+            deferred.resolve(data);
+        })
+        .error(function (err){
+            deferred.reject(err);
+        });
+    }
+
+     this.uploadFileUrl = function(file, uploadFile){
+        
+        var deferred = $q.defer();
+        var fd = new FormData();
+        fd.append('file', file);
+
+        var uploadUrl = appConfig.baseURL + '/' +uploadFile;
+        console.log('uploadFile',uploadFile);
+        $http.post(uploadUrl, fd, {
+            transformRequest: angular.identity,
+            headers: {'Content-Type': undefined}
+        })
+        .success(function (data){
+            console.log('success data',data);
+
+            alert(data.statusMsg);
+            deferred.resolve(data);
+        })
+        .error(function (err){
+            deferred.reject(err);
+        });
+    }
     // this.editFacultyList = function (contentdata) {
     // 	console.log('contentdata======>',contentdata);
     // 	var deferred = $q.defer();

@@ -493,6 +493,7 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
 
                         $scope.gpaScore = data['TestScoresAndGrades']['GPASCORES'];
 
+                        $scope.selectedUploadFile = 'jsonEruditusImport';
 
                         // $scope.sysSports = data['SysSports'];
                         // $scope.manSportsDiv1 = data['Sports']['Men']['NCAADIVISION1'];
@@ -954,9 +955,22 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
 
     };
 
-    $scope.$watch('sports',function (newValue,oldValue){
-        console.log('newValue',newValue);
-    },true);
+   $scope.uploadSportsfileupload = function(event){
+        var file = $scope.myFile;
+        $scope.selectedUploadFile = 'sportsfileupload';
+        console.log('file is ' + $scope.selectedUploadFile);
+        editCollegeAPI.uploadFileToUrl(file, $scope.selectedUploadFile);
+    };
+
+    $scope.uploadFile = function(event){
+        var file = $scope.myFile;
+        $scope.selectedUploadFile = 'uploadFile';
+        console.log('file is ' + $scope.selectedUploadFile);
+        editCollegeAPI.uploadFileUrl(file, $scope.selectedUploadFile);
+    };
+    // $scope.$watch('sports',function (newValue,oldValue){
+    //     console.log('newValue',newValue);
+    // },true);
 
     $scope.saveSports = function() {
         console.log('Sports $scope.menSports', $scope.menSports);
@@ -2391,40 +2405,6 @@ app.directive('fileModel', ['$parse', function ($parse) {
     };
 }]);
 /*================================================================
-Directive = graphCanvasRefresh
-==================================================================*/
-/*global app,$*/
-app.directive('graphCanvasRefresh', ['$compile', function($compile) {
-function link(scope, elem, attrs) {
-
-
-console.log('scope graphCanvasRefresh',scope.data);
-    function refreshDOM() {
-        var markup = '<canvas class="chart chart-pie" height="100" width="100" id="graph" data="data" labels="labels" legend="true" colours="graphColours" ></canvas>';
-        var el = angular.element(markup);
-        compiled = $compile(el);
-        elem.html('');
-        elem.append(el);
-        compiled(scope);
-    };
-
-    // Refresh the DOM when the attribute value is changed
-    scope.$watch(attrs.graphCanvasRefresh, function(value) {
-        refreshDOM();
-    });
-
-    // Clean the DOM on destroy
-    scope.$on('$destroy', function() {
-        elem.html('');
-    });
-};
-
-return  {
-    link: link
-};
-}]);
-/*-----  End of Directive = graphCanvasRefresh  ------*/
-/*================================================================
 Filter = convertMiliSecondsIntoDate
 ==================================================================*/
 
@@ -2615,91 +2595,6 @@ app.filter('remainingTime', function () {
 	};
 
 }));
-/*================================================================
-Service = adminViewApi
-==================================================================*/
-
-app.service('adminViewApi', ['$rootScope', '$q', 'appConfig', '$http', function ($rootScope, $q, appConfig, $http) {
-
-	'use strict';
-
-	//GET method
-	this.getAdminList = function () {
-
-		var deferred = $q.defer();
-		var serviceUrl = appConfig.baseURL + '/jsonAdminUserView';
-	
-		$http.get(serviceUrl)
-			.success(function (data) {
-				deferred.resolve(data);
-			})
-			.error(function (err) {
-				deferred.reject(err);
-			});
-
-		return deferred.promise;
-	};
-
-  
-  
-
-}]);
-
-/*-----  End of Service = adminViewApi  ------*/
-
-/*================================================================
-=>                   Service = classesAPI
-==================================================================*/
-/*global app, $http*/
-
-app.service('classviewAPI', ['$rootScope', '$q', 'appConfig', '$http', function ($rootScope, $q, appConfig, $http) {
-
-	'use strict';
-
-	this.getclassview = function () {
-
-		var deferred = $q.defer();
-		var serviceUrl = appConfig.baseURL + '/jsonClassesList';
-		
-
-
-		$http.get(serviceUrl)
-			.success(function (data) {
-				deferred.resolve(data);
-			})
-			.error(function (err) {
-				deferred.reject(err);
-			});
-
-		return deferred.promise;
-	};
-	
-	this.getCourseAndStudent = function () {
-
-		var deferred = $q.defer();
-		var serviceUrl = appConfig.baseURL + '/jsonAddClasses1';
-		
-
-
-		$http.get(serviceUrl)
-			.success(function (data) {
-				deferred.resolve(data);
-			})
-			.error(function (err) {
-				deferred.reject(err);
-			});
-
-		return deferred.promise;
-	};
-
-
-}]);
-
-
-/*-----  End of Service = classesAPI  ------*/
-
-
-
 
 /*================================================================
 =>                   Service = FacultylistAPI
@@ -2731,54 +2626,6 @@ app.service('CollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', function ($
 
 
 /*-----  End of Service = FacultylistAPI  ------*/
-
-
-
-
-/*================================================================
-=>                   Service = coursesAPI
-==================================================================*/
-/*global app, $http*/
-
-app.service('coursesAPI', ['$rootScope', '$q', 'appConfig', '$http', function ($rootScope, $q, appConfig, $http) {
-
-	'use strict';
-
-	this.getcourseslist = function () {
-
-		var deferred = $q.defer();
-		var serviceUrl = appConfig.baseURL + '/jsonCoursesByClassAndStudentsView';
-		$http.get(serviceUrl)
-			.success(function (data) {
-				deferred.resolve(data);
-			})
-			.error(function (err) {
-				deferred.reject(err);
-			});
-
-		return deferred.promise;
-	};
-
-	this.editCourseList = function (contentdata) {
-		console.log('contentdata======>',contentdata);
-		var deferred = $q.defer();
-		var serviceUrl = appConfig.baseURL + '/jsonEditCourses';
-		$http.post(serviceUrl,contentdata)
-			.success(function (data) {
-				deferred.resolve(data);
-			})
-			.error(function (err) {
-				deferred.reject(err);
-			});
-
-		return deferred.promise;
-
-	};
-
-}]);
-
-
-/*-----  End of Service = classesAPI  ------*/
 
 
 
@@ -3153,6 +3000,51 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', functio
         console.log('promise');
         return deferred.promise;
     };
+    this.uploadFileToUrl = function(file, uploadFile){
+        
+        var deferred = $q.defer();
+        var fd = new FormData();
+        fd.append('file', file);
+
+        var uploadUrl = appConfig.baseURL + '/' +uploadFile;
+        console.log('uploadFile',uploadFile);
+        $http.post(uploadUrl, fd, {
+            transformRequest: angular.identity,
+            headers: {'Content-Type': undefined}
+        })
+        .success(function (data){
+            console.log('success data',data);
+
+            alert(data.statusMsg);
+            deferred.resolve(data);
+        })
+        .error(function (err){
+            deferred.reject(err);
+        });
+    }
+
+     this.uploadFileUrl = function(file, uploadFile){
+        
+        var deferred = $q.defer();
+        var fd = new FormData();
+        fd.append('file', file);
+
+        var uploadUrl = appConfig.baseURL + '/' +uploadFile;
+        console.log('uploadFile',uploadFile);
+        $http.post(uploadUrl, fd, {
+            transformRequest: angular.identity,
+            headers: {'Content-Type': undefined}
+        })
+        .success(function (data){
+            console.log('success data',data);
+
+            alert(data.statusMsg);
+            deferred.resolve(data);
+        })
+        .error(function (err){
+            deferred.reject(err);
+        });
+    }
     // this.editFacultyList = function (contentdata) {
     // 	console.log('contentdata======>',contentdata);
     // 	var deferred = $q.defer();
@@ -3189,7 +3081,7 @@ app.service('FileuploadAPI', ['$rootScope', '$q', 'appConfig', '$http', function
         var fd = new FormData();
         fd.append('file', file);
 
-        var uploadUrl = appConfig.baseURL + '/' +requestType;
+        var uploadUrl = appConfig.baseURL + '/' +uploadFile;
         console.log('requestType',requestType);
         $http.post(uploadUrl, fd, {
             transformRequest: angular.identity,
@@ -3210,144 +3102,6 @@ app.service('FileuploadAPI', ['$rootScope', '$q', 'appConfig', '$http', function
 
 
 /*-----  End of Service = DashboardAPI  ------*/
-
-
-
-
-/*================================================================
-=>                   Service = FrozenpostlistAPI
-==================================================================*/
-/*global app, $http*/
-
-app.service('FrozenpostlistAPI', ['$rootScope', '$q', 'appConfig', '$http', function ($rootScope, $q, appConfig, $http) {
-
-	'use strict';
-
-	this.getfrozenpostlist = function () {
-
-		var deferred = $q.defer();
-		var serviceUrl = appConfig.baseURL + '/jsonFrozenSummaryView';
-		
-
-
-		$http.get(serviceUrl)
-			.success(function (data) {
-				deferred.resolve(data);
-			})
-			.error(function (err) {
-				deferred.reject(err);
-			});
-
-		return deferred.promise;
-	};
-
-	this.getclasslist = function () {
-
-		var deferred = $q.defer();
-		var serviceUrl = appConfig.baseURL + '/jsonAddFrozenList';
-		
-
-
-		$http.get(serviceUrl)
-			.success(function (data) {
-				deferred.resolve(data);
-			})
-			.error(function (err) {
-				deferred.reject(err);
-			});
-
-		return deferred.promise;
-	};
-
-	this.submitFrozenPost = function (data) {
-
-		var deferred = $q.defer();
-		var serviceUrl = appConfig.baseURL + '/jsonSaveOrUpdateFrozenList';
-		
-
-
-		$http.post(serviceUrl,data)
-			.success(function (data) {
-				deferred.resolve(data);
-			})
-			.error(function (err) {
-				deferred.reject(err);
-			});
-
-		return deferred.promise;
-	};
-
-
-	this.editFrozenList = function (data) {
-		var deferred = $q.defer();
-		var serviceUrl = appConfig.baseURL + '/jsonSaveOrUpdateFrozenList';
-		
-		$http.post(serviceUrl,data)
-			.success(function (data) {
-				deferred.resolve(data);
-			})
-			.error(function (err) {
-				deferred.reject(err);
-			});
-
-		return deferred.promise;
-	};
-
-	this.deleteFrozenList = function (data) {
-		var deferred = $q.defer();
-		var serviceUrl = appConfig.baseURL + '/jsonDeactivateFrozenList';
-		
-		$http.post(serviceUrl,data)
-			.success(function (data) {
-				deferred.resolve(data);
-			})
-			.error(function (err) {
-				deferred.reject(err);
-			});
-
-		return deferred.promise;
-	};
-
-
-}]);
-
-
-/*-----  End of Service = FrozenpostlistAPI  ------*/
-
-
-
-
-/*================================================================
-=>                   Service = learninglistAPI
-==================================================================*/
-/*global app, $http*/
-
-app.service('LearninglistAPI', ['$rootScope', '$q', 'appConfig', '$http', function ($rootScope, $q, appConfig, $http) {
-
-	'use strict';
-
-	this.getLearninglist = function () {
-
-		var deferred = $q.defer();
-		var serviceUrl = appConfig.baseURL + '/jsonLearningCircleSummaryView';
-		
-
-
-		$http.get(serviceUrl)
-			.success(function (data) {
-				deferred.resolve(data);
-			})
-			.error(function (err) {
-				deferred.reject(err);
-			});
-
-		return deferred.promise;
-	};
-
-}]);
-
-
-/*-----  End of Service = learninglistAPI  ------*/
 
 
 
@@ -3491,139 +3245,3 @@ app.service('MasterAPI', ['$rootScope', '$q', 'appConfig', '$http', function ($r
 /*-----  End of Service = MasterAPI  ------*/
 
 
-
-
-/*================================================================
-=>                   Service = pollslistAPI
-==================================================================*/
-/*global app, $http*/
-
-app.service('PollslistAPI', ['$rootScope', '$q', 'appConfig', '$http', function ($rootScope, $q, appConfig, $http) {
-
-	'use strict';
-
-	this.getpollslist = function () {
-
-		var deferred = $q.defer();
-		var serviceUrl = appConfig.baseURL + '/jsonSurvey';
-		
-
-
-		$http.get(serviceUrl)
-			.success(function (data) {
-				deferred.resolve(data);
-			})
-			.error(function (err) {
-				deferred.reject(err);
-			});
-
-		return deferred.promise;
-	};
-
-	this.submitPollsDetails = function (data) {
-		var deferred = $q.defer();
-		var serviceUrl = appConfig.baseURL + '/jsonSaveOrUpdateSurvey';
-		
-
-
-		$http.post(serviceUrl,data)
-			.success(function (data) {
-				deferred.resolve(data);
-			})
-			.error(function (err) {
-				deferred.reject(err);
-			});
-
-		return deferred.promise;
-	};
-
-	this.deactivatePollsDetails = function (data) {
-		var deferred = $q.defer();
-		var serviceUrl = appConfig.baseURL + '/jsonDeactivateSurvey';
-		
-
-
-		$http.post(serviceUrl,data)
-			.success(function (data) {
-				deferred.resolve(data);
-			})
-			.error(function (err) {
-				deferred.reject(err);
-			});
-
-		return deferred.promise;
-	};
-
-}]);
-
-
-/*-----  End of Service = pollslistAPI  ------*/
-
-
-
-
-/*================================================================
-=>                   Service = StudentlistAPI
-==================================================================*/
-/*global app,$http*/
-
-app.service('studentlistAPI', ['$rootScope', '$q', 'appConfig', '$http', function ($rootScope, $q, appConfig, $http) {
-
-	'use strict';
-
-	this.getstudentlist = function () {
-
-		var deferred = $q.defer();
-		var serviceUrl = appConfig.baseURL + '/jsonUserView';
-		
-
-
-		$http.get(serviceUrl)
-			.success(function (data) {
-				deferred.resolve(data);
-			})
-			.error(function (err) {
-				deferred.reject(err);
-			});
-
-		return deferred.promise;
-	};
-
-}]);
-
-
-/*-----  End of Service = StudentlistAPI  ------*/
-
-
-
-/*================================================================
-Service = univViewApi
-==================================================================*/
-
-app.service('univViewApi', ['$rootScope', '$q', 'appConfig', '$http', function ($rootScope, $q, appConfig, $http) {
-
-	'use strict';
-
-	this.getUnivList = function () {
-
-		var deferred = $q.defer();
-		var serviceUrl = appConfig.baseURL + '/jsonUniversityList';
-	
-		$http.get(serviceUrl)
-			.success(function (data) {
-				deferred.resolve(data);
-			})
-			.error(function (err) {
-				deferred.reject(err);
-			});
-
-		return deferred.promise;
-	};
-
-
-
-	
-}]);
-
-
-/*-----  End of Service = univViewApi  ------*/

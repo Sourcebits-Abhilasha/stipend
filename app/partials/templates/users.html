@@ -1,1 +1,56 @@
-<h1 class="h1-size">USERS</h1>
+<!--Edit faculty Profile View-->
+<div ng-controller="CollegeCtrl">
+    <!-- Faculty List Page View-->
+    <div ng-hide="colgList">
+        <div class="row list-header">
+            <div class="col-xs-8">
+                <h2>COLLEGE ({{collegeCount}})</h2>
+                <!-- <div  ng-click="getForm();" class="btn-position"></div> -->
+            </div>
+            <div class="col-xs-4">
+                <input type="search" placeholder="Search For Colleges" class="form-control search-bar-student " ng-disabled="true">
+            </div>
+        </div>
+        <div class="container list-item">
+            <table class="table table-striped">
+                <thead>
+                    <tr class="success">
+                        <th class="table-th"><a href="" ng-click="predicate = 'collegeId'; reverse=!reverse" class="heading-white">First Name</a></th>
+                        <th class="table-th"><a href="" ng-click="predicate = 'collegeName'; reverse=!reverse" class="heading-white">Last Name</a></th>
+                        <th class="table-th"><a href="" ng-click="predicate = 'city'; reverse=!reverse" class="heading-white">Gender</a></th>
+                         <th class="table-th"><a href="" ng-click="predicate = 'city'; reverse=!reverse" class="heading-white">EmailID</a></th>
+                         <th class="table-th"><a href="" ng-click="predicate = 'city'; reverse=!reverse" class="heading-white">City</a></th>
+                         <th class="table-th"><a href="" ng-click="predicate = 'city'; reverse=!reverse" class="heading-white">State</a></th>
+                         <th class="table-th"><a href="" ng-click="predicate = 'city'; reverse=!reverse" class="heading-white">UserType</a></th>
+                        
+                        <th class="table-th"><a class="heading-white">Action</a></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in collegedata |  orderBy:predicate:reverse">
+                        <!-- <td data-toggle="tooltip" data-placement="top" title="Description : One year to challenge your thinking, change your outlook and choose your future ">{{item.firstName + ' ' +item.lastName}}</td> -->
+                        <td>{{item.collegeId}}</td>
+                        <td>{{item.collegeName}}</td>
+                        <td>{{item.city}}</td>
+                        <td>{{item.city}}</td>
+                        <td>{{item.city}}</td>
+                        <td>{{item.city}}</td>
+                        <td>{{item.city}}</td>
+                        <!--  <td>{{item.state}}</td>
+                  <td>{{item.country}}</td> -->
+                        <td>
+                            <!-- class="disabled-row" -->
+                            <div class="edit-custom-list-courses">
+                                <a>
+                                    <div class="edit-btn" ng-click="editCollege(item)"></div>
+                                </a>
+                                
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+   
+</div>

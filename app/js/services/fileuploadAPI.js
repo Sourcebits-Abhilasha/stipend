@@ -14,7 +14,7 @@ app.service('FileuploadAPI', ['$rootScope', '$q', 'appConfig', '$http', function
         var fd = new FormData();
         fd.append('file', file);
 
-        var uploadUrl = appConfig.baseURL + '/' +requestType;
+        var uploadUrl = appConfig.baseURL + '/' +uploadFile;
         console.log('requestType',requestType);
         $http.post(uploadUrl, fd, {
             transformRequest: angular.identity,

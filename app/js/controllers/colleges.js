@@ -221,6 +221,7 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
 
                         $scope.gpaScore = data['TestScoresAndGrades']['GPASCORES'];
 
+                        $scope.selectedUploadFile = 'jsonEruditusImport';
 
                         // $scope.sysSports = data['SysSports'];
                         // $scope.manSportsDiv1 = data['Sports']['Men']['NCAADIVISION1'];
@@ -682,9 +683,22 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
 
     };
 
-    $scope.$watch('sports',function (newValue,oldValue){
-        console.log('newValue',newValue);
-    },true);
+   $scope.uploadSportsfileupload = function(event){
+        var file = $scope.myFile;
+        $scope.selectedUploadFile = 'sportsfileupload';
+        console.log('file is ' + $scope.selectedUploadFile);
+        editCollegeAPI.uploadFileToUrl(file, $scope.selectedUploadFile);
+    };
+
+    $scope.uploadFile = function(event){
+        var file = $scope.myFile;
+        $scope.selectedUploadFile = 'uploadFile';
+        console.log('file is ' + $scope.selectedUploadFile);
+        editCollegeAPI.uploadFileUrl(file, $scope.selectedUploadFile);
+    };
+    // $scope.$watch('sports',function (newValue,oldValue){
+    //     console.log('newValue',newValue);
+    // },true);
 
     $scope.saveSports = function() {
         console.log('Sports $scope.menSports', $scope.menSports);
