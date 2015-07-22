@@ -29,7 +29,16 @@ SMACSS: LAYOUT - HEADER
       font-size: 14px;
     }
 }*/
-
+.college-name{
+    color: #ed4e4e !important;
+}
+.active {
+  background-color:  red;
+}
+.disabled {
+  opacity: 0.3;
+  pointer-events:none;
+}
 /*-------------------------------------------------
 SMACSS: LAYOUT - SECTION
 -------------------------------------------------*/

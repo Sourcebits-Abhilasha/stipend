@@ -1,6 +1,6 @@
 <!--Edit admin Profile View-->
-<div ng-controller="HomeCtrl">
-	<div class="side-menu-close" id="popup1" >
+<div ng-controller="CollegeCtrl">
+	<!-- <div class="side-menu-close" id="popup1" >
 		<div class="admin-edit-header">
 			<p class="admin-edit">EDIT PROFILE</p>
 			<div  ng-click="hideSideMenu()" class="close-icon"></div>
@@ -29,13 +29,13 @@
 			    </div>
 			</form>
 		</div>	
-	</div>
+	</div> -->
 	<!-- Home Page View-->
 	<div class="row">
 		<div class="col-xs-11 admin-info-panel">
-			<div>
+			<!-- <div>
 				<img src="" class="admin-image">
-			</div>
+			</div> -->
 			<div class="admin-info">
 				<h2>ADMIN NAME</h2>
 				<div class="admin-data">
@@ -56,7 +56,7 @@
           <div class="row-stat">
             <h1 class="row-stat-label text-center">Number Of Colleges</h1>
             <!-- <h1 class="row-stat-value">10</h1> -->
-            <div class="badge-margin"><span class="label label-success row-stat-badge">10</span></div>
+            <div class="badge-margin"><span class="label label-success row-stat-badge" ng-model = "scope.collegeCount">{{collegeCount}}</span></div>
           </div> <!-- /.row-stat -->
         </div> <!-- /.col -->
 
@@ -64,12 +64,10 @@
           <div class="row-stat">
             <h1 class="row-stat-label text-center ">Number Of Users</h1>
             <!-- <h1 class="row-stat-value">7</h1> -->
-            <div class="badge-margin"><span class="label label-success row-stat-badge badge-margin">200</span></div>
+            <div class="badge-margin"><span class="label label-success row-stat-badge badge-margin" ng-model = "scope.usersCount">{{usersCount}}</span></div>
           </div> <!-- /.row-stat -->
         </div> <!-- /.col -->
         
       </div> <!-- /.row -->
-      <div class="row">
-      	    <img src="../images/chart.png" alt="chart" style="width: 100%;">
-      </div>
+      
 </div>

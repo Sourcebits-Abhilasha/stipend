@@ -41,6 +41,24 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', functio
         return deferred.promise;
     };
 
+    this.addCollegeDetail = function(data) {
+
+        var deferred = $q.defer();
+        var serviceUrl = appConfig.baseURL + '/registerCollege';
+
+        $http.post(serviceUrl, data)
+            .success(function(data) {
+                alert('College Details Uploaded Successfully');
+                deferred.resolve(data);
+            })
+            .error(function(err) {
+                alert('College Details Failed to Upload');
+                deferred.reject(err);
+            });
+
+        return deferred.promise;
+    };
+
     this.saveFreshmanDetail = function(data) {
 
         var deferred = $q.defer();
