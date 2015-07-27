@@ -5,7 +5,7 @@ App stipend
 ==================================================================*/
 'use strict';
 
-var app = angular.module('stipend', ['ngRoute', 'chart.js', 'ui.router', 'ngProgress', 'angularFileUpload']);
+var app = angular.module('stipend', ['ngRoute', 'chart.js', 'ui.router', 'simplePagination', 'ngProgress', 'angularFileUpload']);
 
 app.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', '$locationProvider', function ($stateProvider, $urlRouterProvider, $httpProvider, $locationProvider) {
     
@@ -134,31 +134,35 @@ app.run(['$rootScope', '$state', '$location', '$window', function ($rootScope, $
 
         $rootScope.currentState = toState.name;
         
-        console.log('state --->', toState.name,$.cookie('name'));
-        
-        // debugger;
+        console.log('state --->', toState.name,$.cookie('NAME'));
         
         if (toState.requiredLogin && !isLoggedIn()) {
-            event.preventDefault();
-            $location.url('/');
-            $window.location.assign('/');
+              location.href = '/';
         } 
         else {
-          $rootScope.currentState = toState.name;
+             $rootScope.currentState = toState.name;
         }    
                    
     });
 
     var isLoggedIn = function () {
-        if ($.cookie('name') != undefined) {
-            var accessId = $.cookie('name');
-            return  (!accessId) ? false : true;
-        }
-        else {
-            event.preventDefault();
-            $location.url('/');
+        if ($.cookie('NAME')) {
+            return true;
+        } else {
+            return false;
         }
     };
+
+    // var isLoggedIn = function () {
+    //     if ($.cookie('NAME') != undefined) {
+    //         var accessId = $.cookie('NAME');
+    //         return  (!accessId) ? false : true;
+    //     }
+    //     else {
+    //         event.preventDefault();
+    //         $location.url('/');
+    //     }
+    // };
 
     
 }]);
