@@ -39,6 +39,11 @@ app.controller('MainCtrl', ['$scope', '$location', 'MasterAPI', '$rootScope', fu
     [65, 59, 90, 81, 56, 55, 40],
     [28, 48, 40, 19, 96, 27, 100]
   ];
+
+  $scope.logout = function() {
+    $.removeCookie('NAME');
+    location.href = '/';
+  }
 	// $scope.getPage = function(values) {
 	// 	console.log('values is ',values);
 	// 	switch(values){

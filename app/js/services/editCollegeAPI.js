@@ -299,11 +299,11 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', functio
      this.saveSimilarSchoolDetail = function(data) {
 
         var deferred = $q.defer();
-        var serviceUrl = appConfig.baseURL + '/updateAdmissionOptionForWeb';
+        var serviceUrl = appConfig.baseURL + '/addSimilarSchools';
 
         $http.post(serviceUrl, data)
             .success(function(data) {
-                console.log('sucess updateAdmissionOptionForWeb', data);
+                console.log('sucess addSimilarSchools', data);
                 alert('Admissions Details Uploaded Successfully');
                 deferred.resolve(data);
             })

@@ -69,11 +69,28 @@
 .similer-school{
     border:1px solid #ccc;
     padding: .5em;
+     height: 500px;
+       overflow-y: auto;
     li{
       border-bottom: 1px solid #ccc;
   padding: .5em;
-    }
+    margin: 0px 0px 10px 0px;
+    cursor: pointer !important;
+
 }
+
+}
+.calendar-label{
+      display: inline-block;
+  margin-bottom: 5px !important;
+  font-weight: bold;
+  font-size: 14px !important;
+}
+.icon-middle{
+      height: 500px;
+  line-height: 500px;
+  text-align: center;
+    }
 .login-ahref {
     color: #000 !important;
 }

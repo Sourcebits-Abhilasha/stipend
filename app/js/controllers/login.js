@@ -11,7 +11,7 @@ app.controller('LoginCtrl', ['$scope', '$rootScope', '$location', 'loginAPI', 'M
     $scope.submitForm = function() {
         if ($scope.user != null) {
             $rootScope.userName = $scope.user.userName;
-            $.cookie('name', $rootScope.userName);
+            // $.cookie('name', $rootScope.userName);
         }
         // console.log('$scope.user',$rootScope.userName);
         //Login API
@@ -29,6 +29,8 @@ app.controller('LoginCtrl', ['$scope', '$rootScope', '$location', 'loginAPI', 'M
                 } else {
                    // console.log('data after login',data);
                     // MasterAPI Start
+                    // localStorage.setItem('userId',data.adminID);
+                    $.cookie('NAME',data.firstName);
                     MasterAPI.getdropdowndata()
                     .then(function (data) {
                         console.log('data master API Success====>',data);

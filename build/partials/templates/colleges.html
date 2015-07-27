@@ -160,13 +160,13 @@
         </div>
         <!--  <h1 class="pull-right" ng-click="backCollegeList()">back</h1> -->
         <div id="accordion" class="accordion-margin" editcollege>
-            <h3 class="accordion-h3">College Detail</h3>
+            <h3 class="accordion-h3 h3-size">College Detail</h3>
             <div>
-                <form class="form-horizontal">
+                <form name="saveCollegeForm" class="form-horizontal">
                     <div class="form-group">
                         <label for="collegeName" class="col-sm-3 control-label lable-font">College Name</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" id="collegeName" placeholder="college name" ng-model="college.colgName" value="colgName">
+                            <input type="text" class="form-control" id="collegeName" placeholder="college name" ng-model="college.colgName" value="colgName" required="required">
                         </div>
                     </div>
                     <div class="form-group">
@@ -199,19 +199,19 @@
                     <div class="form-group">
                         <label for="collegeCity" class="col-sm-3 control-label lable-font">City</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" id="collegeCity" placeholder="college city" ng-model="college.colgCity" value="colgCity">
+                            <input type="text" class="form-control" id="collegeCity" placeholder="college city" ng-model="college.colgCity" value="colgCity" requird>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="longitude" class="col-sm-3 lable-font control-label">Longitude</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" id="longitude" placeholder="longitude" ng-model="college.colgLongitude" value="colgLongitude">
+                            <input type="text" class="form-control" id="longitude" placeholder="longitude" ng-model="college.colgLongitude" value="colgLongitude" requird>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="latitude" class="col-sm-3 lable-font control-label">Latitude</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" id="latitude" placeholder="latitude" ng-model="college.colgLatitude" value="colgLatitude">
+                            <input type="text" class="form-control" id="latitude" placeholder="latitude" ng-model="college.colgLatitude" value="colgLatitude" requird>
                         </div>
                     </div>
                     <div class="row text-center">
@@ -220,7 +220,7 @@
                     </div>
                 </form>
             </div>
-            <h3 class="accordion-h3">Test Scores & Grades</h3>
+            <h3 class="accordion-h3 h3-size">Test Scores & Grades</h3>
             <div>
                 <p>Test Scores & Grades...</p>
                 <!-- <div id="tabs">
@@ -246,7 +246,7 @@
                             <div class="form-group">
                                 <label for="avgGPA" class="col-sm-7 control-label lable-font">Average GPA</label>
                                 <div class="col-sm-5">
-                                    <input type="text" class="form-control" ng-model="testScoreAvg.averageACT">
+                                    <input type="text" id="avgGPA" class="form-control" ng-model="testScoreAvg.averageACT">
                                 </div>
                             </div>
                         </div>
@@ -254,7 +254,7 @@
                             <div class="form-group">
                                 <label for="avgACT" class="col-sm-7 control-label lable-font">Average ACT</label>
                                 <div class="col-sm-5">
-                                    <input type="text" class="form-control" ng-model="testScoreAvg.averageGPA">
+                                    <input type="text" id = "avgACT" class="form-control" ng-model="testScoreAvg.averageGPA">
                                 </div>
                             </div>
                         </div>
@@ -262,7 +262,7 @@
                             <div class="form-group">
                                 <label for="avgSAT" class="col-sm-7 control-label lable-font">Average SAT</label>
                                 <div class="col-sm-5">
-                                    <input type="text" class="form-control" ng-model="testScoreAvg.averageSAT">
+                                    <input type="text" id="avgSAT" class="form-control" ng-model="testScoreAvg.averageSAT">
                                 </div>
                             </div>
                         </div>
@@ -270,11 +270,20 @@
                     <div class="row">
                         <h2 class="h2-size">SAT</h2>
                         <div class="form-group">
-                            <label for="criticalLowReading" class="col-sm-3 control-label lable-font">CRITICAL READING</label>
-                            <div class="col-sm-4">
+                            <label class="col-sm-2 control-label lable-font"></label>
+                            <div class="col-sm-2 text-center">
+                                <strong>MIN</strong>
+                            </div>
+                            <div class="col-sm-2 text-center" >
+                                <strong>MAX</strong>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="criticalLowReading" class="col-sm-2 control-label lable-font">CRITICAL READING</label>
+                            <div class="col-sm-2">
                                 <input type="text" class="form-control" ng-model="SatData.CriticalReading.scoreLowerLimit">
                             </div>
-                            <div class="col-sm-4" for="criticalHighReading">
+                            <div class="col-sm-2" for="criticalHighReading">
                                 <input type="text" class="form-control" ng-model="SatData.CriticalReading.scoreHigherLimit">
                             </div>
                         </div>
@@ -312,6 +321,15 @@
                     <div class="row">
                         <h2 class="h2-size">ACT</h2>
                         <div class="form-group">
+                            <label class="col-sm-3 control-label lable-font"></label>
+                            <div class="col-sm-4 text-center">
+                                <strong>MIN</strong>
+                            </div>
+                            <div class="col-sm-4 text-center" >
+                                <strong>MAX</strong>
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <label for="actEnglish" class="col-sm-3 control-label lable-font">ENGLISH</label>
                             <div class="col-sm-4">
                                 <input type="text" class="form-control" ng-model="ActData.English.scoreLowerLimit">
@@ -343,7 +361,14 @@
                         </div> -->
                     </div>
                     <div class="row">
+                    
                         <h2 class="h2-size">GPA SCORE</h2>
+                        <div class="form-group">
+                            <span class="col-sm-1" ></span> <span class="col-sm-1"></span><span class="col-sm-1" ></span>
+                            <div class="col-sm-4 text-center" >
+                                <strong>Percentage</strong>
+                            </div>
+                        </div>
                         <div class="form-group" ng-repeat="data in gpaScore">
                             <span class="col-sm-1" ng-bind="data.scoreLowerLimit"></span> <span class="col-sm-1">&#45;</span><span class="col-sm-1" ng-bind="data.scoreHigherLimit"></span>
                             <!--  <label class="col-sm-2 control-label lable-font" ng-bind="data.scoreLowerLimit"></label>
@@ -358,6 +383,12 @@
                     </div>
                     <div class="row">
                         <h2 class="h2-size">SAT SCORE</h2>
+                        <div class="form-group">
+                            <span class="col-sm-1" ></span> <span class="col-sm-1"></span><span class="col-sm-1" ></span>
+                            <div class="col-sm-4 text-center" >
+                                <strong>Percentage</strong>
+                            </div>
+                        </div>
                         <div class="form-group" ng-repeat="data in satScore">
                             <span class="col-sm-1" ng-bind="data.scoreLowerLimit"></span> <span class="col-sm-1">&#45;</span><span class="col-sm-1" ng-bind="data.scoreHigherLimit"></span>
                             <!-- <label for="avgSAT" class="col-sm-2 control-label lable-font" ng-bind="data.scoreLowerLimit"></label>
@@ -372,6 +403,12 @@
                     </div>
                     <div class="row">
                         <h2 class="h2-size">ACT SCORE</h2>
+                        <div class="form-group">
+                            <span class="col-sm-1" ></span> <span class="col-sm-1"></span><span class="col-sm-1" ></span>
+                            <div class="col-sm-4 text-center" >
+                                <strong>Percentage</strong>
+                            </div>
+                        </div>
                         <div class="form-group" ng-repeat="data in actScore">
                             <span class="col-sm-1" ng-bind="data.scoreLowerLimit"></span> <span class="col-sm-1">&#45;</span><span class="col-sm-1" ng-bind="data.scoreHigherLimit"></span>
                             <!--  <label for="avgSAT" class="col-sm-4 control-label lable-font" ng-bind="data.scoreLowerLimit"></label>
@@ -387,7 +424,7 @@
                     </div>
                 </form>
             </div>
-            <h3 class="accordion-h3">Freshman Profile</h3>
+            <h3 class="accordion-h3 h3-size">Freshman Profile</h3>
             <div>
                 <form class="form-horizontal">
                     <div class="row">
@@ -476,6 +513,27 @@
                             </div>
                             <!-- Female <span class="label label-success">{{freshman.femalePer}}</span> --></div>
                     </div>
+                    <h2 class="h2-size">MOST REPRESENTED STATES</h2>
+                    <div class="row">
+                    <div class="col-md-1"></div>
+                        <div class="col-md-2">
+                             <input type="text" class="form-control" ng-model="mostRepresentedState.stateId1">
+                        </div>
+                        <div class="col-md-2">
+                             <input type="text" class="form-control" ng-model="mostRepresentedState.stateId2">
+                        </div>
+                        <div class="col-md-2">
+                             <input type="text" class="form-control" ng-model="mostRepresentedState.stateId3">
+                        </div>
+                        <div class="col-md-2">
+                             <input type="text" class="form-control" ng-model="mostRepresentedState.stateId4">
+                        </div>
+                        <div class="col-md-2">
+                             <input type="text" class="form-control" ng-model="mostRepresentedState.stateId5">
+                        </div>
+                        <div class="col-md-1"></div>    
+                       
+                    </div>
                     <div class="row">
                         <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
                             <h2 class="h2-size">GEOGRAPHY</h2>
@@ -502,7 +560,7 @@
                     </div>
                 </form>
             </div>
-            <h3 class="accordion-h3">Admissions</h3>
+            <h3 class="accordion-h3 h3-size">Admissions</h3>
             <div class="row">
                 <form class="form-horizontal">
                     <!-- ######## ADMISSION DETAIL START #########-->
@@ -601,24 +659,20 @@
                     </div>
                 </form>
             </div>
-            <h3 class="accordion-h3">Calendar</h3>
+            <h3 class="accordion-h3 h3-size">Calendar</h3>
             <div class="row">
-                <form class="form-horizontal">
+                <form >
                     <div class="form-group" ng-repeat="data in test" >
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label for="eventName" class="col-sm-5 control-label lable-font">Event Name</label>
-                                <div class="col-sm-7">
-                                    <input type="text" class="form-control" id="eventName" ng-model="data.eventName" value="evtName">
-                                </div>
+                                <label for="eventName" class="calendar-label">Event Name</label>                                
+                                    <input type="text" class="form-control" id="eventName" ng-model="data.eventName" value="evtName">                               
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label for="datepicker" class="col-sm-5 control-label lable-font">Event Date</label>
-                                <div class="col-sm-7">
+                                <label for="datepicker" class="calendar-label">Event Date</label> 
                                     <input type="date" class="form-control" id="datepicker" ng-model="data.eventDate" value="data.eventDate">
-                                </div>
                             </div>
                         </div>
                         <!-- <div style="cursor: pointer;  margin: 9px 2px;" class="col-xs-1" ng-click="deleteCalendar($index)">X</div> -->
@@ -636,7 +690,7 @@
                     </div>
                 </form>
             </div>
-            <h3 class="accordion-h3">Intended Study</h3>
+            <h3 class="accordion-h3 h3-size">Intended Study</h3>
             <div class="row">
                 <form class="form-horizontal">
                     <div class="form-group" ng-repeat="data in intendedStudy">
@@ -651,15 +705,33 @@
                     </div>
                 </form>
             </div>
-            <h3 class="accordion-h3">Fees & Financial Aid</h3>
+            <h3 class="accordion-h3 h3-size">Fees & Financial Aid</h3>
             <div>
                 <!-- <p>Fees & Financial Aid...... </p> -->
                 <form class="form-horizontal">
                     <div class="form-group" ng-repeat="data in feesAndFinancial">
                         <label for="feesAndFinancial" class="col-sm-5 lable-font control-label" ng-model="data.sysFeesStructureName">{{data.sysFeesStructureName}}</label>
                         <div class="col-sm-7">
-                            <input type="text" class="form-control" id="feesAndFinancial" ng-model="data.fees" ng-change="changeAmount(this)">
+                            <input type="text" class="form-control" ng-disabled="data.sysFeesStructureID == 7 ||  data.sysFeesStructureID == 8" id="feesAndFinancial" ng-model="data.fees" ng-change="changeAmount(this)">
                         </div>
+                    </div>
+                    <div class="row">
+                    <div class="col-md-6">
+                         <div class="form-group">
+                        <label for="feesAndFinancial" class="col-sm-7 lable-font control-label" >AVERAGE FINANCIAL AID</label>
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" ng-model="AvgFees.AverageFinancialAid" >
+                        </div>
+                    </div>
+                    </div>
+                    <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="feesAndFinancial" class="col-sm-7 lable-font control-label">RECEIVING FINANCIAL AID</label>
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" ng-model="AvgFees.ReceivingFinancialAid">
+                        </div>
+                    </div>
+                    </div>
                     </div>
                     <div class="row text-center">
                         <button type="submit" class="btn btn-danger" ng-click="saveFeesAndFinancial()">SAVE</button>
@@ -667,7 +739,7 @@
                     </div>
                 </form>
             </div>
-            <h3 class="accordion-h3 ">Sports</h3>
+            <h3 class="accordion-h3 h3-size">Sports</h3>
             <div>
                 <!--  <p>Sports...... </p> -->
                 <form class="form-horizontal ">
@@ -760,7 +832,7 @@
                     </div>
                 </form>
             </div>
-            <h3 class="accordion-h3 ">Weather</h3>
+            <h3 class="accordion-h3 h3-size">Weather</h3>
             <div class="row ">
                 <div id="tabs">
                     <ul>
@@ -799,6 +871,10 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="row text-center weather-save">
+                                <button type="submit" class="btn btn-danger" ng-click="saveWeather()">SAVE</button>
+                                <!-- <button type="submit" class="btn btn-default" ng-click="backCollegeList()">Cancel</button> -->
+                            </div>
                         </div>
                     </div>
                     <div id="tabs-2">
@@ -830,6 +906,10 @@
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                            <div class="row text-center weather-save">
+                                <button type="submit" class="btn btn-danger" ng-click="saveWeather()">SAVE</button>
+                                <!-- <button type="submit" class="btn btn-default" ng-click="backCollegeList()">Cancel</button> -->
                             </div>
                         </div>
                     </div>
@@ -863,6 +943,10 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="row text-center weather-save">
+                                <button type="submit" class="btn btn-danger" ng-click="saveWeather()">SAVE</button>
+                                <!-- <button type="submit" class="btn btn-default" ng-click="backCollegeList()">Cancel</button> -->
+                            </div>
                         </div>
                     </div>
                     <div id="tabs-4">
@@ -895,11 +979,15 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="row text-center weather-save">
+                                <button type="submit" class="btn btn-danger" ng-click="saveWeather()">SAVE</button>
+                                <!-- <button type="submit" class="btn btn-default" ng-click="backCollegeList()">Cancel</button> -->
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <h3 class="accordion-h3 ">College Rankings</h3>
+            <h3 class="accordion-h3 h3-size">PayScale Rank</h3>
             <div class="row ">
                 <form class="form-horizontal">
                     <div class="form-group" style="color :black;" ng-repeat="data in collegeRanking">
@@ -924,7 +1012,7 @@
                     </div>
                 </form>
             </div>
-            <h3 class="accordion-h3 ">Prominent Alumni</h3>
+            <h3 class="accordion-h3 h3-size">Prominent Alumni</h3>
             <div class="row ">
                 <form class="form-horizontal ">
                     <div class="form-group " style="color :black; " ng-repeat="data in prominentAlumni ">
@@ -946,19 +1034,19 @@
                     </div>
                 </form>
             </div>
-            <h3 class="accordion-h3 ">Similar Schools</h3>
+            <h3 class="accordion-h3 h3-size">Similar Schools</h3>
             <div class="row ">
                 <form class="form-horizontal ">
                     <div class="col-md-5 similer-school">
                         <ul>
-                            <li ng-repeat="item in collegedata" ng-click="addSimilarSchools(item, $event)">
+                            <li ng-repeat="item in similarCollegeData" ng-click="addSimilarSchools(item, $event)">
                                 {{item.collegeName}}
                             </li>
                         </ul>
                     </div>
-                    <div class="col-md-2">
-                        <p> <i class="fa fa-caret-square-o-right" ng-click="selectedSimilarSchools()"></i></p>
-                        <p> <i class="fa fa-caret-square-o-left"></i></p>
+                    <div class="col-md-2 icon-middle">
+                        <p> <i class="fa fa-caret-square-o-right fa-3x" ng-click="selectedSimilarSchools()"></i></p>
+                        <!-- <p> <i class="fa fa-caret-square-o-left fa-4x"></i></p> -->
                     </div>
                     <div class="col-md-5 similer-school">
                         <ul ng-repeat="item in similarSchoolsSelectedArray">
@@ -973,7 +1061,7 @@
                     </div>
                 </form>
             </div>
-            <h3 class="accordion-h3 ">Links & Addresses</h3>
+            <h3 class="accordion-h3 h3-size">Links & Addresses</h3>
             <div class="row ">
                 <form class="form-horizontal ">
                     <div class="form-group " style="color :black; " ng-repeat="data in linkAndAddress ">
@@ -1053,7 +1141,7 @@
                     </div>
                 </form>
             </div>
-            <h3 class="accordion-h3 ">Quick Facts</h3>
+            <h3 class="accordion-h3 h3-size">Quick Facts</h3>
             <div class="row ">
                 <form class="form-horizontal ">
                     <div class="form-group ">
