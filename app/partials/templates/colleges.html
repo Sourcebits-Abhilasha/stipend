@@ -268,60 +268,10 @@
                         </div>
                     </div>
                     <div class="row">
+                    <div class="col-md-6">
                         <h2 class="h2-size">SAT</h2>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label lable-font"></label>
-                            <div class="col-sm-2 text-center">
-                                <strong>MIN</strong>
-                            </div>
-                            <div class="col-sm-2 text-center" >
-                                <strong>MAX</strong>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="criticalLowReading" class="col-sm-2 control-label lable-font">CRITICAL READING</label>
-                            <div class="col-sm-2">
-                                <input type="text" class="form-control" ng-model="SatData.CriticalReading.scoreLowerLimit">
-                            </div>
-                            <div class="col-sm-2" for="criticalHighReading">
-                                <input type="text" class="form-control" ng-model="SatData.CriticalReading.scoreHigherLimit">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="satMath" class="col-sm-3 control-label lable-font">MATH</label>
-                            <div class="col-sm-4">
-                                <input type="text" class="form-control" ng-model="SatData.math.scoreLowerLimit">
-                            </div>
-                            <div class="col-sm-4">
-                                <input type="text" class="form-control" ng-model="SatData.math.scoreHigherLimit">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="writing" class="col-sm-3 control-label lable-font">WRITING</label>
-                            <div class="col-sm-4">
-                                <input type="text" class="form-control" ng-model="SatData.Writing.scoreLowerLimit">
-                            </div>
-                            <div class="col-sm-4">
-                                <input type="text" class="form-control" ng-model="SatData.Writing.scoreHigherLimit">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="writing" class="col-sm-3 control-label lable-font">Total</label>
-                            <div class="col-sm-4">
-                                <input type="text" class="form-control" ng-model="SatData.TotalLow" readonly="">
-                            </div>
-                            <div class="col-sm-4">
-                                <input type="text" class="form-control" ng-model="SatData.TotalHigh" readonly="">
-                            </div>
-                        </div>
-                        <!-- <div class="col-md-6">
-                            Graph
-                        </div> -->
-                    </div>
-                    <div class="row">
-                        <h2 class="h2-size">ACT</h2>
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label lable-font"></label>
+                            <label class="col-sm-4 control-label lable-font"></label>
                             <div class="col-sm-4 text-center">
                                 <strong>MIN</strong>
                             </div>
@@ -330,7 +280,55 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="actEnglish" class="col-sm-3 control-label lable-font">ENGLISH</label>
+                            <label for="criticalLowReading" class="col-sm-4 control-label lable-font">CRITICAL READING</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" ng-model="SatData.CriticalReading.scoreLowerLimit">
+                            </div>
+                            <div class="col-sm-4" for="criticalHighReading">
+                                <input type="text" class="form-control" ng-model="SatData.CriticalReading.scoreHigherLimit">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="satMath" class="col-sm-4 control-label lable-font">MATH</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" ng-model="SatData.math.scoreLowerLimit">
+                            </div>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" ng-model="SatData.math.scoreHigherLimit">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="writing" class="col-sm-4 control-label lable-font">WRITING</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" ng-model="SatData.Writing.scoreLowerLimit">
+                            </div>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" ng-model="SatData.Writing.scoreHigherLimit">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="writing" class="col-sm-4 control-label lable-font">Total</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" ng-model="SatData.TotalLow" readonly="">
+                            </div>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" ng-model="SatData.TotalHigh" readonly="">
+                            </div>
+                        </div>
+                        </div>
+                        <div class="col-md-6">
+                             <h2 class="h2-size">ACT</h2>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label lable-font"></label>
+                            <div class="col-sm-4 text-center">
+                                <strong>MIN</strong>
+                            </div>
+                            <div class="col-sm-4 text-center" >
+                                <strong>MAX</strong>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="actEnglish" class="col-sm-4 control-label lable-font">ENGLISH</label>
                             <div class="col-sm-4">
                                 <input type="text" class="form-control" ng-model="ActData.English.scoreLowerLimit">
                             </div>
@@ -339,7 +337,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="actMath" class="col-sm-3 control-label lable-font">MATH</label>
+                            <label for="actMath" class="col-sm-4 control-label lable-font">MATH</label>
                             <div class="col-sm-4">
                                 <input type="text" class="form-control" ng-model="ActData.math.scoreLowerLimit">
                             </div>
@@ -348,7 +346,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="actMath" class="col-sm-3 control-label lable-font">Composite</label>
+                            <label for="actMath" class="col-sm-4 control-label lable-font">Composite</label>
                             <div class="col-sm-4">
                                 <input type="text" class="form-control" ng-model="ActData.CompositeLow" readonly="">
                             </div>
@@ -356,10 +354,17 @@
                                 <input type="text" class="form-control" ng-model="ActData.CompositeHigh" readonly="">
                             </div>
                         </div>
-                        <!--  <div class="col-md-6">
+                        </div>
+                        <!-- <div class="col-md-6">
                             Graph
                         </div> -->
                     </div>
+                    <!-- <div class="row">
+                       
+                         <div class="col-md-6">
+                            Graph
+                        </div>
+                    </div> -->
                     <div class="row">
                     
                         <h2 class="h2-size">GPA SCORE</h2>
@@ -563,6 +568,25 @@
             <h3 class="accordion-h3 h3-size">Admissions</h3>
             <div class="row">
                 <form class="form-horizontal">
+                <div class="row">
+                 <div class="col-md-6">
+                        <div class="form-group">
+                                <label for="actcode" class="col-sm-7 control-label lable-font">ACTCODE</label>
+                                <div class="col-sm-5">
+                                    <input type="text" class="form-control" id="actcode" ng-model="admissionCode.ACTCODE">
+                                </div>
+                            </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                                <label for="satcode" class="col-sm-7 control-label lable-font">SETCODE</label>
+                                <div class="col-sm-5">
+                                    <input type="text" class="form-control" id="setcode" ng-model="admissionCode.SATCODE">
+                                </div>
+                            </div>
+                    </div>
+                   
+                </div>
                     <!-- ######## ADMISSION DETAIL START #########-->
                     <h2 class="h2-size">Admission {{isChecked}}</h2>
                     <div class="form-group" ng-repeat="data in admission">
@@ -697,6 +721,14 @@
                         <label for="intStudy" class="col-sm-3 control-label lable-font" ng-model="data.intendedStudyName">{{data.intendedStudyName}}</label>
                         <div class="col-sm-5">
                             <input type="text" class="form-control" ng-model="data.intendedStudyPercentage" id="intStudy">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            
+                        </div>
+                        <div class="col-md-6">
+                            
                         </div>
                     </div>
                     <div class="row text-center">
@@ -1049,7 +1081,7 @@
                         <!-- <p> <i class="fa fa-caret-square-o-left fa-4x"></i></p> -->
                     </div>
                     <div class="col-md-5 similer-school">
-                        <ul ng-repeat="item in similarSchoolsSelectedArray">
+                        <ul ng-repeat="item in similerSchool">
                             <li>
                                 {{item.collegeName}} <span class="pull-right" ng-click="deleteSelectedSchool(item)">X</span>
                             </li>
@@ -1065,10 +1097,10 @@
             <div class="row ">
                 <form class="form-horizontal ">
                     <div class="form-group " style="color :black; " ng-repeat="data in linkAndAddress ">
-                        <div class="col-xs-5 ">
+                        <div class="col-xs-6 ">
                             <input type="text " class="form-control " ng-model="data.websiteName" />
                         </div>
-                        <div class="col-xs-5 ">
+                        <div class="col-xs-6">
                             <input type="text " class="form-control " ng-model="data.websiteUrl" />
                         </div>
                         <!-- <div style="cursor: pointer; margin: 9px 2px; " class="col-xs-1 " ng-click="deleteAddress($index) ">X</div> -->
@@ -1145,7 +1177,7 @@
             <div class="row ">
                 <form class="form-horizontal ">
                     <div class="form-group ">
-                        <textarea data-required="true " name="textarea-input " id="textarea-input " cols="10 " rows="4 " class="form-control " ng-model="quickFact.quickFactsVal "></textarea>
+                        <textarea data-required="true " name="textarea-input " id="textarea-input " cols="10 " rows="4 " class="form-control" ng-model="quickfact.quickFactsValue "></textarea>
                     </div>
                     <div class="row text-center ">
                         <button type="submit " class="btn btn-danger " ng-click="saveQuickFact() ">SAVE</button>

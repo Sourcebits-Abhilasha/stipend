@@ -99,7 +99,7 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', functio
         return deferred.promise;
     };
 
-    this.saveEthenicityDetail = function(data) {
+    this.saveEthenicityDetail = function(data) { 
 
         var deferred = $q.defer();
         var serviceUrl = appConfig.baseURL + '/addCollegeEthnicityForWeb';
@@ -108,6 +108,24 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', functio
 
         .success(function(data) {
                 console.log('Ethenicity save data=======>', data)
+                deferred.resolve(data);
+            })
+            .error(function(err) {
+                deferred.reject(err);
+            });
+
+        return deferred.promise;
+    };
+
+    this.saveMostRepStateDetail = function(data) { 
+
+        var deferred = $q.defer();
+        var serviceUrl = appConfig.baseURL + '/saveOrUpdateStates';
+
+        $http.post(serviceUrl, data)
+
+        .success(function(data) {
+                console.log('Most Represented States save data=======>', data)
                 deferred.resolve(data);
             })
             .error(function(err) {

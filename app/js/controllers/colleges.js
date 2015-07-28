@@ -41,9 +41,7 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
         evtName: '',
         evtDate: ''
     };
-    $scope.quickFact = {
 
-    };
     $scope.weatherObj = {
 
     };
@@ -106,7 +104,7 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
     };
 
     console.log($.cookie());
- 
+
 
     $scope.getcollege = function(state) {
         //$('body').addClass('page-loader');
@@ -223,10 +221,13 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
     // })
 
 
-   $scope.getSimilarCollege = function() {
-        console.log('getSimilarCollege------>',$scope.collegeCount);
-        var page = {'off':0,'size':$scope.collegeCount}
-        //$('body').addClass('page-loader');
+    $scope.getSimilarCollege = function() {
+        console.log('getSimilarCollege------>', $scope.collegeCount);
+        var page = {
+                'off': 0,
+                'size': $scope.collegeCount
+            }
+            //$('body').addClass('page-loader');
         CollegeAPI.getSimilarSchoollist(page)
             .then(
                 function(data) {
@@ -234,21 +235,21 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
                     if (data !== null) {
                         $scope.similarCollegeData = data.Colleges;
                         $scope.similarSchoolColgData = data;
-                        
+
                         //$('body').removeClass('page-loader');
                         // $scope.FacultyName = data.firstName + data.lastName;
-                        console.log('similar school data---->',$scope.similarCollegeData)
+                        console.log('similar school data---->', $scope.similarCollegeData)
                     }
 
                 }
             );
     };
-   
+
 
 
     $scope.editCollege = function(data) {
         //$('body').addClass('page-loader');
-         $scope.getSimilarCollege();
+        $scope.getSimilarCollege();
         console.log('data is in ====>', data);
         $rootScope.colgData = data;
         editCollegeAPI.editcollegelist(data.collegeId)
@@ -311,7 +312,7 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
                         $scope.freshman.collegeEthnicityID = data['FreshmanProfile']['CollegeEthnicity'].collegeEthnicityID;
 
                         $scope.mostRepresentedState = data.FreshmanProfile.MostRepresentedStates;
-                        
+
 
                         // $scope.mostRepresentedState['stateArray'] = [];
                         // for(var key in $scope.mostRepresentedState) {
@@ -323,7 +324,7 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
                         // };
 
                         $scope.weatherObj.avgFallLowTemp = data['Weather'];
-                        // $scope.quickFact.qukFact = data['QuickFacts'].quickFactsValue;
+                        $scope.quickfact = data.QuickFacts;
 
                         $scope.geoData = data['FreshmanProfile']['Geographics'];
                         $scope.clgEthenicity = data['FreshmanProfile']['CollegeEthnicity'];
@@ -332,13 +333,15 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
                         $scope.interview = data['Admissions']['Interviews'];
                         $scope.recommendation = data['Admissions']['Recommendations'];
 
+                        $scope.admissionCode = data.Admissions.AdmissionCodes;
+
                         $scope.SatData = data.TestScoresAndGrades.SAT;
                         $scope.ActData = data.TestScoresAndGrades.ACT;
                         // $scope.averageScore =  data.TestScoresAndGrades.TestScoresAndGrades;
 
                         $scope.testScoreAvg = data.TestScoresAndGrades.Averages;
 
-                        
+
                         $scope.sports = data.Sports;
 
                         $scope.actScore = data['TestScoresAndGrades']['ACTSCORES'];
@@ -361,13 +364,10 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
                         $scope.weatherObj.avgSpringHighTemp = data['Weather'].averageSpringHighTemp;
                         $scope.weatherObj.avgSpringPrecipitation = data['Weather'].averageSpringPrecipitation;
 
-                        // $scope.quickFact.quickFactsVal = data['QuickFacts'].quickFactsValue;
-                        // $scope.quickFact.quickFactsID = data['QuickFacts'].quickFactsID;
-
                         $scope.feesAndFinancial = data.FeesAndFinancialAids.Fees;
 
                         $scope.AvgFees = data.FeesAndFinancialAids;
-                    
+
 
                         var dataFees = data.FeesAndFinancialAids;
 
@@ -381,35 +381,8 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
                         $scope.collegeRanking = data.CollegeRanking;
                         $scope.prominentAlumni = data.ProminentAlumini;
                         $scope.similerSchool = data.SimilarSchools;
+                        console.log('scope.similerSchool',$scope.similerSchool);
                         $scope.linkAndAddress = data.LinksAndAddresses;
-                        //$scope.webDetailID = data['LinksAndAddresses'][0].websiteDetailsId;
-                        //$scope.websiteName = data['websiteName'].websiteName;
-                        //console.log(' $scope.webDetailID', $scope.webDetailID);
-                        // $scope.data.quickFactsValue = data.QuickFacts[0].quickFactsValue;
-
-                        //----------- Fees and financial Aid
-                        // var feesAndFinancialAids = data['FeesAndFinancialAids'];
-                        // feesAndFinancialAids.push({
-                        //     percentangeInState: 81,
-                        //     percentangeOutState: 90,
-                        //     avgInState: 200,
-                        //     avgOutState: 41555
-                        // });
-                        // var feesAndFinancialAidsLength = feesAndFinancialAids.length;
-
-
-                        // for (var i = 0; i < feesAndFinancialAidsLength; i++) {
-                        //     var obj = feesAndFinancialAids[i];
-                        //     if (obj.inState == true) {
-                        //         $scope.inStateData.push(obj);
-                        //         $scope.inStateTotal = $scope.inStateTotal + obj.fees;
-                        //     } else if (obj.inState == false) {
-                        //         $scope.outStateData.push(obj);
-                        //         $scope.outStateTotal = $scope.outStateTotal + obj.fees;
-                        //     } else {
-                        //         $scope.financialAid = obj;
-                        //     }
-                        // }
 
                         $scope.sports.Divisions.Men.NCAADIVISION1.forEach(function(item) {
                             $scope.selectedSportsDiv1.push(item.syssportsId);
@@ -562,19 +535,19 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
                 'accessTypeID': $scope.addCollegeAccessTypeID ? $scope.addCollegeAccessTypeID : null,
                 'collegeAreaID': $scope.addCollegeAreaID ? $scope.addCollegeAreaID : null
             }
-        }else {
+        } else {
             data = {
-            'collegeId': $rootScope.colgData['collegeId'] ? $rootScope.colgData['collegeId'] : null,
-            'collegeName': $scope.college.colgName ? $scope.college.colgName : null,
-            'collegeTypeId': $rootScope.colgData['collegeTypeId'] ? $rootScope.colgData['collegeTypeId'] : null,
-            'city': $scope.college.colgCity ? $scope.college.colgCity : null,
-            'collegeLatitude': $scope.college.colgLatitude ? $scope.college.colgLatitude : null,
-            'collegeLongitude': $scope.college.colgLongitude ? $scope.college.colgLongitude : null,
-            'accessTypeID': $scope.college.colgAccessTypeID ? $scope.college.colgAccessTypeID : null,
-            'collegeAreaID': $scope.college.colgAreaID ? $scope.college.colgAreaID : null
-        }; 
+                'collegeId': $rootScope.colgData['collegeId'] ? $rootScope.colgData['collegeId'] : null,
+                'collegeName': $scope.college.colgName ? $scope.college.colgName : null,
+                'collegeTypeId': $rootScope.colgData['collegeTypeId'] ? $rootScope.colgData['collegeTypeId'] : null,
+                'city': $scope.college.colgCity ? $scope.college.colgCity : null,
+                'collegeLatitude': $scope.college.colgLatitude ? $scope.college.colgLatitude : null,
+                'collegeLongitude': $scope.college.colgLongitude ? $scope.college.colgLongitude : null,
+                'accessTypeID': $scope.college.colgAccessTypeID ? $scope.college.colgAccessTypeID : null,
+                'collegeAreaID': $scope.college.colgAreaID ? $scope.college.colgAreaID : null
+            };
         }
-        
+
 
         console.log('data finally data', data);
         editCollegeAPI.addCollegeDetail(data)
@@ -590,9 +563,9 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
         //debugger
         console.log('save saveQuickFact====>', $rootScope.colgData);
         var qukFact = {
-
-            'quickFactsValue': $scope.quickFact.quickFactsVal ? $scope.quickFact.quickFactsVal : null,
-            'quickFactsID': $scope.quickFact.quickFactsID ? $scope.quickFact.quickFactsID : null
+            'collegeId': $rootScope.colgData['collegeId'] ? $rootScope.colgData['collegeId'] : null,
+            'quickFactsValue': $scope.quickfact.quickFactsVal ? $scope.quickfact.quickFactsVal : null,
+            'quickFactsID': $scope.quickfact.quickFactsID ? $scope.quickfact.quickFactsID : null
 
         };
 
@@ -666,10 +639,6 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
             'malePercentage': $scope.freshman.malePer ? $scope.freshman.malePer : null,
             'femalePercentage': $scope.freshman.femalePer ? $scope.freshman.femalePer : null
         };
-
-        //console.log('enrollmentStatusId============>', enrollmentStatusId)
-        //console.log('freshmanData========>', freshmanData);
-
         console.log('data finally Freshman Common data', freshmanData);
         editCollegeAPI.saveFreshmanDetail(freshmanData)
             .then(
@@ -677,29 +646,26 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
                     console.log('save detail====>', data);
                 });
 
+        var mostRepresentedStt = {
+            'mostRepresentedStateID': $scope.mostRepresentedState.mostRepresentedStateID ? $scope.mostRepresentedState.mostRepresentedStateID : null,
+            'stateId1': $scope.mostRepresentedState.stateId1 ? $scope.mostRepresentedState.stateId1 : null,
+            'stateId2': $scope.mostRepresentedState.stateId2 ? $scope.mostRepresentedState.stateId2 : null,
+            'stateId3': $scope.mostRepresentedState.stateId3 ? $scope.mostRepresentedState.stateId3 : null,
+            'stateId4': $scope.mostRepresentedState.stateId4 ? $scope.mostRepresentedState.stateId4 : null,
+            'stateId5': $scope.mostRepresentedState.stateId5 ? $scope.mostRepresentedState.stateId5 : null,
+
+        }
+
+        console.log('data finally mostRepresentedStt Common data', mostRepresentedStt);
+        editCollegeAPI.saveMostRepStateDetail(mostRepresentedStt)
+            .then(
+                function(data) {
+                    console.log('save detail====>', data);
+                });
+
+
+
     };
-
-    // $scope.saveCalendar = function() {
-    //     //console.log('testData Calendar data',$scope.test);
-    //     var finalCalendarData = [];
-
-    //     for (var count = 0; count < $scope.test.length; count++) {
-    //         var finalCalendarObject = {};
-    //         finalCalendarObject['collegeCalendarId'] = $scope.test[count].collegeCalendarId;
-    //         finalCalendarObject['eventName'] = $scope.test[count].eventName;
-    //         finalCalendarObject['eventDate'] = $scope.test[count].eventDate;
-    //         finalCalendarData.push(finalCalendarObject);
-    //     }
-
-    //     console.log('final array for calendar', finalCalendarData);
-
-    //     editCollegeAPI.saveCalendarDetail(finalCalendarData)
-    //         .then(
-    //             function(data) {
-    //                 // console.log('save detail====>', data);
-    //             });
-
-    // };
 
     $scope.saveCollegeRanking = function() {
         console.log('testData College ranking data', $scope.collegeRanking);
@@ -709,6 +675,7 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
         for (var count = 0; count < $scope.collegeRanking.length; count++) {
             var finalColegeRankingObject = {};
             // finalColegeRankingObject['collegeId'] = collegeId;
+            finalColegeRankingObject['collegeId'] = $rootScope.colgData['collegeId'];
             finalColegeRankingObject['collegeRankingId'] = $scope.collegeRanking[count].collegeRankingId;
             finalColegeRankingObject['ranking'] = $scope.collegeRanking[count].ranking;
             finalColegeRankingObject['rankingPoints'] = $scope.collegeRanking[count].rankingPoints;
@@ -721,7 +688,7 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
         for (var i = 1; i < clgRankingArray.length; i++) {
             if (clgRankingArray[i] != undefined) {
                 var finalColegeRankingObject = {};
-                finalColegeRankingObject['collegeId'] = $rootScope.colgData['collegeId']
+                finalColegeRankingObject['collegeId'] = $rootScope.colgData['collegeId'];
                 finalColegeRankingObject['ranking'] = clgRankingArray[i];
                 finalColegeRankingObject['rankingPoints'] = clgRankingPointsArray[i];
                 finalColegeRankingData.push(finalColegeRankingObject);
@@ -745,6 +712,7 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
         /* Scope Data */
         for (var count = 0; count < $scope.prominentAlumni.length; count++) {
             var finalProminentAlumniObject = {};
+            finalProminentAlumniObject['collegeId'] = $rootScope.colgData['collegeId']
             finalProminentAlumniObject['alumniId'] = $scope.prominentAlumni[count].alumniId;
             finalProminentAlumniObject['alumniName'] = $scope.prominentAlumni[count].alumniName;
             // finalProminentAlumniObject['collegeId'] = collegeId;
@@ -758,7 +726,7 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
         for (var i = 1; i < prominentArray.length; i++) {
             if (prominentArray[i] != undefined) {
                 var finalProminentAlumniObject = {};
-                finalProminentAlumniObject['collegeId'] = $rootScope.colgData['collegeId']
+                finalProminentAlumniObject['collegeId'] = $rootScope.colgData['collegeId'];
                 finalProminentAlumniObject['alumniName'] = prominentArray[i];
 
                 finalProminentAlumniData.push(finalProminentAlumniObject);
@@ -783,6 +751,7 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
         /* Scope Data */
         for (var count = 0; count < $scope.linkAndAddress.length; count++) {
             var finalLinkAndAddressObject = {};
+            finalLinkAndAddressObject['collegeId'] = $rootScope.colgData['collegeId'];
             finalLinkAndAddressObject['websiteName'] = $scope.linkAndAddress[count].websiteName;
             finalLinkAndAddressObject['websiteUrl'] = $scope.linkAndAddress[count].websiteUrl;
             finalLinkAndAddressObject['websiteDetailsId'] = $scope.linkAndAddress[count].websiteDetailsId;
@@ -839,6 +808,7 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
 
         for (var count = 0; count < $scope.intendedStudy.length; count++) {
             var finalIntendedStudyObject = {};
+            finalIntendedStudyObject['collegeId'] = $rootScope.colgData['collegeId'];
             finalIntendedStudyObject['collegeIntendedStudyID'] = $scope.intendedStudy[count].collegeIntendedStudyID;
             finalIntendedStudyObject['intendedStudyName'] = $scope.intendedStudy[count].intendedStudyName;
             finalIntendedStudyObject['intendedStudyType'] = $scope.intendedStudy[count].intendedStudyType;
@@ -912,16 +882,7 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
         });
 
         console.log('finalSportsData -- >', finalSportsData);
-        // for (var count = 0; count < $scope.intendedStudy.length; count++) {
-        //     var finalIntendedStudyObject = {};
-        //     finalIntendedStudyObject['collegeIntendedStudyID'] = $scope.intendedStudy[count].collegeIntendedStudyID;
-        //     finalIntendedStudyObject['intendedStudyName'] = $scope.intendedStudy[count].intendedStudyName;
-        //     finalIntendedStudyObject['intendedStudyType'] = $scope.intendedStudy[count].intendedStudyType;
-        //     finalIntendedStudyObject['intendedStudyPercentage'] = $scope.intendedStudy[count].intendedStudyPercentage;
 
-        //     finalIntendedStudyData.push(finalIntendedStudyObject);
-        // }
-        // console.log('final array IntendedStudy', finalIntendedStudyData);
 
         editCollegeAPI.saveSportsDetail(finalSportsData)
             .then(
@@ -988,7 +949,7 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
             'averageSAT': parseInt($scope.testScoreAvg.averageSAT, 10) ? parseInt($scope.testScoreAvg.averageSAT, 10) : 0,
             'averageACT': parseInt($scope.testScoreAvg.averageACT, 10) ? parseInt($scope.testScoreAvg.averageACT, 10) : 0
         }
-console.log("testScoreAverage====>", testScoreAverage);
+        console.log("testScoreAverage====>", testScoreAverage);
         var finalTestScoreData = [];
         finalTestScoreData.push(testScoreSatAvg);
         finalTestScoreData.push(testScoreActAvg);
@@ -1032,7 +993,7 @@ console.log("testScoreAverage====>", testScoreAverage);
 
         for (var count = 0; count < $scope.admission.length; count++) {
             var finalAdmissionObject = {};
-
+            finalAdmissionObject['collegeId'] = $rootScope.colgData['collegeId'];
             finalAdmissionObject['admissionsOptionID'] = $scope.admission[count].admissionsOptionID;
             finalAdmissionObject['optionNameID'] = $scope.admission[count].optionNameID;
             finalAdmissionObject['optionValueID'] = $scope.admission[count].optionValueID;
@@ -1046,6 +1007,7 @@ console.log("testScoreAverage====>", testScoreAverage);
 
         for (var count = 0; count < $scope.interview.length; count++) {
             var finalInterviewObject = {};
+            finalInterviewObject['collegeId'] = $rootScope.colgData['collegeId'];
             finalInterviewObject['admissionsOptionID'] = $scope.interview[count].admissionsOptionID;
             finalInterviewObject['optionNameID'] = $scope.interview[count].optionNameID;
             finalInterviewObject['optionValueID'] = $scope.interview[count].optionValueID;
@@ -1061,6 +1023,7 @@ console.log("testScoreAverage====>", testScoreAverage);
 
         for (var count = 0; count < $scope.interview.length; count++) {
             var finalRecommendationObject = {};
+            finalRecommendationObject['collegeId'] = $rootScope.colgData['collegeId'];
             finalRecommendationObject['admissionsOptionID'] = $scope.recommendation[count].admissionsOptionID;
             finalRecommendationObject['optionNameID'] = $scope.recommendation[count].optionNameID;
             finalRecommendationObject['optionValueID'] = $scope.recommendation[count].optionValueID;
@@ -1068,6 +1031,13 @@ console.log("testScoreAverage====>", testScoreAverage);
 
 
             finalAdmissionData.push(finalRecommendationObject);
+        }
+
+        var admCode = {
+            'collegeId': $rootScope.colgData['collegeId'] ? $rootScope.colgData['collegeId'] : null,
+            'admissionsOptionID': $scope.recommendation.admissionsOptionID ? $scope.recommendation.admissionsOptionID : null,
+            'SETCODE': $scope.admissionCode.SETCODE ? $scope.admissionCode.SETCODE : null,
+            'ACTCODE': $scope.admissionCode.ACTCODE ? $scope.admissionCode.ACTCODE : null
         }
 
         console.log('final array recommendation', finalAdmissionData);
@@ -1085,6 +1055,7 @@ console.log("testScoreAverage====>", testScoreAverage);
 
         for (var count = 0; count < $scope.feesAndFinancial.length; count++) {
             var finalFeesAndFinancialObject = {};
+            finalFeesAndFinancialObject['collegeId'] = $rootScope.colgData['collegeId'];
             finalFeesAndFinancialObject['collegeFeesID'] = $scope.feesAndFinancial[count].collegeFeesID;
             finalFeesAndFinancialObject['fees'] = $scope.feesAndFinancial[count].fees;
 
@@ -1102,11 +1073,12 @@ console.log("testScoreAverage====>", testScoreAverage);
     };
 
     $scope.saveCalendar = function() {
-        console.log('testData Calendar data',$scope.test);
+        console.log('testData Calendar data', $scope.test);
         var finalCalendarData = [];
 
         for (var count = 0; count < $scope.test.length; count++) {
             var finalCalendarObject = {};
+            finalCalendarObject['collegeId'] = $rootScope.colgData['collegeId'];
             finalCalendarObject['collegeCalendarId'] = $scope.test[count].collegeCalendarId;
             finalCalendarObject['eventName'] = $scope.test[count].eventName;
             finalCalendarObject['eventDate'] = $scope.test[count].eventDate;
@@ -1141,6 +1113,7 @@ console.log("testScoreAverage====>", testScoreAverage);
     $scope.saveWeather = function() {
 
         var finalWeatherData = {
+            'collegeId': $rootScope.colgData['collegeId'] ? $rootScope.colgData['collegeId'] : null,
             'weatherId': $scope.weatherObj.weatherId ? $scope.weatherObj.weatherId : null,
             'averageFallLowTemp': $scope.weatherObj.avgFallLowTemp ? $scope.weatherObj.avgFallLowTemp : null,
             'averageFallHighTemp': $scope.weatherObj.avgFallHighTemp ? $scope.weatherObj.avgFallHighTemp : null,
@@ -1204,7 +1177,7 @@ console.log("testScoreAverage====>", testScoreAverage);
 
         $scope.menSports = false;
         $scope.womenSports = true;
-         event.target.style.backgroundColor = "#ccc";
+        event.target.style.backgroundColor = "#ccc";
 
     }
 
@@ -1212,7 +1185,7 @@ console.log("testScoreAverage====>", testScoreAverage);
 
         $scope.menSports = true;
         $scope.womenSports = false;
-         event.target.style.backgroundColor = "#ccc";
+        event.target.style.backgroundColor = "#ccc";
     }
 
     $scope.outStates = function() {
@@ -1321,89 +1294,139 @@ console.log("testScoreAverage====>", testScoreAverage);
 
     //create global array of similarSchools
     $scope.similarSchoolsArray = [];
+    $scope.schoolArrayId = [];
     $scope.addSimilarSchools = function(data, event) {
-        console.log('addSimilarSchools======>', data + event);
-        //console.log($scope.similarSchoolsArray.indexOf(data.collegeId));
-        var index = $scope.similarSchoolsArray.indexOf(data.collegeId);
-        if (index == -1) {
-            // push to array
-            $scope.similarSchoolsArray.push(data.collegeId);
-            console.log('pushing in similarSchoolsArray===> ', data.collegeId);
-            console.log('similarSchoolsArray===> ', $scope.similarSchoolsArray);
-            // background color
-            event.target.style.backgroundColor = "#ccc";
-        } else {
-            // element to remove from array
-            $scope.similarSchoolsArray.splice(index, 1);
-            // background color
-            event.target.style.backgroundColor = "transparent";
+        console.log('addSimilarSchools======>', data);
 
-            console.log('pop in similarSchoolsArray===> ', data.collegeId);
-            console.log('similarSchoolsArray===> ', $scope.similarSchoolsArray);
+        if ($scope.similarSchoolsArray) {
+            $scope.similarSchoolsArray.forEach(function (item) {
+                if(item.schoolID == data.schoolID) {
+                    var nIndex = $scope.similarSchoolsArray.indexOf(item);
+                    console.log('------true---->',nIndex);
+                    $scope.similarSchoolsArray.splice(nIndex,1);
+                }
+            });
         }
+
+        var index = $scope.schoolArrayId.indexOf(data.schoolID);
+
+        if (index == -1) {
+            $scope.schoolArrayId.push(data.schoolID);
+            $scope.similarSchoolsArray.push({'collegeName':data.collegeName,'college':$rootScope.colgData.collegeId,'schoolID':data.schoolID});
+            event.target.style.backgroundColor = "#ccc";
+        }else {
+            $scope.schoolArrayId.splice(index,1);
+            $scope.similarSchoolsArray.splice(index, 1);
+            event.target.style.backgroundColor = "transparent";
+        }
+
+        // console.log('similarSchoolsArray',$scope.similarSchoolsArray);
+        // console.log('similerSchool',$scope.similerSchool);
+
+
+        // var index = $scope.similarSchoolsArray.indexOf(data.collegeId);
+        // if (index == -1) {
+        //     // push to array
+        //     $scope.similarSchoolsArray.push(data.collegeId);
+
+
+
+
+        //     // console.log('pushing in similarSchoolsArray===> ', data.collegeId);
+        //     // console.log('similarSchoolsArray===> ', $scope.similarSchoolsArray);
+        //     // background color
+        //     event.target.style.backgroundColor = "#ccc";
+        // } else {
+        //     // element to remove from array
+        //     $scope.similarCollegeData.splice(index, 1);
+        //     // background color
+        //     event.target.style.backgroundColor = "transparent";
+
+        //     console.log('pop in similarSchoolsArray===> ', data.collegeId);
+        //     console.log('similarSchoolsArray===> ', $scope.similarSchoolsArray);
+        // }
     }
 
     $scope.similarSchoolsSelectedArray = [];
     //Right Button Clicked
 
     $scope.selectedSimilarSchools = function() {
+        console.log('$scope.schoolArrayId = [];',$scope.schoolArrayId);
 
-        var similarSchoolsArray = $scope.similarSchoolsArray;
-        console.log('selectedSimilarSchools ======>', similarSchoolsArray);
+        var ind;
+        if ($scope.similarSchoolsArray) {
+            $scope.similarSchoolsArray.forEach(function (item1) {
+                $scope.similerSchool.push(item1);
+            
 
-        var similarSchoolColgData = $scope.similarSchoolColgData;
-
-        for (var i = 0; i < similarSchoolsArray.length; i++) {
-
-            console.log('Checking for collegeID ===> ', similarSchoolsArray[i]); // number
-                debugger;
-
-            for (var j = 0; j < similarSchoolColgData.Colleges.length; j++) {
-                //console.log(similarSchoolColgData[j].collegeId);
-                if (similarSchoolColgData.Colleges[j].collegeId == similarSchoolsArray[i]) {
-                    console.log('Matched ===> ', similarSchoolColgData.Colleges[j].collegeId + ' ===== ' + similarSchoolsArray[i]);
-                    console.log('Matched ===> ', similarSchoolColgData.Colleges[j].collegeName + ' ===== ' + similarSchoolsArray[i]);
-                    // var obj = {};
-                    // obj.collegeId = similarSchoolsArray[i];
-                    // obj.collegeName = similarSchoolColgData[j].collegeName;
-
-                    $scope.similarSchoolsSelectedArray.push(similarSchoolColgData.Colleges[j]);
-                    $scope.similarSchoolColgData.Colleges.splice(j, 1);
-                }
-            };
+                // $scope.similarCollegeData.forEach(function (item) {
+                //     if(item.schoolID == item1.schoolID) {
+                //         console.log('true----');
+                //         ind =  $scope.similarCollegeData.indexOf(item);
+                //         $scope.similarCollegeData.splice(ind,1);
+                //     }
+                // })
+            })
+            $scope.similarSchoolsArray = [];
+            $scope.schoolArrayId = [];
+            console.log('similarSchoolsArray',$scope.similarSchoolsArray);
         }
+        console.log('origninal',$scope.similarCollegeData);
 
-        $scope.similarSchoolsArray = [];
+        // var similarSchoolsArray = $scope.similarCollegeData;
+        // console.log('selectedSimilarSchools ======>', similarSchoolsArray);
+
+        // var similarSchoolColgData = $scope.similarSchoolColgData;
+
+        // for (var i = 0; i < similarSchoolsArray.length; i++) {
+
+        //     console.log('Checking for collegeID ===> ', similarSchoolsArray[i]); // number
+        //     // debugger;
+
+        //     for (var j = 0; j < similarSchoolColgData.Colleges.length; j++) {
+        //         //console.log(similarSchoolColgData[j].collegeId);
+        //         if (similarSchoolColgData.Colleges[j].collegeId == similarSchoolsArray[i]) {
+        //             console.log('Matched ===> ', similarSchoolColgData.Colleges[j].collegeId + ' ===== ' + similarSchoolsArray[i]);
+        //             console.log('Matched ===> ', similarSchoolColgData.Colleges[j].collegeName + ' ===== ' + similarSchoolsArray[i]);
+        //             // var obj = {};
+        //             // obj.collegeId = similarSchoolsArray[i];
+        //             // obj.collegeName = similarSchoolColgData[j].collegeName;
+
+        //             $scope.similerSchool.push(similarSchoolColgData.Colleges[j]);
+        //             $scope.similarSchoolColgData.Colleges.splice(j, 1);
+        //         }
+        //     };
+        // }
+
+        // $scope.similarSchoolsArray = [];
     };
 
     $scope.saveSimilarSchool = function() {
-        console.log('1',$scope.similerSchool);
-        console.log('2',$scope.similarSchoolsSelectedArray);
+            console.log('1', $scope.similerSchool);
+            console.log('2', $scope.similarSchoolsSelectedArray);
 
-        // editCollegeAPI.saveSimilarSchoolDetail($scope.similarSchoolsSelectedArray)
-        //     .then(
-        //         function(data) {
-        //             console.log('save detail weather====>', data);
-        //         });
+            // editCollegeAPI.saveSimilarSchoolDetail($scope.similarSchoolsSelectedArray)
+            //     .then(
+            //         function(data) {
+            //             console.log('save detail weather====>', data);
+            //         });
 
-    }
-    // Sed=nd this in APi call -similarSchoolsSelectedArray
+        }
+        // Sed=nd this in APi call -similarSchoolsSelectedArray
     $scope.deleteSelectedSchool = function(item) {
         //alert('delete selected school==>'+ item.collegeId);
-
-        for (var i = 0; i < $scope.similarSchoolsSelectedArray.length; i++) {
-            if ($scope.similarSchoolsSelectedArray[i].collegeId == item.collegeId) {
-                $scope.similarSchoolsSelectedArray.splice(i, 1);
-                $scope.similarSchoolColgData.Colleges.push(item);
+        console.log('collegeid',item.collegeId);
+        for (var i = 0; i < $scope.similerSchool.length; i++) {
+            if ($scope.similerSchool[i].collegeID == item.collegeID) {
+                $scope.similerSchool.splice(i, 1);
+                // $scope.similarSchoolColgData.Colleges.push(item);
+                $scope.similarCollegeData.push(item);
                 event.target.style.backgroundColor = "#ccc";
-            }else {
-            // element to remove from array
-            // $scope.similarSchoolsArray.splice(index, 1);
-            // background color
-            event.target.style.backgroundColor = "transparent";
+            } else {
+                event.target.style.backgroundColor = "transparent";
 
-            
-        }
+
+            }
         };
 
     };
