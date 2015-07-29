@@ -504,6 +504,26 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
             });
         }
     },true);
+    $scope.testing = function() {
+        //alert('test');
+        var objIntendedStudyOption = $scope.intendedStudyOption;
+        for (var i = 0; i < objIntendedStudyOption.length; i++) {
+            var obj = objIntendedStudyOption[i],
+                ele = obj.sysIntendedStudyOptionName.slice(0, -1).split(' ').join(''),
+                value = obj.optionValue;
+            if (value === 'YES') {
+                $('#' + ele).bootstrapToggle('on');
+            } else {
+                $('#' + ele).bootstrapToggle('off');
+            }
+            (function(i) {
+                $('#' + ele).change(function() {
+                    $scope.intendedStudyOption[i].optionValue = $(this).prop('checked') ? 'YES' : 'NO';
+                    console.log('Value Changed ', $scope.intendedStudyOption[i].optionValue);
+                })
+            })(i);
+        }
+    }
 
     // $scope.$watch('college',function (newValue) {
     //     console.log('newValue',newValue);
@@ -1335,7 +1355,11 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
 
         if (index == -1) {
             $scope.schoolArrayId.push(data.schoolID);
-            $scope.similarSchoolsArray.push({'collegeName':data.collegeName,'college':$rootScope.colgData.collegeId,'schoolID':data.schoolID});
+            $scope.similarSchoolsArray.push({
+                'collegeName': data.collegeName,
+                'college': $rootScope.colgData.collegeId,
+                'schoolID': data.schoolID
+            });
             event.target.style.backgroundColor = "#ccc";
         }else {
             $scope.schoolArrayId.splice(index,1);

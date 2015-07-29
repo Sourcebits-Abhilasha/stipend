@@ -21,6 +21,7 @@ app.directive('editcollege', ['$rootScope', function ($rootScope) {
 			console.log('Directive === edit_college');
 			$(function() {
 			    $( "#tabs" ).tabs();
+			    $( "#tabs_sports" ).tabs();
 			  });
 		}
 
