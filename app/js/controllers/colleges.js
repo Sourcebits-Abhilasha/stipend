@@ -7,6 +7,7 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
     var inStateData = [1, 3, 4, 5, 6];
     var outStateData = [1, 2, 4, 5, 6];
     var tempFees = {};
+    var k = 0;
 
     $scope.colgList = false;
     $scope.editList = true;
@@ -234,6 +235,7 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
                     console.log('data====>', data);
                     if (data !== null) {
                         $scope.similarCollegeData = data.Colleges;
+                        $scope.similarCollegeData = _.sortByOrder($scope.similarCollegeData,['collegeName'],['asc']);
                         $scope.similarSchoolColgData = data;
 
                         //$('body').removeClass('page-loader');
@@ -250,6 +252,7 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
     $scope.editCollege = function(data) {
         //$('body').addClass('page-loader');
         $scope.getSimilarCollege();
+        
         console.log('data is in ====>', data);
         $rootScope.colgData = data;
         editCollegeAPI.editcollegelist(data.collegeId)
@@ -329,6 +332,8 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
                         $scope.geoData = data['FreshmanProfile']['Geographics'];
                         $scope.clgEthenicity = data['FreshmanProfile']['CollegeEthnicity'];
                         $scope.intendedStudy = data['IntendedStudy']['Study'];
+                        $scope.studentFacultyRatio = data['IntendedStudy'];
+                        $scope.intendedStudyOption = data['IntendedStudy']['IntendedStudyOption'];
                         $scope.admission = data['Admissions']['Admission'];
                         $scope.interview = data['Admissions']['Interviews'];
                         $scope.recommendation = data['Admissions']['Recommendations'];
@@ -377,11 +382,17 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
 
 
                         $scope.test = data.Calender;
-
+                        $scope.similarArray=[];
                         $scope.collegeRanking = data.CollegeRanking;
                         $scope.prominentAlumni = data.ProminentAlumini;
                         $scope.similerSchool = data.SimilarSchools;
-                        console.log('scope.similerSchool',$scope.similerSchool);
+                        $scope.similerSchool.forEach(function (item) {
+                            $scope.similarArray.push(item.similarSchoolsID);
+                            // console.log('$scope.similarArray',$scope.similarArray);
+                        })
+                       
+                        
+                        console.log('scope.similarCollegeDatasimilarCollegeDatasimilarCollegeDatasimilarCollegeData',$scope.similarCollegeData);
                         $scope.linkAndAddress = data.LinksAndAddresses;
 
                         $scope.sports.Divisions.Men.NCAADIVISION1.forEach(function(item) {
@@ -474,6 +485,8 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
                             })
                         });
 
+                        
+
 
                         console.log('$scope.selectedSportsDiv1', $scope.selectedSportsDiv1);
 
@@ -482,6 +495,15 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
                 }
             );
     }
+
+    $scope.$watch('similarCollegeData',function (newValue) {
+        if (newValue && k==0) {
+            k = 1;
+            $scope.similarCollegeData = _.filter($scope.similarCollegeData,function (i) {
+                return $scope.similarArray.indexOf(i.schoolID) == -1;
+            });
+        }
+    },true);
 
     // $scope.$watch('college',function (newValue) {
     //     console.log('newValue',newValue);
@@ -647,6 +669,7 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
                 });
 
         var mostRepresentedStt = {
+            'collegeId': $rootScope.colgData['collegeId'] ? $rootScope.colgData['collegeId'] : null,
             'mostRepresentedStateID': $scope.mostRepresentedState.mostRepresentedStateID ? $scope.mostRepresentedState.mostRepresentedStateID : null,
             'stateId1': $scope.mostRepresentedState.stateId1 ? $scope.mostRepresentedState.stateId1 : null,
             'stateId2': $scope.mostRepresentedState.stateId2 ? $scope.mostRepresentedState.stateId2 : null,
@@ -1035,17 +1058,17 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
 
         var admCode = {
             'collegeId': $rootScope.colgData['collegeId'] ? $rootScope.colgData['collegeId'] : null,
-            'admissionsOptionID': $scope.recommendation.admissionsOptionID ? $scope.recommendation.admissionsOptionID : null,
-            'SETCODE': $scope.admissionCode.SETCODE ? $scope.admissionCode.SETCODE : null,
-            'ACTCODE': $scope.admissionCode.ACTCODE ? $scope.admissionCode.ACTCODE : null
+            'admissionsOptionID': $scope.admission[0].admissionsOptionID,
+            'SETCODE': parseInt($scope.admissionCode.SETCODE, 10) ? parseInt($scope.admissionCode.SETCODE, 10) : 0,
+            'ACTCODE': parseInt($scope.admissionCode.ACTCODE, 10) ? parseInt($scope.admissionCode.ACTCODE, 10) : 0
         }
-
+        finalAdmissionData.push(admCode);
         console.log('final array recommendation', finalAdmissionData);
-        editCollegeAPI.saveAdmissionDetail(finalAdmissionData)
-            .then(
-                function(data) {
-                    console.log('save detail finalAdmissionData====>', data);
-                });
+        // editCollegeAPI.saveAdmissionDetail(finalAdmissionData)
+        //     .then(
+        //         function(data) {
+        //             console.log('save detail finalAdmissionData====>', data);
+        //         });
 
     };
 
@@ -1320,31 +1343,6 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
             event.target.style.backgroundColor = "transparent";
         }
 
-        // console.log('similarSchoolsArray',$scope.similarSchoolsArray);
-        // console.log('similerSchool',$scope.similerSchool);
-
-
-        // var index = $scope.similarSchoolsArray.indexOf(data.collegeId);
-        // if (index == -1) {
-        //     // push to array
-        //     $scope.similarSchoolsArray.push(data.collegeId);
-
-
-
-
-        //     // console.log('pushing in similarSchoolsArray===> ', data.collegeId);
-        //     // console.log('similarSchoolsArray===> ', $scope.similarSchoolsArray);
-        //     // background color
-        //     event.target.style.backgroundColor = "#ccc";
-        // } else {
-        //     // element to remove from array
-        //     $scope.similarCollegeData.splice(index, 1);
-        //     // background color
-        //     event.target.style.backgroundColor = "transparent";
-
-        //     console.log('pop in similarSchoolsArray===> ', data.collegeId);
-        //     console.log('similarSchoolsArray===> ', $scope.similarSchoolsArray);
-        // }
     }
 
     $scope.similarSchoolsSelectedArray = [];
@@ -1357,15 +1355,9 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
         if ($scope.similarSchoolsArray) {
             $scope.similarSchoolsArray.forEach(function (item1) {
                 $scope.similerSchool.push(item1);
-            
-
-                // $scope.similarCollegeData.forEach(function (item) {
-                //     if(item.schoolID == item1.schoolID) {
-                //         console.log('true----');
-                //         ind =  $scope.similarCollegeData.indexOf(item);
-                //         $scope.similarCollegeData.splice(ind,1);
-                //     }
-                // })
+                $scope.similarCollegeData = _.filter($scope.similarCollegeData,function (i) {
+                    return i.schoolID != item1.schoolID;
+                })
             })
             $scope.similarSchoolsArray = [];
             $scope.schoolArrayId = [];
@@ -1373,61 +1365,38 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
         }
         console.log('origninal',$scope.similarCollegeData);
 
-        // var similarSchoolsArray = $scope.similarCollegeData;
-        // console.log('selectedSimilarSchools ======>', similarSchoolsArray);
-
-        // var similarSchoolColgData = $scope.similarSchoolColgData;
-
-        // for (var i = 0; i < similarSchoolsArray.length; i++) {
-
-        //     console.log('Checking for collegeID ===> ', similarSchoolsArray[i]); // number
-        //     // debugger;
-
-        //     for (var j = 0; j < similarSchoolColgData.Colleges.length; j++) {
-        //         //console.log(similarSchoolColgData[j].collegeId);
-        //         if (similarSchoolColgData.Colleges[j].collegeId == similarSchoolsArray[i]) {
-        //             console.log('Matched ===> ', similarSchoolColgData.Colleges[j].collegeId + ' ===== ' + similarSchoolsArray[i]);
-        //             console.log('Matched ===> ', similarSchoolColgData.Colleges[j].collegeName + ' ===== ' + similarSchoolsArray[i]);
-        //             // var obj = {};
-        //             // obj.collegeId = similarSchoolsArray[i];
-        //             // obj.collegeName = similarSchoolColgData[j].collegeName;
-
-        //             $scope.similerSchool.push(similarSchoolColgData.Colleges[j]);
-        //             $scope.similarSchoolColgData.Colleges.splice(j, 1);
-        //         }
-        //     };
-        // }
-
-        // $scope.similarSchoolsArray = [];
     };
 
     $scope.saveSimilarSchool = function() {
             console.log('1', $scope.similerSchool);
-            console.log('2', $scope.similarSchoolsSelectedArray);
 
-            // editCollegeAPI.saveSimilarSchoolDetail($scope.similarSchoolsSelectedArray)
-            //     .then(
-            //         function(data) {
-            //             console.log('save detail weather====>', data);
-            //         });
+            $scope.similerSchool = _.each($scope.similerSchool,function (item,key) {
+
+                if (item.similarSchoolsID) {
+                    item['schoolID'] = item.similarSchoolsID;
+                    delete item.similarSchoolsID;
+                }
+                
+            });
+
+            console.log('new 1', $scope.similerSchool);
+
+            editCollegeAPI.saveSimilarSchoolDetail($scope.similerSchool)
+                .then(
+                    function(data) {
+                        console.log('save detail similarschool====>', data);
+                    });
 
         }
         // Sed=nd this in APi call -similarSchoolsSelectedArray
     $scope.deleteSelectedSchool = function(item) {
         //alert('delete selected school==>'+ item.collegeId);
-        console.log('collegeid',item.collegeId);
-        for (var i = 0; i < $scope.similerSchool.length; i++) {
-            if ($scope.similerSchool[i].collegeID == item.collegeID) {
-                $scope.similerSchool.splice(i, 1);
-                // $scope.similarSchoolColgData.Colleges.push(item);
-                $scope.similarCollegeData.push(item);
-                event.target.style.backgroundColor = "#ccc";
-            } else {
-                event.target.style.backgroundColor = "transparent";
+        console.log('collegeid',item);
 
-
-            }
-        };
+        $scope.similarCollegeData.push(item);
+        $scope.similarCollegeData = _.sortByOrder($scope.similarCollegeData,['collegeName'],['asc']);
+        var index = $scope.similerSchool.indexOf(item);
+        $scope.similerSchool.splice(index, 1);
 
     };
 

@@ -5,7 +5,7 @@ App stipend
 ==================================================================*/
 'use strict';
 
-var app = angular.module('stipend', ['ngRoute', 'chart.js', 'ui.router', 'simplePagination', 'ngProgress', 'angularFileUpload']);
+var app = angular.module('stipend', ['ngRoute', 'chart.js', 'ui.router', 'ngProgress', 'angularFileUpload']);
 
 app.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', '$locationProvider', function ($stateProvider, $urlRouterProvider, $httpProvider, $locationProvider) {
     
@@ -95,12 +95,12 @@ app.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', '$locationP
         //     templateUrl: 'partials/templates/polls.html'   
         //     //controller: 'ItemsCrtl'     
         // })
-        // .state('dashboard.import',  {
-        //     url: '/import',
-        //     requiredLogin: true,                     
-        //     templateUrl: 'partials/templates/import.html'   
-        //     //controller: 'ItemsCrtl'     
-        // })
+        .state('resetPassword',  {
+            url: '/resetPassword',
+             //equiredLogin: true,                     
+            templateUrl: 'partials/templates/resetPassword.html'   
+            //controller: 'ItemsCrtl'     
+        })
         .state('dashboard.admin',  {
             url: '/admin',
             requiredLogin: true,                     
