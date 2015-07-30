@@ -285,7 +285,6 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
 
                         $scope.college.colgArea = $scope.college.colgAreaID;
 
-
                         $scope.college.colgLongitude = data['College'].collegeLongitude;
                         $scope.college.colgLatitude = data['College'].collegeLatitude;
                         $scope.college.colgStreet = data['College'].streetName;
@@ -504,7 +503,8 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
             });
         }
     },true);
-    $scope.testing = function() {
+
+    $scope.toggalBtn = function() {
         //alert('test');
         var objIntendedStudyOption = $scope.intendedStudyOption;
         for (var i = 0; i < objIntendedStudyOption.length; i++) {
@@ -859,6 +859,8 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
 
             finalIntendedStudyData.push(finalIntendedStudyObject);
         }
+
+
         console.log('final array IntendedStudy', finalIntendedStudyData);
 
         editCollegeAPI.saveIntendedStudyDetail(finalIntendedStudyData)
@@ -1107,6 +1109,13 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
         }
         console.log('final array FeesAndFinancial', finalFeesAndFinancialData);
 
+        var averageFees = {
+            'collegeId': $rootScope.colgData['collegeId'] ? $rootScope.colgData['collegeId'] : null,
+            'collegeFeesID': parseInt($scope.feesAndFinancial.collegeFeesID, 10) ? parseInt($scope.feesAndFinancial.collegeFeesID, 10) : 0,
+            'AverageFinancialAid': parseInt($scope.AvgFees.AverageFinancialAid, 10) ? parseInt($scope.AvgFees.AverageFinancialAid, 10) : 0,
+            'ReceivingFinancialAid': parseInt($scope.AvgFees.ReceivingFinancialAid, 10) ? parseInt($scope.AvgFees.ReceivingFinancialAid, 10) : 0
+        }
+        finalFeesAndFinancialData.push(averageFees);
         editCollegeAPI.saveFeesAndFinancialDetail(finalFeesAndFinancialData)
             .then(
                 function(data) {

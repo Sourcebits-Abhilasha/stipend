@@ -29,6 +29,7 @@ app.controller('MainCtrl', ['$scope', '$location', 'MasterAPI', '$rootScope', fu
                     $rootScope.sysSports4 = angular.copy(data['SysSports']);
                     $rootScope.sysSports5 = angular.copy(data['SysSports']);
                     $rootScope.sysSports6 = angular.copy(data['SysSports']);
+                    $rootScope.sportsDivisions = data.SysSportsDivision;
 
                     console.log('$rootScope.sysSports',$rootScope.sysSports);
 

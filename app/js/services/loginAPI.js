@@ -39,9 +39,30 @@ app.service('loginAPI', ['$rootScope', '$q', 'appConfig', '$http', function ($ro
 	this.fgtPwd = function (data) {
 		console.log('data',data);
 		var deferred = $q.defer();
-		var serviceUrl = appConfig.baseURL + '/forgotPassword/'+ data.emailID +'/';
+		var serviceUrl = appConfig.baseURL + '/forgotPasswordForAdmin/'+ data.emailID +'/';
 
 		$http.get(serviceUrl)
+			.success(function (data) {
+				console.log('Controller ===  apisuccess');
+				
+				deferred.resolve(data);
+
+			})
+			.error(function (err) {
+				console.log('Controller =====>apifail');
+				
+				deferred.reject(err);
+			});
+
+		return deferred.promise;
+	};
+
+	this.changePassword = function (data) {
+		console.log('data',data);
+		var deferred = $q.defer();
+		var serviceUrl = appConfig.baseURL + '/changePasswordForAdmin/'+ data.emailID + '/' + data.password + '/';
+
+		$http.post(serviceUrl)
 			.success(function (data) {
 				console.log('Controller ===  apisuccess');
 				

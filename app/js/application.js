@@ -113,6 +113,14 @@ app.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', '$locationP
             templateUrl: 'partials/templates/forgot-password.html'   
             //controller: 'ItemsCrtl'     
         });
+
+        // .state('emailFormat',  {
+        //     url: '/emailFormat',
+        //     //requiredLogin: true,                     
+        //     templateUrl: 'partials/templates/emailFormat.html'   
+        //     //controller: 'ItemsCrtl'     
+        // });
+
         $urlRouterProvider.otherwise('/');
 
         // This is required for Browser Sync to work poperly

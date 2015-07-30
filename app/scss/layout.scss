@@ -29,6 +29,54 @@ SMACSS: LAYOUT - HEADER
       font-size: 14px;
     }
 }*/
+.body-color{
+  background-color: #ffffff !important;
+  height:890px;
+}
+.background-color: white;
+}
+.reset-label-color{
+  font-family: Avenir-Heavy;
+font-size: 12px;
+color: #808080;
+}
+.reset-heading{
+    font-family: Avenir-Medium;
+  font-size: 32px !important;
+  color: #007180;
+  margin:60px 0px 40px 0px;
+    text-align: left;
+}
+.header-reset{
+  width:100% !important;
+  height:100px !important;
+  background-image: url("../images/CollegeHunchLogo.png") !important;
+}
+.text-box{
+  width: 340px;
+  height: 50px !important;
+  margin:15px 0px 30px 0px;
+}
+.save-button-reset{
+  width: 340px;
+  height: 50px;
+  margin:60px 0px 0px 0px;
+  font-family: Avenir-Heavy;
+font-size: 18px;
+color: #FFFFFF;
+}
+
+.save-button{
+  padding:1em 0em 1em 0em;
+}
+.options-style{
+    background: #eee;
+  margin: 0px 0px 20px 0px !important;
+  padding: 1em 0em 1em 0em;
+}
+.intended-study-border{
+  border-right:2px solid #ccc;
+}
 .weather-save{
     padding: 2em 0em 0em 0em;
 }
