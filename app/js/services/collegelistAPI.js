@@ -4,7 +4,7 @@
 ==================================================================*/
 /*global app, $http*/
 
-app.service('CollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', function ($rootScope, $q, appConfig, $http) {
+app.service('CollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', 'ngDialog','usSpinnerService', function ($rootScope, $q, appConfig, $http, ngDialog, usSpinnerService) {
 
 	'use strict';
 
@@ -18,7 +18,11 @@ app.service('CollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', function ($
 				deferred.resolve(data);
 			})
 			.error(function (err) {
-				alert('Unable to load list of colleges..');
+				// alert('Unable to load list of colleges..');
+				ngDialog.open({
+                template: '<p>Unable to load list of colleges..</p>',
+                plain: true
+            });
 				deferred.reject(err);
 			});
 
@@ -35,7 +39,11 @@ app.service('CollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', function ($
 				deferred.resolve(data);
 			})
 			.error(function (err) {
-				alert('Unable to load list of similar school colleges..');
+				// alert('Unable to load list of similar school colleges..');
+				ngDialog.open({
+                template: '<p>Unable to load list of similar school colleges..</p>',
+                plain: true
+            });
 				deferred.reject(err);
 			});
 
@@ -53,7 +61,11 @@ app.service('CollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', function ($
 				deferred.resolve(data);
 			})
 			.error(function (err) {
-				alert('Unable to load list of Users..');
+				// alert('Unable to load list of Users..');
+				ngDialog.open({
+                template: '<p>Unable to load list of Users..</p>',
+                plain: true
+            });
 				deferred.reject(err);
 			});
 

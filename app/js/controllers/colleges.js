@@ -109,6 +109,7 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
 
     $scope.getcollege = function(state) {
         //$('body').addClass('page-loader');
+        usSpinnerService.spin('spinner-1');
         var page;
         if (!isNaN(state)) {
             $scope.collegeState = state;
@@ -157,7 +158,7 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
                         // $scope.collegeCount = data.length;
 
                     }
-
+                    usSpinnerService.stop('spinner-1');
                 }
             );
     };
@@ -165,6 +166,7 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
 
     $scope.getUsers = function(state) {
         //$('body').addClass('page-loader');
+        usSpinnerService.spin('spinner-1');
         var page;
         if (!isNaN(state)) {
             $scope.pageState = state;
@@ -212,7 +214,7 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
                         $scope.userdata = data.Users;
 
                     }
-
+                    usSpinnerService.stop('spinner-1');
                 }
             );
     };
@@ -223,6 +225,7 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
 
 
     $scope.getSimilarCollege = function() {
+        usSpinnerService.spin('spinner-1');
         console.log('getSimilarCollege------>', $scope.collegeCount);
         var page = {
                 'off': 0,
@@ -242,7 +245,7 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
                         // $scope.FacultyName = data.firstName + data.lastName;
                         console.log('similar school data---->', $scope.similarCollegeData)
                     }
-
+                    usSpinnerService.stop('spinner-1');
                 }
             );
     };
@@ -536,7 +539,7 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
         //debugger
         //$('body').addClass('page-loader');
         // console.log('save detail====>', $scope.saveCollegeForm.$valid);
-
+usSpinnerService.spin('spinner-1');
         if (!$scope.saveCollegeForm.$valid) {
             return false;
         }
@@ -559,6 +562,7 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
             .then(
                 function(data) {
                     console.log('save detail====>', data);
+                    usSpinnerService.stop('spinner-1');
                 });
         //$('body').removeClass('page-loader');
 
@@ -567,6 +571,7 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
     $scope.addCollege = function(addNew) {
         //debugger
         //$('body').addClass('page-loader');
+        usSpinnerService.spin('spinner-1');
         console.log('save detail====>', $rootScope.colgData);
         var data;
 
@@ -602,11 +607,13 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
                     console.log('save detail====>', data);
                 });
         //$('body').removeClass('page-loader');
+        usSpinnerService.sptop('spinner-1');
 
     }
 
     $scope.saveQuickFact = function() {
         //debugger
+        usSpinnerService.spin('spinner-1');
         console.log('save saveQuickFact====>', $rootScope.colgData);
         var qukFact = {
             'collegeId': $rootScope.colgData['collegeId'] ? $rootScope.colgData['collegeId'] : null,
@@ -620,12 +627,14 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
             .then(
                 function(data) {
                     console.log('save saveQuickFact====>', data);
+                    usSpinnerService.stop('spinner-1');
                 });
     }
 
 
 
     $scope.saveFreshman = function() {
+        usSpinnerService.spin('spinner-1');
         // $scope.enrollmentID = $scope.enrollmentStatusId
         console.log('testData', $scope.geoData);
         console.log('testData for ethecity', $scope.clgEthenicity);
@@ -708,6 +717,7 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
             .then(
                 function(data) {
                     console.log('save detail====>', data);
+                    usSpinnerService.stop('spinner-1');
                 });
 
 
@@ -715,6 +725,7 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
     };
 
     $scope.saveCollegeRanking = function() {
+        usSpinnerService.spin('spinner-1');
         console.log('testData College ranking data', $scope.collegeRanking);
         var finalColegeRankingData = [],
             collegeId = $scope.collegeRanking[0].collegeId;
@@ -748,11 +759,13 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
             .then(
                 function(data) {
                     console.log('save detail saveCollegeRankingDetail====>', data);
+                    usSpinnerService.stop('spinner-1');
                 });
 
     };
 
     $scope.saveProminentAlumni = function() {
+        usSpinnerService.spin('spinner-1');
         console.log('testData Prominent Alumni data', $scope.prominentAlumni);
         var finalProminentAlumniData = [],
             collegeId = $scope.prominentAlumni[0].collegeId;
@@ -786,11 +799,13 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
             .then(
                 function(data) {
                     console.log('save detail Prominent Alumni====>', data);
+                    usSpinnerService.stop('spinner-1');
                 });
 
     };
 
     $scope.saveAddress = function() {
+        usSpinnerService.spin('spinner-1');
         console.log('Save Address data', $scope.linkAndAddress);
         var finalLinkAndAddressData = [],
             collegeId = $scope.linkAndAddress[0].collegeId;
@@ -845,11 +860,13 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
             .then(
                 function(data) {
                     console.log('save detail====>', data);
+                    usSpinnerService.stop('spinner-1');
                 });
 
     };
 
     $scope.saveIntendedStudy = function() {
+        usSpinnerService.spin('spinner-1');
         console.log('testData saveIntendedStudy data', $scope.intendedStudy);
         var finalIntendedStudyData = [];
 
@@ -871,6 +888,7 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
             .then(
                 function(data) {
                     console.log('save detail IntendedStudy====>', data);
+                    usSpinnerService.stop('spinner-1');
                 });
 
     };
@@ -893,6 +911,7 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
     // },true);
 
     $scope.saveSports = function() {
+        usSpinnerService.spin('spinner-1');
         console.log('Sports $scope.menSports', $scope.menSports);
         // console.log('Sports data2', $rootScope.sysSports2);
         // console.log('Sports data3', $rootScope.sysSports3);
@@ -937,6 +956,7 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
             .then(
                 function(data) {
                     console.log('save detail IntendedStudy====>', data);
+                    usSpinnerService.stop('spinner-1');
                 });
 
     };
@@ -947,6 +967,7 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
 
 
     $scope.saveTestScore = function() {
+        usSpinnerService.spin('spinner-1');
         var testScoreSatCriticalReading = {
             'collegeId': $rootScope.colgData['collegeId'] ? $rootScope.colgData['collegeId'] : null,
             'collegeScoreId': $scope.SatData.CriticalReading.collegeScoreId ? $scope.SatData.CriticalReading.collegeScoreId : null,
@@ -1032,11 +1053,13 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
             .then(
                 function(data) {
                     console.log('save detail Test And Score====>', data);
+                    usSpinnerService.stop('spinner-1');
                 });
 
     };
 
     $scope.saveAdmission = function() {
+        usSpinnerService.spin('spinner-1');
         console.log('testData Admission data', $scope.admission);
         var finalAdmissionData = [];
 
@@ -1090,15 +1113,17 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
         }
         finalAdmissionData.push(admCode);
         console.log('final array recommendation', finalAdmissionData);
-        // editCollegeAPI.saveAdmissionDetail(finalAdmissionData)
-        //     .then(
-        //         function(data) {
-        //             console.log('save detail finalAdmissionData====>', data);
-        //         });
+        editCollegeAPI.saveAdmissionDetail(finalAdmissionData)
+            .then(
+                function(data) {
+                    console.log('save detail finalAdmissionData====>', data);
+                     usSpinnerService.stop('spinner-1');
+                });
 
     };
 
     $scope.saveFeesAndFinancial = function() {
+        usSpinnerService.spin('spinner-1');
         console.log('testData saveFeesAndFinancial data', $scope.feesAndFinancial);
         var finalFeesAndFinancialData = [];
 
@@ -1124,11 +1149,13 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
             .then(
                 function(data) {
                     console.log('save detail FeesAndFinancial====>', data);
+                    usSpinnerService.stop('spinner-1');
                 });
 
     };
 
     $scope.saveCalendar = function() {
+        usSpinnerService.spin('spinner-1');
         console.log('testData Calendar data', $scope.test);
         var finalCalendarData = [];
 
@@ -1161,13 +1188,14 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
             .then(
                 function(data) {
                     // console.log('save detail====>', data);
+                    usSpinnerService.stop('spinner-1');
                 });
 
     };
 
 
     $scope.saveWeather = function() {
-
+usSpinnerService.spin('spinner-1');
         var finalWeatherData = {
             'collegeId': $rootScope.colgData['collegeId'] ? $rootScope.colgData['collegeId'] : null,
             'weatherId': $scope.weatherObj.weatherId ? $scope.weatherObj.weatherId : null,
@@ -1189,15 +1217,17 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
             .then(
                 function(data) {
                     console.log('save detail weather====>', data);
+                     usSpinnerService.stop('spinner-1');
                 });
     }
 
 
 
     $scope.backCollegeList = function() {
-
+usSpinnerService.spin('spinner-1');
         $scope.colgList = false;
         $scope.editList = true;
+        usSpinnerService.stop('spinner-1');
 
     };
     $scope.winter = function() {
@@ -1251,7 +1281,7 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
     }
 
     $scope.inStates = function() {
-        alert("im in instate");
+        
         $scope.outState = true;
         $scope.inState = false;
     }

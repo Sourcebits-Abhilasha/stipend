@@ -61,13 +61,14 @@ app.controller('ForgotpwdCtrl', ['$scope', 'loginAPI', 'ngProgress', 'ngDialog',
                         $scope.statusMsg = 'Reset Password Link Sent to your Email Address';
                         $scope.resetPassword.visible = true;
                     }
-                    ngProgress.complete();
+                        //ngProgress.complete();
+                         usSpinnerService.stop('spinner-1');
                 };
             },
             function(err) {
                 console.log('err', err);
                 });
-            usSpinnerService.stop('spinner-1');
+           
         }else{
             ngDialog.open({
                 template: '<p>Password and Confirm password does not match</p>',
