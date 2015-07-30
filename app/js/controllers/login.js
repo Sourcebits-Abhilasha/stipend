@@ -2,7 +2,7 @@
 Controller = LoginCtrl
 ==================================================================*/
 
-app.controller('LoginCtrl', ['$scope', '$rootScope', '$location', 'loginAPI', 'MasterAPI', 'ngProgress', function ($scope, $rootScope, $location, loginAPI, MasterAPI, ngProgress) {
+app.controller('LoginCtrl', ['$scope', '$rootScope', '$location', 'loginAPI', 'MasterAPI', 'ngProgress', 'usSpinnerService', function ($scope, $rootScope, $location, loginAPI, MasterAPI, ngProgress, usSpinnerService) {
     'use strict';
     console.log('Controller ===  LoginCtrl');
     $scope.class_status = 0;
@@ -19,7 +19,9 @@ app.controller('LoginCtrl', ['$scope', '$rootScope', '$location', 'loginAPI', 'M
             $scope.formValidations = true;
         }
         else {
-            ngProgress.start();
+            // ngProgress.start();
+            debugger;
+            usSpinnerService.spin('spinner-1');
             loginAPI.adminlogin($scope.user)
             .then(function (data) {
                // console.log('stipend login data====>',data);
@@ -47,6 +49,7 @@ app.controller('LoginCtrl', ['$scope', '$rootScope', '$location', 'loginAPI', 'M
                 //$scope.loginFailed = 'Server is Down';     
                 console.log('error');
             });
+        usSpinnerService.stop('spinner-1');
         }
     };
 

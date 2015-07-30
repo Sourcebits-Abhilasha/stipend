@@ -3,7 +3,7 @@
 ==================================================================*/
 /*global app*/
 
-app.controller('ForgotpwdCtrl', ['$scope', 'loginAPI', 'ngProgress', function($scope, loginAPI, ngProgress) {
+app.controller('ForgotpwdCtrl', ['$scope', 'loginAPI', 'ngProgress', 'ngDialog','usSpinnerService', function($scope, loginAPI, ngProgress, ngDialog, usSpinnerService) {
     'use strict';
     $scope.resetPassword = {
         visible: false
@@ -39,8 +39,12 @@ app.controller('ForgotpwdCtrl', ['$scope', 'loginAPI', 'ngProgress', function($s
     // $scope.newAccessPasswordModel = '';
     // $scope.newPasswordModel = '';
     // $scope.newConfirmPasswordModel = '';
-    $scope.setNewPassword = function() {
-        ngProgress.start();
+    $scope.setNewPassword = function(userData) {
+        //debugger;
+        var flag = (userData.newPassword === userData.confirmPassword);
+        if(flag){
+            //ngProgress.start();
+            usSpinnerService.spin('spinner-1');
         var data = {
             'emailID': 'asd@asd.com',
             'password': $scope.password
@@ -62,7 +66,14 @@ app.controller('ForgotpwdCtrl', ['$scope', 'loginAPI', 'ngProgress', function($s
             },
             function(err) {
                 console.log('err', err);
+                });
+            usSpinnerService.stop('spinner-1');
+        }else{
+            ngDialog.open({
+                template: '<p>Password and Confirm password does not match</p>',
+                plain: true
             });
+        }
 
     }
 

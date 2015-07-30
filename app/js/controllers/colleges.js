@@ -2,7 +2,7 @@
 Controller = CollegeCtrl
 ==================================================================*/
 
-app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootScope', function($scope, CollegeAPI, editCollegeAPI, $rootScope) {
+app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootScope', 'usSpinnerService', function($scope, CollegeAPI, editCollegeAPI, $rootScope, usSpinnerService) {
     'use strict';
     var inStateData = [1, 3, 4, 5, 6];
     var outStateData = [1, 2, 4, 5, 6];
@@ -251,6 +251,7 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
 
     $scope.editCollege = function(data) {
         //$('body').addClass('page-loader');
+        usSpinnerService.spin('spinner-1');
         $scope.getSimilarCollege();
         
         console.log('data is in ====>', data);
@@ -260,6 +261,7 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
                 function(data) {
                     console.log('data Edit College====>', data);
                     if (data !== null) {
+                        try {
                         $scope.selectedSportsDiv1 = [];
                         $scope.selectedSportsDiv2 = [];
                         $scope.selectedSportsDiv3 = [];
@@ -488,11 +490,13 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
 
 
                         console.log('$scope.selectedSportsDiv1', $scope.selectedSportsDiv1);
-
+                        } catch (e) {
+                            console.log('exception ', e);
                     }
 
                 }
-            );
+                    usSpinnerService.stop('spinner-1');
+                });
     }
 
     $scope.$watch('similarCollegeData',function (newValue) {
