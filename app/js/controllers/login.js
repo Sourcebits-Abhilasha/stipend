@@ -20,7 +20,7 @@ app.controller('LoginCtrl', ['$scope', '$rootScope', '$location', 'loginAPI', 'M
         }
         else {
             // ngProgress.start();
-            debugger;
+            //debugger;
             usSpinnerService.spin('spinner-1');
             loginAPI.adminlogin($scope.user)
             .then(function (data) {

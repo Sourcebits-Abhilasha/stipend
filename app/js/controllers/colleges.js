@@ -378,7 +378,7 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
                         $scope.AvgFees = data.FeesAndFinancialAids;
 
 
-                        var dataFees = data.FeesAndFinancialAids;
+                        var dataFees = data.FeesAndFinancialAids.Fees;
 
                         for (var i = 0; i < dataFees.length; i++) {
                             tempFees[dataFees[i].sysFeesStructureID] = dataFees[i].fees;
@@ -510,7 +510,7 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
             });
         }
     },true);
-
+    /* Toggle Button for Sports and Intended Study*/
     $scope.toggalBtn = function() {
         //alert('test');
         var objIntendedStudyOption = $scope.intendedStudyOption;
@@ -530,6 +530,18 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
                 })
             })(i);
         }
+
+        var intramuralsFlag = $scope.sports.Intramurals, intramurals = $('#intramurals');
+        if (intramuralsFlag) {
+            intramurals.bootstrapToggle('on');
+        } else {
+            intramurals.bootstrapToggle('off');
+        }
+        intramurals.change(function() {
+            $scope.sports.Intramurals = $(this).prop('checked') ? true : false;
+            console.log('Value Changed ', $scope.sports.Intramurals);
+        })
+
     }
 
     // $scope.$watch('college',function (newValue) {
