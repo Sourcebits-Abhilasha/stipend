@@ -2,11 +2,15 @@
 Controller = MainCtrl
 ==================================================================*/
 
-app.controller('MainCtrl', ['$scope', '$location', 'MasterAPI', '$rootScope', function ($scope, $location, MasterAPI, $rootScope) {
+app.controller('MainCtrl', ['$scope', '$location', 'MasterAPI', '$rootScope', '$state', function ($scope, $location, MasterAPI, $rootScope, $state) {
 'use strict';
 
 	console.log('Controller ===  MainCtrl');
 	$rootScope.dropDownData = '';
+
+    console.log('statee-e----e-e---',$location.url());
+    if (!$location.url().match('resetPassword')) {
+        // console.log('true');
 	 MasterAPI.getdropdowndata()
                     .then(function (data) {
                         console.log('data master API Success====>',data);
@@ -34,6 +38,8 @@ app.controller('MainCtrl', ['$scope', '$location', 'MasterAPI', '$rootScope', fu
                     console.log('$rootScope.sysSports',$rootScope.sysSports);
 
                     });
+    }
+    // }
   $scope.labelsOfGraph =["Eating", "Drinking", "Sleeping", "Designing", "Coding", "Cycling", "Running"];
 
   $scope.dataOfGraph = [

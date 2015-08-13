@@ -56,13 +56,19 @@ app.service('loginAPI', ['$rootScope', '$q', 'appConfig', '$http', function ($ro
 
 		return deferred.promise;
 	};
+	
 
-	this.changePassword = function (data) {
+	// var data = {
+	 //                'emailId': emailId,
+	 //                'authCode': authCode,
+	 //                'password': userData.newPassword
+	 //            }
+	this.changePasswordAdmin = function (data) {
 		console.log('data',data);
 		var deferred = $q.defer();
-		var serviceUrl = appConfig.baseURL + '/changePasswordForAdmin/'+ data.emailID + '/' + data.password + '/';
+		var serviceUrl = appConfig.baseURL + '/changePasswordForAdmin/';
 
-		$http.post(serviceUrl)
+		$http.post(serviceUrl, data)//get
 			.success(function (data) {
 				console.log('Controller ===  apisuccess');
 				
@@ -77,7 +83,26 @@ app.service('loginAPI', ['$rootScope', '$q', 'appConfig', '$http', function ($ro
 
 		return deferred.promise;
 	};
+// this.changePassword = function (data) {
+// 		console.log('data',data);
+// 		var deferred = $q.defer();
+// 		var serviceUrl = appConfig.baseURL + '/changePassword/';
 
+// 		$http.post(serviceUrl, data)//get
+// 			.success(function (data) {
+// 				console.log('Controller ===  apisuccess');
+				
+// 				deferred.resolve(data);
+
+// 			})
+// 			.error(function (err) {
+// 				console.log('Controller =====>apifail');
+				
+// 				deferred.reject(err);
+// 			});
+
+// 		return deferred.promise;
+// 	};
 
 
 }]);
