@@ -7,7 +7,7 @@ app.controller('DashboardCtrl', ['$scope', '$location', '$rootScope', 'logoutAPI
 
 'use strict';
 
-	console.log('Controller ===  DashboardCtrl');
+	// console.log('Controller ===  DashboardCtrl');
 	$scope.labels = ['Download Sales', 'In-Store Sales', 'Mail-Order Sales'];
   	$scope.data = [300, 500, 100];
   	$scope.name="admin@sourcebits.com";
@@ -64,18 +64,18 @@ app.controller('DashboardCtrl', ['$scope', '$location', '$rootScope', 'logoutAPI
 
   	/*File Upload*/
   	$scope.onFileSelect = function($files) {
-  		console.log('$files=====>',$scope.test);
+  		// console.log('$files=====>',$scope.test);
       	var data, xhr;
       	data = new FormData();
 		data.append( 'file', $( '#file' )[0].files[0] );
-		console.log('data',data);
+		// console.log('data',data);
 		var request = new XMLHttpRequest();
 		if(data !== null) {
 		    request.open('POST', 'http://httpbin.org/post', /* async = */ false);
 		    var formData = data;
-		    console.log('formdata---->',formData);
+		    // console.log('formdata---->',formData);
 		    request.send(formData);
-		    console.log('output is---->',request.response);
+		    // console.log('output is---->',request.response);
 		}
 	};
 	/*Display side panel for home page*/

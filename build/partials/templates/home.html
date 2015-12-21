@@ -1,52 +1,18 @@
 <!--Edit admin Profile View-->
 <div ng-controller="CollegeCtrl">
-	<!-- <div class="side-menu-close" id="popup1" >
-		<div class="admin-edit-header">
-			<p class="admin-edit">EDIT PROFILE</p>
-			<div  ng-click="hideSideMenu()" class="close-icon"></div>
-		</div>
-		<div class="container edit-admin-form">
-			<form class="form-horizontal">
-				<div class="form-group">
-			        <div class="col-xs-10">
-			            <input type="text" class="form-control" id="username" placeholder="Admin Name">
-			        </div>
-			    </div>
-			    <div class="form-group">
-			        <div class="col-xs-10">
-			            <input type="text" class="form-control" id="password" placeholder="admin@gmail.com">
-			        </div>
-			    </div>
-			    <div class="form-group">
-			        <div class="col-xs-10">
-			            <input type="tel" class="form-control" id="password" placeholder="0989873345">
-			        </div>
-			    </div>
-			    <div class="form-group">
-			        <div class="col-xs-10">
-			            <button type="button" class="btn btn-primary" ng-click="submitForm()">SAVE</button>
-			        </div>
-			    </div>
-			</form>
-		</div>	
-	</div> -->
-	<!-- Home Page View-->
+	
 	<div class="row">
 		<div class="col-xs-11 admin-info-panel">
-			<!-- <div>
-				<img src="" class="admin-image">
-			</div> -->
+			
 			<div class="admin-info">
-				<h2>ADMIN NAME</h2>
+				<h2><i class="fa fa-user"></i> {{userFirstName}}</h2>
 				<div class="admin-data">
-					<div class="admin-email"></div>{{name}}
+					<div><i class="fa fa-envelope"></i> {{userEmailId}}</div>
 					<!-- <div class="admin-no"></div>098 987 3345	  -->
 				</div>
 			</div>
 		</div>
-		<div class="col-xs-1 admin-info-panel edit-img">
-			<!-- <div class="edit-icon" ng-click="getForm();"></div> -->
-		</div>
+		
 	</div>
 	
 	
@@ -69,5 +35,6 @@
         </div> <!-- /.col -->
         
       </div> <!-- /.row -->
+      
       
 </div>

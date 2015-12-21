@@ -19,7 +19,7 @@ app.directive('addProminent', ['$rootScope', '$compile', function($rootScope, $c
             });
 
             $('div').on('click', '.test', function($event) {
-                console.log('$event', $event);
+                // console.log('$event', $event);
                 // $event.preventDefault();
                 //  $(this).parent().prev().prev().remove();
                 //  $(this).parent().prev().remove();
@@ -28,7 +28,7 @@ app.directive('addProminent', ['$rootScope', '$compile', function($rootScope, $c
 
 
 
-            console.log('Directive === addProminent');
+            // console.log('Directive === addProminent');
         }
     };
 

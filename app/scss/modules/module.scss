@@ -63,13 +63,13 @@
             margin-left: 87px;
             display: table-cell;
 			vertical-align: middle;
-			height: 60px;
+			/*height: 60px;*/
             
             &:hover {   
             	background: transparent;    
-            	height: 60px;		
+            	/*height: 60px;		*/
             	color: #FFF;
-            	@include borderRadius(0px);
+            	/*@include borderRadius(0px);*/
             }
             &:focus {
 				background: transparent !important;

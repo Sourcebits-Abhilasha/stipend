@@ -66,6 +66,39 @@
   padding: 1em;
   color: #fff;
 }*/
+.LoginBackgroundPopup{  
+position:fixed !important;  
+_position:absolute; /* hack for internet explorer 6*/  
+height:100%;  
+opacity: 0.7;
+width:100%;  
+top:0;  
+left:0;  
+background:#000000;  
+border:1px solid #cecece;  
+z-index:1;  
+} 
+.popupLogin{  
+position:fixed !important;  
+_position:absolute; /* hack for internet explorer 6*/  
+height:200px;  
+width:408px; 
+border-radius: 10px;
+top:40%;
+left:40%;      
+background:#FFFFFF;  
+border:2px solid #cecece;  
+z-index:2;  
+padding:12px;  
+font-size:13px;  
+}
+  
+
+
+.activeTab{
+    color: #fff;
+    background-color: #B24926;
+}
 .similer-school{
     border:1px solid #ccc;
     padding: .5em;
@@ -855,7 +888,7 @@ fieldset[disabled] .btn-twitter.active {
 }
 
 .nav-pills.nav-stacked > li > a {
-    padding: 10px 15px;
+    /*padding: 10px 15px;*/
 }
 
 .nav-pills > li {
@@ -863,13 +896,13 @@ fieldset[disabled] .btn-twitter.active {
 }
 
 .nav-pills > li > a {
-    padding: 5px 12px;
+    /*padding: 5px 12px;*/
     color: #444;
-    background-color: #eee;
+    /*background-color: #eee;*/
 }
 
 .nav-pills > li > a:hover {
-    background-color: #e4e4e4;
+    /*background-color: #e4e4e4;*/
 }
 
 .nav-pills > li.active > a,
@@ -1071,7 +1104,7 @@ input[type="checkbox"] {
     z-index: 501;
     min-height: 60px;
     margin-bottom: 0;
-    background-color: #222222;
+    background-color: #B24926;
     border: none;
     border-top-right-radius: 0;
     border-top-left-radius: 0;
@@ -1123,7 +1156,8 @@ input[type="checkbox"] {
 }
 
 .navbar .navbar-collapse {
-    background: #222222;
+    /*background: #222222;*/
+    background:#B24926;
 }
 
 .navbar .navbar-collapse,

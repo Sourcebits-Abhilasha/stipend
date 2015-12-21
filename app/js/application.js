@@ -47,10 +47,10 @@ app.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', '$locationP
             templateUrl: 'partials/templates/users.html'   
             //controller: 'ItemsCrtl'     
         })
-        .state('dashboard.weather',  {
-            url: '/weather',
+        .state('dashboard.fileupload',  {
+            url: '/fileupload',
             requiredLogin: true,              
-            templateUrl: 'partials/templates/weather.html'   
+            templateUrl: 'partials/templates/fileupload.html'   
             //controller: 'ItemsCrtl'     
         })
         // .state('dashboard.colleges',  {
@@ -136,13 +136,13 @@ app.run(['$rootScope', '$state', '$location', '$window', function ($rootScope, $
     
     'use strict';
 
-    console.log('Angular.js run() function...');
+    // console.log('Angular.js run() function...');
 
     $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
 
         $rootScope.currentState = toState.name;
         
-        console.log('state --->', toState.name,$.cookie('NAME'));
+        // console.log('state --->', toState.name,$.cookie('NAME'));
         
         if (toState.requiredLogin && !isLoggedIn()) {
               location.href = '/';
@@ -181,7 +181,9 @@ app.constant('appConfig', {
 
     
     //baseURL : 'http://192.168.10.229:8080/stipendadmin'
-    baseURL : 'http://ec2-52-10-5-217.us-west-2.compute.amazonaws.com:8080/Stipend' 
+    // baseURL : 'http://ec2-52-10-5-217.us-west-2.compute.amazonaws.com:8080/Stipend' 
+    // baseURL : 'http://mystipendappelasticloadbalancer-178615218.us-west-2.elb.amazonaws.com:8080/Stipend'
+    baseURL:'http://mystipendappelasticloadbalancer-178615218.us-west-2.elb.amazonaws.com:8080/Stipend'
     // baseURL : 'http://192.168.11.134:8085/Stipend'
     
 });

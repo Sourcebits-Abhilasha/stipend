@@ -33,7 +33,7 @@ app.directive('addCalendar', ['$rootScope', '$compile', function($rootScope, $co
 
 
             $('div').on('click', '.test', function($event) {
-                console.log('$event', $event);
+                // console.log('$event', $event);
                 // $event.preventDefault();
                 //  $(this).parent().prev().prev().remove();
                 //  $(this).parent().prev().remove();
@@ -42,7 +42,7 @@ app.directive('addCalendar', ['$rootScope', '$compile', function($rootScope, $co
 
 
 
-            console.log('Directive === addCalendar');
+            // console.log('Directive === addCalendar');
         }
     };
 

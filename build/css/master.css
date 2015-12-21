@@ -157,6 +157,65 @@ SMACSS: LAYOUT - HEADER
       font-size: 14px;
     }
 }*/
+.empFont {
+  font-size: 14px; }
+
+.body-color {
+  background-color: #ffffff !important;
+  height: 890px; }
+
+.reset-label-color {
+  font-family: Avenir-Heavy;
+  font-size: 12px;
+  color: #808080; }
+
+.reset-heading {
+  font-family: Avenir-Medium;
+  font-size: 32px !important;
+  color: #007180;
+  margin: 60px 0px 40px 0px;
+  text-align: left; }
+
+.text-box {
+  width: 410px;
+  height: 50px !important;
+  margin: 15px 0px 30px 0px; }
+
+.save-button-reset {
+  width: 410px;
+  height: 50px;
+  margin: 60px 0px 0px 0px;
+  font-family: Avenir-Heavy;
+  font-size: 18px;
+  color: #FFFFFF; }
+
+.save-button {
+  padding: 1em 0em 1em 0em; }
+
+.intended-study-border {
+  border-right: 2px solid #ccc; }
+
+.weather-save {
+  padding: 2em 0em 0em 0em; }
+
+.accordion .h3-size {
+  background-color: #757373 !important;
+  margin-bottom: .5em !important; }
+
+.h3-size {
+  background-color: #757373 !important;
+  margin-bottom: .3em !important; }
+
+.college-name {
+  color: #ed4e4e !important; }
+
+.active {
+  background-color: red; }
+
+.disabled {
+  opacity: 0.3;
+  pointer-events: none; }
+
 /*-------------------------------------------------
 SMACSS: LAYOUT - SECTION
 -------------------------------------------------*/
@@ -165,6 +224,12 @@ section {
   color: #fff;
   font-size: 4.375em;
   font-weight: 300; }
+
+.search-btn {
+  height: 28px;
+  width: 75px;
+  line-height: 10px;
+  border-radius: 0px; }
 
 /*-------------------------------------------------
 SMACSS: LAYOUT - FOOTER
@@ -244,15 +309,12 @@ footer {
       margin-left: 87px;
       display: table-cell;
       vertical-align: middle;
-      height: 60px; }
+      /*height: 60px;*/ }
       .menu-list li a:hover {
         background: transparent;
-        height: 60px;
+        /*height: 60px;		*/
         color: #FFF;
-        -webkit-border-radius: 0px;
-        -moz-border-radius: 0px;
-        -ms-border-radius: 0px;
-        border-radius: 0px; }
+        /*@include borderRadius(0px);*/ }
       .menu-list li a:focus {
         background: transparent !important; }
   .menu-list .univ-logo {
@@ -920,6 +982,12 @@ header {
   background-color: #e74c3c;
   border-color: #df2e1b; }
 
+.header-reset {
+  width: 100% !important;
+  background: #4dd0e1 !important;
+  position: relative !important;
+  height: 100px !important; }
+
 .btn-secondary:hover, .btn-secondary:focus, .btn-secondary:active, .btn-secondary.active, .open .dropdown-toggle.btn-secondary {
   color: #ffffff;
   background-color: #df2e1b;
@@ -1029,8 +1097,8 @@ header {
       width: 88px;
       height: 88px; }
     .sub-area .admin-info-panel .admin-info {
-      margin-top: 32px;
-      margin-left: 118px; }
+      /*margin-top: 32px;
+			margin-left: 118px;*/ }
       .sub-area .admin-info-panel .admin-info h2 {
         font-family: 'HelveticaNeue';
         font-size: 1.25em;
@@ -1041,7 +1109,7 @@ header {
         color: #818181;
         margin-top: 12px; }
         .sub-area .admin-info-panel .admin-info .admin-data .admin-email {
-          background: url('../images/Icons-sprint.png') no-repeat -53px -526px;
+          /*background: url('../images/Icons-sprint.png') no-repeat -53px -526px;*/
           width: 19px;
           height: 14px;
           margin-right: 8px;
@@ -1393,12 +1461,59 @@ header {
   padding: 1em;
   color: #fff;
 }*/
+.LoginBackgroundPopup {
+  position: fixed !important;
+  _position: absolute;
+  /* hack for internet explorer 6*/
+  height: 100%;
+  opacity: 0.7;
+  width: 100%;
+  top: 0;
+  left: 0;
+  background: #000000;
+  border: 1px solid #cecece;
+  z-index: 1; }
+
+.popupLogin {
+  position: fixed !important;
+  _position: absolute;
+  /* hack for internet explorer 6*/
+  height: 200px;
+  width: 408px;
+  border-radius: 10px;
+  top: 40%;
+  left: 40%;
+  background: #FFFFFF;
+  border: 2px solid #cecece;
+  z-index: 2;
+  padding: 12px;
+  font-size: 13px; }
+
+.activeTab {
+  color: #fff;
+  background-color: #B24926; }
+
 .similer-school {
   border: 1px solid #ccc;
-  padding: .5em; }
+  padding: .5em;
+  height: 500px;
+  overflow-y: auto; }
   .similer-school li {
     border-bottom: 1px solid #ccc;
-    padding: .5em; }
+    padding: .5em;
+    margin: 0px 0px 10px 0px;
+    cursor: pointer !important; }
+
+.calendar-label {
+  display: inline-block;
+  margin-bottom: 5px !important;
+  font-weight: bold;
+  font-size: 14px !important; }
+
+.icon-middle {
+  height: 500px;
+  line-height: 500px;
+  text-align: center; }
 
 .login-ahref {
   color: #000 !important; }
@@ -1478,6 +1593,11 @@ h1, h2, h3, h4, h5, h6 {
 .btn-primary .badge {
   color: #e74c3c;
   background-color: #ffffff; }
+
+.options-style {
+  background: #eee;
+  margin: 0px 0px 20px 20px !important;
+  padding: 1em 0em 1em 0em !important; }
 
 .btn-secondary {
   color: #ffffff;
@@ -1897,18 +2017,18 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: .5em; }
 
 .nav-pills.nav-stacked > li > a {
-  padding: 10px 15px; }
+  /*padding: 10px 15px;*/ }
 
 .nav-pills > li {
   margin-right: 6px; }
 
 .nav-pills > li > a {
-  padding: 5px 12px;
+  /*padding: 5px 12px;*/
   color: #444;
-  background-color: #eee; }
+  /*background-color: #eee;*/ }
 
 .nav-pills > li > a:hover {
-  background-color: #e4e4e4; }
+  /*background-color: #e4e4e4;*/ }
 
 .nav-pills > li.active > a, .nav-pills > li.active > a:hover, .nav-pills > li.active > a:focus {
   color: #fff;
@@ -2050,7 +2170,7 @@ input[type="radio"], input[type="checkbox"] {
   z-index: 501;
   min-height: 60px;
   margin-bottom: 0;
-  background-color: #222222;
+  background-color: #B24926;
   border: none;
   border-top-right-radius: 0;
   border-top-left-radius: 0;
@@ -2088,7 +2208,8 @@ input[type="radio"], input[type="checkbox"] {
   background-color: #333333; }
 
 .navbar .navbar-collapse {
-  background: #222222; }
+  /*background: #222222;*/
+  background: #B24926; }
 
 .navbar .navbar-collapse, .navbar .navbar-form {
   border-color: #101010; }
@@ -2304,8 +2425,8 @@ input[type="radio"], input[type="checkbox"] {
   font-size: 15px; }
 
 .content-container {
-  position: relative;
-  z-index: 101; }
+  /*position: relative;*/
+  /*z-index: 101;*/ }
 
 .content-header {
   padding-bottom: .5em;

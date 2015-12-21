@@ -18,12 +18,12 @@ app.controller('HomeCtrl', ['$scope', '$location', 'DashboardAPI', '$rootScope',
 		DashboardAPI.getdashboardlist()
 		.then(
 			function (data) {
-				console.log(data)
+				// console.log(data)
 	          if (data !== null) {
 	            $scope.dashboarddata = data;
 	            $scope.name = $.cookie('name');
-	            console.log('=====>',$.cookie('name'));
-	            console.log('values',$scope.dashboarddata);
+	            // console.log('=====>',$.cookie('name'));
+	            // console.log('values',$scope.dashboarddata);
 	          //  $('#loading').removeClass('page-loader');
 	          }
 	        }

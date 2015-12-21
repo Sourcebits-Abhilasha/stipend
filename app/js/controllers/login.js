@@ -4,7 +4,7 @@ Controller = LoginCtrl
 
 app.controller('LoginCtrl', ['$scope', '$rootScope', '$location', 'loginAPI', 'MasterAPI', 'ngProgress', 'usSpinnerService', function ($scope, $rootScope, $location, loginAPI, MasterAPI, ngProgress, usSpinnerService) {
     'use strict';
-    console.log('Controller ===  LoginCtrl');
+    // console.log('Controller ===  LoginCtrl');
     $scope.class_status = 0;
     $rootScope.isSuperAdmin = false;
     $rootScope.isAdmin = false;
@@ -32,10 +32,16 @@ app.controller('LoginCtrl', ['$scope', '$rootScope', '$location', 'loginAPI', 'M
                    // console.log('data after login',data);
                     // MasterAPI Start
                     // localStorage.setItem('userId',data.adminID);
+
+                    // $rootScope.userEmailId = data.emailID;
+
                     $.cookie('NAME',data.firstName);
+                    $.cookie('EMAIL',data.emailID);
+                    $rootScope.userFirstName = $.cookie('NAME');
+                    $rootScope.userEmailId = $.cookie('EMAIL');
                     MasterAPI.getdropdowndata()
                     .then(function (data) {
-                        console.log('data master API Success====>',data);
+                        // console.log('data master API Success====>',data);
                          //var test = JSON.stringify(data);
                         //$.cookie('dropDownData',test);
                     $rootScope.dropDownData = data;

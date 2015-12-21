@@ -1,53 +1,69 @@
 @@include('../_header.html')
 <div class="container" ng-controller="DashboardCtrl">
-  <div class="content1">
-    <div class="content-container">
-	<div class="row">
+    <div class="content1">
+        <div class="content-container">
+            <div class="row">
+                <div id="overlay" ng-click="hideOverlay()" class="window"></div>
+                <div id="loading"></div>
+                <div class="col-xs-3 menu-list">
+                    <!-- Local -->
+                    <ul class="nav nav-pills nav-stacked header-links" ng-hide="isSuperAdmin">
+                        <li role="presentation" ng-class="{activeTab:currentState.match('home')}">
+                            <a href="/#/dashboard/home" >
+                                <div class="dashboard-icon"></div><span class="menu-option">DASHBOARD</span>
+                            </a>
+                        </li>
+                        <li role="presentation" ng-class="{activeTab:currentState.match('colleges')}">
+                            <a href="/#/dashboard/colleges" >
+                                <div class="course-icon"></div><span class="menu-option">COLLEGES</span>
+                            </a>
+                        </li>
+                        <li role="presentation" ng-class="{activeTab:currentState.match('users')}">
+                            <a href="/#/dashboard/users" >
+                                <div class="faculty-icon"></div><span class="menu-option">USERS</span>
+                            </a>
+                        </li>
+                        <li role="presentation" ng-class="{activeTab:currentState.match('fileupload')}">
+                            <a href="/#/dashboard/fileupload" >
+                                <div class="classes-icon"></div><span class="menu-option">FILE UPLOAD</span>
+                            </a>
+                        </li>
+                    </ul>
 
-		<div id="overlay" ng-click="hideOverlay()" class="window"></div>
-		<div id="loading"></div>
-		<div class="col-xs-3 menu-list">
-			<!-- Local -->
-			<ul class="nav nav-pills nav-stacked" ng-hide="isSuperAdmin">	
-				<a href="/#/dashboard/home" active-menu>
-					<li role="presentation"  ><div class="dashboard-icon"></div><span class="menu-option">DASHBOARD</span></li>
-				</a>
-			   	<a href="/#/dashboard/colleges" active-menu>
-			   		<li role="presentation"  ><div class="course-icon"></div><span class="menu-option">COLLEGES</span></li>
-			   	</a>
-			    <a href="/#/dashboard/users" active-menu>
-			    	<li role="presentation" ><div class="faculty-icon" ></div><span class="menu-option">USERS</span></li>
-			    </a>
-			   	<a href="/#/dashboard/weather" active-menu> 	
-			    	<li role="presentation" ><div class="classes-icon"></div><span class="menu-option">FILE UPLOAD</span></li>
-			    </a>
-			</ul>
-			<!-- <ul class="nav nav-pills nav-stacked" ng-hide="isSuperAdmin">
-				<a href="/StipendWeb/#/dashboard/home" active-menu>
-					<li role="presentation"  ><div class="dashboard-icon"></div><span class="menu-option">DASHBOARD</span></li>
-				</a>
-			   	<a href="/StipendWeb/#/dashboard/colleges" active-menu>
-			   		<li role="presentation"  ><div class="course-icon"></div><span class="menu-option">COLLEGES</span></li>
-			   	</a>
-			    <a href="/StipendWeb/#/dashboard/users" active-menu>
-			    	<li role="presentation" ><div class="faculty-icon" ></div><span class="menu-option">USERS</span></li>
-			    </a>
-			   	<a href="/StipendWeb/#/dashboard/weather" active-menu> 	
-			    	<li role="presentation" ><div class="classes-icon"></div><span class="menu-option">FILE UPLOAD</span></li>
-			    </a>
-			</ul> -->
 
-		</div>
-		<div class="col-xs-9 sub-area">
-		 <div class="content">
-    		<div class="content-container">
-				<div ui-view></div>
-			</div>
-			</div>
-		</div>
-	</div>	
+                   <!--  <ul class="nav nav-pills nav-stacked header-links" ng-hide="isSuperAdmin">
+                        <li role="presentation" ng-class="{activeTab:currentState.match('home')}">
+                            <a href="/#/dashboard/home" >
+                                <div class="dashboard-icon"></div><span class="menu-option">DASHBOARD</span>
+                            </a>
+                        </li>
+                        <li role="presentation" ng-class="{activeTab:currentState.match('colleges')}">
+                            <a href="/#/dashboard/colleges" >
+                                <div class="course-icon"></div><span class="menu-option">COLLEGES</span>
+                            </a>
+                        </li>
+                        <li role="presentation" ng-class="{activeTab:currentState.match('users')}">
+                            <a href="/#/dashboard/users" >
+                                <div class="faculty-icon"></div><span class="menu-option">USERS</span>
+                            </a>
+                        </li>
+                        <li role="presentation" ng-class="{activeTab:currentState.match('fileupload')}">
+                            <a href="/#/dashboard/fileupload" >
+                                <div class="classes-icon"></div><span class="menu-option">FILE UPLOAD</span>
+                            </a>
+                        </li>
+                    </ul> -->
+                    
+                        
+                </div>
+                <div class="col-xs-9 sub-area">
+                    <div class="content">
+                        <div class="content-container">
+                            <div ui-view></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-</div>
-</div>
-
-

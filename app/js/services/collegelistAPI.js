@@ -72,6 +72,8 @@ app.service('CollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', 'ngDialog',
 		return deferred.promise;
 	};
 
+	
+
 }]);
 
 

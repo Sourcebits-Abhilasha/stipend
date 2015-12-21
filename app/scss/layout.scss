@@ -29,6 +29,9 @@ SMACSS: LAYOUT - HEADER
       font-size: 14px;
     }
 }*/
+.empFont{
+  font-size:14px;
+}
 .body-color{
   background-color: #ffffff !important;
   height:890px;
@@ -99,7 +102,12 @@ section {
   font-size: em(70);
   font-weight: 300;
 }
-
+.search-btn{
+      height: 28px;
+    width: 75px;
+    line-height: 10px;
+    border-radius: 0px;
+}
 /*-------------------------------------------------
 SMACSS: LAYOUT - FOOTER
 -------------------------------------------------*/

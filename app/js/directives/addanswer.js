@@ -28,7 +28,7 @@ app.directive('addAnswer', ['$rootScope', '$compile', function($rootScope, $comp
     		});*/
 
             $('div').on('click', '.test', function($event) {
-                console.log('$event', $event);
+                // console.log('$event', $event);
                 // $event.preventDefault();
                 //  $(this).parent().prev().prev().remove();
                 //  $(this).parent().prev().remove();
@@ -37,7 +37,7 @@ app.directive('addAnswer', ['$rootScope', '$compile', function($rootScope, $comp
 
 
 
-            console.log('Directive === addAnswer');
+            // console.log('Directive === addAnswer');
         }
     };
 

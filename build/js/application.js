@@ -5,7 +5,7 @@ App stipend
 ==================================================================*/
 'use strict';
 
-var app = angular.module('stipend', ['ngRoute', 'chart.js', 'ui.router', 'ngProgress', 'angularFileUpload']);
+var app = angular.module('stipend', ['ngRoute', 'chart.js', 'ui.router', 'ngProgress', 'angularFileUpload', 'ngDialog', 'angularSpinner']);
 
 app.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', '$locationProvider', function ($stateProvider, $urlRouterProvider, $httpProvider, $locationProvider) {
     
@@ -47,10 +47,10 @@ app.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', '$locationP
             templateUrl: 'partials/templates/users.html'   
             //controller: 'ItemsCrtl'     
         })
-        .state('dashboard.weather',  {
-            url: '/weather',
+        .state('dashboard.fileupload',  {
+            url: '/fileupload',
             requiredLogin: true,              
-            templateUrl: 'partials/templates/weather.html'   
+            templateUrl: 'partials/templates/fileupload.html'   
             //controller: 'ItemsCrtl'     
         })
         // .state('dashboard.colleges',  {
@@ -95,12 +95,12 @@ app.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', '$locationP
         //     templateUrl: 'partials/templates/polls.html'   
         //     //controller: 'ItemsCrtl'     
         // })
-        // .state('dashboard.import',  {
-        //     url: '/import',
-        //     requiredLogin: true,                     
-        //     templateUrl: 'partials/templates/import.html'   
-        //     //controller: 'ItemsCrtl'     
-        // })
+        .state('resetPassword',  {
+            url: '/resetPassword',
+             //equiredLogin: true,                     
+            templateUrl: 'partials/templates/resetPassword.html'   
+            //controller: 'ItemsCrtl'     
+        })
         .state('dashboard.admin',  {
             url: '/admin',
             requiredLogin: true,                     
@@ -113,6 +113,14 @@ app.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', '$locationP
             templateUrl: 'partials/templates/forgot-password.html'   
             //controller: 'ItemsCrtl'     
         });
+
+        // .state('emailFormat',  {
+        //     url: '/emailFormat',
+        //     //requiredLogin: true,                     
+        //     templateUrl: 'partials/templates/emailFormat.html'   
+        //     //controller: 'ItemsCrtl'     
+        // });
+
         $urlRouterProvider.otherwise('/');
 
         // This is required for Browser Sync to work poperly
@@ -128,37 +136,41 @@ app.run(['$rootScope', '$state', '$location', '$window', function ($rootScope, $
     
     'use strict';
 
-    console.log('Angular.js run() function...');
+    // console.log('Angular.js run() function...');
 
     $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
 
         $rootScope.currentState = toState.name;
         
-        console.log('state --->', toState.name,$.cookie('name'));
-        
-        // debugger;
+        // console.log('state --->', toState.name,$.cookie('NAME'));
         
         if (toState.requiredLogin && !isLoggedIn()) {
-            event.preventDefault();
-            $location.url('/');
-            $window.location.assign('/');
+              location.href = '/';
         } 
         else {
-          $rootScope.currentState = toState.name;
+             $rootScope.currentState = toState.name;
         }    
                    
     });
 
     var isLoggedIn = function () {
-        if ($.cookie('name') != undefined) {
-            var accessId = $.cookie('name');
-            return  (!accessId) ? false : true;
-        }
-        else {
-            event.preventDefault();
-            $location.url('/');
+        if ($.cookie('NAME')) {
+            return true;
+        } else {
+            return false;
         }
     };
+
+    // var isLoggedIn = function () {
+    //     if ($.cookie('NAME') != undefined) {
+    //         var accessId = $.cookie('NAME');
+    //         return  (!accessId) ? false : true;
+    //     }
+    //     else {
+    //         event.preventDefault();
+    //         $location.url('/');
+    //     }
+    // };
 
     
 }]);
@@ -169,119 +181,31 @@ app.constant('appConfig', {
 
     
     //baseURL : 'http://192.168.10.229:8080/stipendadmin'
-    baseURL : 'http://ec2-52-10-5-217.us-west-2.compute.amazonaws.com:8080/Stipend' 
+    // baseURL : 'http://ec2-52-10-5-217.us-west-2.compute.amazonaws.com:8080/Stipend' 
+    // baseURL : 'http://mystipendappelasticloadbalancer-178615218.us-west-2.elb.amazonaws.com:8080/Stipend'
+    baseURL:'http://mystipendappelasticloadbalancer-178615218.us-west-2.elb.amazonaws.com:8080/Stipend'
     // baseURL : 'http://192.168.11.134:8085/Stipend'
     
 });
 
 /*================================================================
-Controller = AdminCtrl
-==================================================================*/
-
-app.controller('AdminCtrl', ['$scope', 'adminViewApi', function ($scope, adminViewApi) {
-'use strict';
-
-	var getAdminList = function () {
-		$('#loading').addClass('page-loader');
-    	adminViewApi.getAdminList()
-    	.then(
-    		function (data) {
-              if (data !== null) {
-                console.log('admin data',data);
-                $scope.adminCount = data.length;
-                $scope.admin = data;
-                $('#loading').removeClass('page-loader');
-	          	// $scope.FacultyName = data.firstName + data.lastName;
-	          	// console.log('facultydata---->',$scope.FacultyName)
-	          }
-
-	        }
-        );
-    }();
-	console.log('Controller ===  AdminCtrl');
-}]);
-
-/*-----  End of Controller = AdminCtrl  ------*/
-
-
-
-/*================================================================
-Controller = ClassesCtrl
-==================================================================*/
-/*global app,$*/
-app.controller('ClassesCtrl', ['$scope', 'classviewAPI', function ($scope, classviewAPI) {
-'use strict';
-
-	//$scope.classes = result
-
-    var getClasses = function () {
-    	console.log('getClasses-------->');
-    	$('#loading').addClass('page-loader');
-    	classviewAPI.getclassview()
-    	.then(
-    		function (data) {
-              if (data !== null) {
-                console.log('filter infodata---->',data);
-                $scope.classdata = data;
-                $scope.noOfClasses = data.length;
-                $('#loading').removeClass('page-loader');
-              }
-          }
-         );
-    }();
-
-
-
-	$scope.getForm = function() {
-		$('#overlay').addClass('overlay');
-		$('#popup4').removeClass('side-menu-close').addClass('side-menu-open-wider');
-
-		//jsonAddClasses1
-		classviewAPI.getCourseAndStudent()
-	    .then(function(data){
-	    	if(data !== null) {
-	    		$scope.course = data.listOftheCourses;
-	    		console.log('data in while add class',$scope.course);
-	    		console.log('data in while add class',$scope.course[1]);
-	    	}
-	    	//console.log('data in while add class',data);
-	    },
-		  function(err){
-		  	console.log('error is while getting data',err);
-		  });
-	};
-
-	//hide overlay and hide side menu
-	$scope.hideSideMenu = function() {
-		$('#overlay').removeClass('overlay');
-		$('#popup4').removeClass('side-menu-open-wider').addClass('side-menu-close');
-	};
-
-	$scope.editClasses = function() {
-		$('#overlay').addClass('overlay');
-		$('#popup4').removeClass('side-menu-close').addClass('side-menu-open-wider');
-	};
-	
-	
-	console.log('Controller ===  ClassesCtrl');
-}]);
-
-/*-----  End of Controller = ClassesCtrl  ------*/
-
-
-
-/*================================================================
 Controller = CollegeCtrl
 ==================================================================*/
 
-app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootScope', function($scope, CollegeAPI, editCollegeAPI, $rootScope) {
+app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootScope', 'usSpinnerService', function($scope, CollegeAPI, editCollegeAPI, $rootScope, usSpinnerService) {
     'use strict';
     var inStateData = [1, 3, 4, 5, 6];
     var outStateData = [1, 2, 4, 5, 6];
     var tempFees = {};
+    var k = 0;
+    $scope.query = {};
+    $scope.query1 = {};
+    $scope.queryBy = '$';
+    $scope.queryBy1 = '$';
 
     $scope.colgList = false;
     $scope.editList = true;
+    $scope.searchList = true;
 
     $scope.fallWeather = false;
     $scope.winterWeather = true;
@@ -313,20 +237,19 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
         evtName: '',
         evtDate: ''
     };
-    $scope.quickFact = {
 
-    };
     $scope.weatherObj = {
 
     };
 
+
     $scope.delSelectedAns = function(count) {
 
-        console.log('i m here in count', count);
-        console.log('$scope.ans', $scope.ans);
+        // console.log('i m here in count', count);
+        // console.log('$scope.ans', $scope.ans);
         $('.answer-div-' + count).remove();
         //$scope.ans.splice(count,1);
-        console.log('$scope.ans', $scope.ans);
+        // console.log('$scope.ans', $scope.ans);
         //$scope.ans.splice(count,1);
         delete $scope.ans[count]
 
@@ -334,71 +257,237 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
 
     $scope.delSelectedProminent = function(count) {
 
-        console.log('i m here in count', count);
-        console.log('$scope.prominentArray', $scope.prominentArray);
+        // console.log('i m here in count', count);
+        // console.log('$scope.prominentArray', $scope.prominentArray);
         $('.prominent-alumni-div-' + count).remove();
-        console.log('$scope.prominentArray', $scope.prominentArray);
+        // console.log('$scope.prominentArray', $scope.prominentArray);
         delete $scope.prominentArray[count]
 
     };
 
     $scope.delSelectedCollegeRanking = function(count) {
 
-        console.log('i m here in count', count);
-        console.log('$scope.clgRankingArray', $scope.clgRankingArray);
-        console.log('$scope.clgRankingPointsArray', $scope.clgRankingPointsArray);
+        // console.log('i m here in count', count);
+        // console.log('$scope.clgRankingArray', $scope.clgRankingArray);
+        // console.log('$scope.clgRankingPointsArray', $scope.clgRankingPointsArray);
         $('.college-ranking-' + count).remove();
         delete $scope.clgRankingArray[count];
         delete $scope.clgRankingPointsArray[count]
 
     };
 
-    $scope.delSelectedLinkAndAddress = function(count) {
+    // $scope.delSelectedLinkAndAddress = function(count) {
 
-        console.log('i m here in count', count);
-        console.log('$scope.websiteNameArray', $scope.websiteNameArray);
-        $('.college-address-div-' + count).remove();
-        console.log('$scope.websiteNameArray', $scope.websiteNameArray);
-        delete $scope.websiteNameArray[count];
-        delete $scope.websiteURLArray[count];
+    //     console.log('i m here in count', count);
+    //     console.log('$scope.websiteNameArray', $scope.websiteNameArray);
+    //     $('.college-address-div-' + count).remove();
+    //     console.log('$scope.websiteNameArray', $scope.websiteNameArray);
+    //     delete $scope.websiteNameArray[count];
+    //     delete $scope.websiteURLArray[count];
 
-    };
+    // };
 
     $scope.delSelectedCalendar = function(count) {
 
-        console.log('i m here in count', count);
-        console.log('$scope.calendarEventNameArray', $scope.calendarEventNameArray);
+        // console.log('i m here in count', count);
+        // console.log('$scope.calendarEventNameArray', $scope.calendarEventNameArray);
         $('.calendar-div-' + count).remove();
-        console.log('$scope.calendarEventNameArray', $scope.calendarEventNameArray);
+        // console.log('$scope.calendarEventNameArray', $scope.calendarEventNameArray);
         //delete $scope.calendarArray[count]
         delete $scope.calendarEventNameArray[count];
         delete $scope.calendarEventDateArray[count];
 
     };
 
-    //console.log($.cookie());
-    $scope.getcollege = function() {
+    console.log($.cookie());
+
+
+    $scope.getcollege = function(state) {
         //$('body').addClass('page-loader');
-        CollegeAPI.getcollegelist()
+        // usSpinnerService.spin('spinner-1');
+        var page;
+        if (!isNaN(state)) {
+            $scope.collegeState = state;
+            page = {
+                'off': ($scope.collegeState - 1) * 100,
+                'size': 100
+            };
+        }
+        if (state == 'next') {
+            $scope.collegeState = $scope.collegeState + 1;
+            page = {
+                'off': ($scope.collegeState - 1) * 100,
+                'size': 100
+            };
+        } else if (state == 'prev') {
+            $scope.collegeState = $scope.collegeState - 1;
+            page = {
+                'off': ($scope.collegeState - 1) * 100,
+                'size': 100
+            };
+        }
+        if (state == 'initial') {
+            page = {
+                'off': 0,
+                'size': 100
+            };
+        }
+        CollegeAPI.getcollegelist(page)
             .then(
                 function(data) {
-                    console.log('data====>', data);
+                    // console.log('user data====>', data);
+                    if (state == 'initial') {
+                        $scope.collegeState = 1;
+                        $scope.collegeCount = (data.Colleges.length + data.RemainingColleges);
+                        var count = Math.ceil((data.Colleges.length + data.RemainingColleges) / 100);
+                        // console.log('count', count);
+                        $scope.totalCount = [];
+                        // $scope.totalCount = new Array(count);
+                        for (var i = 1; i <= count; i++) {
+                            $scope.totalCount.push(i);
+                        }
+                    }
                     if (data !== null) {
-                        $scope.collegedata = data;
+                        $scope.collegedata = data.Colleges;
                         $scope.similarSchoolColgData = data;
-                        $scope.collegeCount = data.length;
-                        //$('body').removeClass('page-loader');
-                        // $scope.FacultyName = data.firstName + data.lastName;
-                        // console.log('facultydata---->',$scope.FacultyName)
+                        // $scope.collegeCount = data.length;
+
+                    }
+                    // usSpinnerService.stop('spinner-1');
+                    if ($scope.collegeState == $scope.totalCount.length) {
+                        $scope.collegeCountShown = $scope.collegeCount;
+
+                    } else {
+                        $scope.collegeCountShown = $scope.collegeState * 100;
+
+                    }
+                }
+            );
+    };
+    $scope.getcollege('initial');
+
+
+
+    $scope.getUsers = function(state) {
+        //$('body').addClass('page-loader');
+        $scope.userList = false;
+        $scope.userSearch = true;
+        var page;
+        if (!isNaN(state)) {
+            $scope.pageState = state;
+            page = {
+                'off': ($scope.pageState - 1) * 100,
+                'size': 100
+            };
+        }
+        if (state == 'next') {
+            $scope.pageState = $scope.pageState + 1;
+            page = {
+                'off': ($scope.pageState - 1) * 100,
+                'size': 100
+            };
+        } else if (state == 'prev') {
+            $scope.pageState = $scope.pageState - 1;
+            page = {
+                'off': ($scope.pageState - 1) * 100,
+                'size': 100
+            };
+        }
+        if (state == 'initial') {
+            page = {
+                'off': 0,
+                'size': 100
+            };
+        }
+        CollegeAPI.getUserslist(page)
+            .then(
+                function(data) {
+                    // console.log('user data====>', data);
+                    if (state == 'initial') {
+                        $scope.pageState = 1;
+                        $scope.usersCount = (data.Users.length + data.RemainingUsers);
+                        var count = Math.ceil((data.Users.length + data.RemainingUsers) / 100);
+
+                        // console.log('count', count);
+                        $scope.totalCountUsers = [];
+                        // $scope.totalCountUsers = new Array(count);
+                        for (var i = 1; i <= count; i++) {
+                            $scope.totalCountUsers.push(i);
+                        }
+                    }
+                    if (data !== null) {
+                        $scope.userdata = data.Users;
+
+                    }
+                    usSpinnerService.stop('spinner-1');
+                    // console.log('totalCountUsers', $scope.totalCountUsers);
+                    if ($scope.pageState == $scope.totalCountUsers.length) {
+                        $scope.userCountShown = $scope.usersCount;
+
+                    } else {
+                        $scope.userCountShown = $scope.pageState * 100;
+
                     }
 
                 }
             );
     };
-    $scope.getcollege();
+    $scope.getUsers('initial');
+    // $scope.$watch('pageState',function (newValue) {
+    //     console.log('------>> newValue',newValue);
+    // })
+
+
+    $scope.getSimilarCollege = function() {
+        // usSpinnerService.spin('spinner-1');
+        // console.log('getSimilarCollege------>', $scope.collegeCount);
+        var page = {
+                'off': 0,
+                'size': $scope.collegeCount
+            }
+            //$('body').addClass('page-loader');
+        CollegeAPI.getSimilarSchoollist(page)
+            .then(
+                function(data) {
+                    console.log('data====>', data);
+                    if (data !== null) {
+                        $scope.similarCollegeData = data.Colleges;
+                        $scope.similarCollegeData = _.sortByOrder($scope.similarCollegeData, ['collegeName'], ['asc']);
+                        $scope.similarSchoolColgData = data;
+
+                        //$('body').removeClass('page-loader');
+                        // $scope.FacultyName = data.firstName + data.lastName;
+                        // console.log('similar school data---->', $scope.similarCollegeData)
+                    }
+                    // usSpinnerService.stop('spinner-1');
+                }
+            );
+    };
+
+$scope.deleteUser = function(data) {
+        //debugger
+        
+        var delUser = [{
+            "userId":data.userId
+        }];
+
+
+        console.log('data delete User', data);
+        editCollegeAPI.deleteUserList(delUser)
+            .then(
+                function(data) {
+                    $scope.getUsers('initial');
+                    console.log('save Delete user====>', data);
+                    
+                });
+            
+    };
 
     $scope.editCollege = function(data) {
         //$('body').addClass('page-loader');
+        usSpinnerService.spin('spinner-1');
+        $scope.getSimilarCollege();
+
         console.log('data is in ====>', data);
         $rootScope.colgData = data;
         editCollegeAPI.editcollegelist(data.collegeId)
@@ -406,310 +495,437 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
                 function(data) {
                     console.log('data Edit College====>', data);
                     if (data !== null) {
-                        $scope.selectedSportsDiv1 = []; $scope.selectedSportsDiv2 = []; $scope.selectedSportsDiv3 = [];
-                        $scope.selectedSportsDiv11 = []; $scope.selectedSportsDiv22 = []; $scope.selectedSportsDiv33 = [];
-                        $scope.colgList = true;
-                        $scope.editList = false;
-                        // console.log('get college details',data['College'].collegeName);
-                        $scope.college.colgName = data['College'].collegeName;
-                        //Store Collge Type Id
-                        $scope.college.collegeTypeId = data['College'].collegeTypeId;
-                        //Drop-Down -> Model Name from HTML = (college_id from data you getting)
-                        $scope.college.colgType = $scope.college.collegeTypeId;
+                        try {
 
-                        $scope.college.accessTypeID = data['College'].accessTypeID;
-                        //$scope.college.colgArea = $scope.college.accessTypeID;
-                        $scope.college.accessType = $scope.college.accessTypeID;
+                            $scope.colgList = true;
+                            $scope.editList = false;
+                            $scope.searchList = true;
+                            // console.log('get college details',data['College'].collegeName);
+                            $scope.college.colgName = data['College'].collegeName;
+                            //Store Collge Type Id
+                            $scope.college.collegeTypeId = data['College'].collegeTypeId;
+                            //Drop-Down -> Model Name from HTML = (college_id from data you getting)
+                            $scope.college.colgType = $scope.college.collegeTypeId;
 
-                        $scope.college.colgAreaID = data['College'].collegeAreaID;
+                            $scope.college.accessTypeID = data['College'].accessTypeID;
+                            //$scope.college.colgArea = $scope.college.accessTypeID;
+                            $scope.college.accessType = $scope.college.accessTypeID;
 
-                        //Drop-Down -> Model Name from HTML = (college_id from data you getting)
+                            $scope.college.colgAreaID = data['College'].collegeAreaID;
 
-                        $scope.college.colgArea = $scope.college.colgAreaID;
+                            //Drop-Down -> Model Name from HTML = (college_id from data you getting)
 
+                            $scope.college.colgArea = $scope.college.colgAreaID;
 
-                        $scope.college.colgLongitude = data['College'].collegeLongitude;
-                        $scope.college.colgLatitude = data['College'].collegeLatitude;
-                        $scope.college.colgStreet = data['College'].streetName;
-                        $scope.college.colgCity = data['College'].city;
-                        $scope.college.colgState = data['College'].state;
-                        $scope.college.colgPhn = data['College'].telephoneNumber;
-                        $scope.college.colgEmail = data['College'].officeEmailAddress;
-                        $scope.college.colgZip = data['College'].zip;
-                        $scope.college.colgStreet = data['College'].streetName;
-                        $scope.college.colgState = data['College'].state;
-                        $scope.college.colgTelephoneNumber = data['College'].telephoneNumber;
-                        $scope.college.colgOfficeEmailAddress = data['College'].officeEmailAddress;
+                            $scope.college.colgLongitude = data['College'].collegeLongitude;
+                            $scope.college.colgLatitude = data['College'].collegeLatitude;
+                            $scope.college.colgStreet = data['College'].streetName;
+                            $scope.college.colgCity = data['College'].city;
+                            $scope.college.colgState = data['College'].state;
+                            $scope.college.colgPhn = data['College'].telephoneNumber;
+                            $scope.college.colgEmail = data['College'].officeEmailAddress;
+                            $scope.college.colgZip = data['College'].zip;
+                            $scope.college.colgStreet = data['College'].streetName;
+                            $scope.college.colgState = data['College'].state;
+                            $scope.college.colgTelephoneNumber = data['College'].telephoneNumber;
+                            $scope.college.colgOfficeEmailAddress = data['College'].officeEmailAddress;
 
-                        $scope.freshman.enrollmentID = data['FreshmanProfile']['FreshManProfile'].enrollmentStatusId;
-                        $scope.freshman.totApplicants = data['FreshmanProfile']['FreshManProfile'].totalApplicants;
-                        $scope.freshman.totAccepted = data['FreshmanProfile']['FreshManProfile'].totalAccepted;
-                        $scope.freshman.xptanceRate = data['FreshmanProfile']['FreshManProfile'].acceptanceRate;
-                        $scope.freshman.totEnrolled = data['FreshmanProfile']['FreshManProfile'].totalEnrolled;
-                        $scope.freshman.earlyDecision = data['FreshmanProfile']['FreshManProfile'].percentageEnrolledEarlyDecision;
-                        $scope.freshman.waitingList = data['FreshmanProfile']['FreshManProfile'].percentageEnrolledFromWaitList;
-                        $scope.freshman.outFState = data['FreshmanProfile']['FreshManProfile'].percentageEnrolledOutofState;
-                        $scope.freshman.ernPiblicHS = data['FreshmanProfile']['FreshManProfile'].percentageEnrolledPublicHs;
-                        $scope.freshman.rcvFinanceAid = data['FreshmanProfile']['FreshManProfile'].percentageReceivingFinancialAid;
-                        $scope.freshman.avgFinanceAid = data['FreshmanProfile']['FreshManProfile'].averageFinancialAid;
-                        $scope.freshman.malePer = data['FreshmanProfile']['FreshManProfile'].malePercentage;
-                        $scope.freshman.femalePer = data['FreshmanProfile']['FreshManProfile'].femalePercentage;
-                        $scope.freshman.collegeEthnicityID = data['FreshmanProfile']['CollegeEthnicity'].collegeEthnicityID;
+                            $scope.freshman.enrollmentID = data['FreshmanProfile']['Profile'].enrollmentStatusId;
+                            $scope.freshman.totApplicants = data['FreshmanProfile']['Profile'].totalApplicants;
+                            $scope.freshman.totAccepted = data['FreshmanProfile']['Profile'].totalAccepted;
+                            $scope.freshman.xptanceRate = data['FreshmanProfile']['Profile'].acceptanceRate;
+                            $scope.freshman.totEnrolled = data['FreshmanProfile']['Profile'].totalEnrolled;
+                            $scope.freshman.earlyDecision = data['FreshmanProfile']['Profile'].percentageEnrolledEarlyDecision;
+                            $scope.freshman.waitingList = data['FreshmanProfile']['Profile'].percentageEnrolledFromWaitList;
+                            $scope.freshman.outFState = data['FreshmanProfile']['Profile'].percentageEnrolledOutofState;
+                            $scope.freshman.ernPiblicHS = data['FreshmanProfile']['Profile'].percentageEnrolledPublicHs;
+                            $scope.freshman.rcvFinanceAid = data['FreshmanProfile']['Profile'].percentageReceivingFinancialAid;
+                            $scope.freshman.avgFinanceAid = data['FreshmanProfile']['Profile'].averageFinancialAid;
+                            $scope.freshman.malePer = data['FreshmanProfile']['Profile'].malePercentage;
+                            $scope.freshman.religiousAffiliation = data['FreshmanProfile']['Profile'].religiousAffiliation;
+                            $scope.freshman.femalePer = data['FreshmanProfile']['Profile'].femalePercentage;
+                            $scope.freshman.collegeEthnicityID = data['FreshmanProfile']['CollegeEthnicity'].collegeEthnicityID;
 
-                        $scope.weatherObj.avgFallLowTemp = data['Weather'];
-                        // $scope.quickFact.qukFact = data['QuickFacts'].quickFactsValue;
-
-                        $scope.geoData = data['FreshmanProfile']['Geographics'];
-                        $scope.clgEthenicity = data['FreshmanProfile']['CollegeEthnicity'];
-                        $scope.intendedStudy = data['IntendedStudy']['Study'];
-                        $scope.admission = data['Admissions']['Admission'];
-                        $scope.interview = data['Admissions']['Interviews'];
-                        $scope.recommendation = data['Admissions']['Recommendations'];
-
-                        $scope.SatData =  data.TestScoresAndGrades.SAT;
-                        $scope.ActData =  data.TestScoresAndGrades.ACT;
-
-                        $scope.testScoreAvg =  data.TestScoresAndGrades.TestScoresAndGrades;
-
-                        // $scope.satLowerCriticalReading = data['TestScoresAndGrades']['SAT']['CriticalReading'].scoreLowerLimit;
-                        // $scope.satHigherCriticalReading = data['TestScoresAndGrades']['SAT']['CriticalReading'].scoreHigherLimit;
-                        // $scope.satHigherCriticalReading = data['TestScoresAndGrades']['SAT']['CriticalReading'].collegeScoreId;
-                        // $scope.satLowMath = data['TestScoresAndGrades']['SAT']['Math'].scoreLowerLimit;
-                        // $scope.satHighMath = data['TestScoresAndGrades']['SAT']['Math'].scoreHigherLimit;
-                        // $scope.satLowWriting = data['TestScoresAndGrades']['SAT']['Writing'].scoreLowerLimit;
-                        // $scope.satHighWriting = data['TestScoresAndGrades']['SAT']['Writing'].scoreHigherLimit;
-
-                        // $scope.actLowEnglish = data['TestScoresAndGrades']['ACT']['English'].scoreLowerLimit;
-                        // $scope.actHighEnglish = data['TestScoresAndGrades']['ACT']['English'].scoreHigherLimit;
-                        // $scope.actLowMath = data['TestScoresAndGrades']['ACT']['Math'].scoreLowerLimit;
-                        // $scope.actHighMath = data['TestScoresAndGrades']['ACT']['Math'].scoreHigherLimit;
-
-                        // $scope.colgScoreId = data['TestScoresAndGrades'].collegeScoreId;
-                        $scope.sports = data.Sports;
-
-                        $scope.actScore = data['TestScoresAndGrades']['ACTSCORES'];
-
-                        $scope.satScore = data['TestScoresAndGrades']['SATSCORES'];
-
-                        $scope.gpaScore = data['TestScoresAndGrades']['GPASCORES'];
-
-                        $scope.selectedUploadFile = 'jsonEruditusImport';
-
-                        // $scope.sysSports = data['SysSports'];
-                        // $scope.manSportsDiv1 = data['Sports']['Men']['NCAADIVISION1'];
-                        // $scope.manSportsDiv2 = data['Sports']['Men']['NCAADIVISION2'];
-                        // $scope.manSportsDiv3 = data['Sports']['Men']['NCAADIVISION3'];  SysSports
+                            $scope.mostRepresentedState = data.FreshmanProfile.MostRepresentedStates;
 
 
+                            // $scope.mostRepresentedState['stateArray'] = [];
+                            // for(var key in $scope.mostRepresentedState) {
+                            //     console.log('key',key);
+                            //     if (key.match('stateId')) {
+                            //         var obj = {'id':key,'value':$scope.mostRepresentedState[key]};
+                            //         $scope.mostRepresentedState.stateArray.push(obj);
+                            //     }
+                            // };
+
+                            $scope.weatherObj.avgFallLowTemp = data['Weather'];
+                            $scope.quickfact = data.QuickFacts;
+
+                            $scope.geoData = data['FreshmanProfile']['Geographics'];
+                            $scope.clgEthenicity = data['FreshmanProfile']['CollegeEthnicity'];
+                            $scope.intendedStudy = data['IntendedStudy']['Study'];
+                            $scope.studentFacultyRatio = data['IntendedStudy'];
+                            $scope.teamName = data['Sports'];
+                            $scope.intendedStudyOption = data['IntendedStudy']['IntendedStudyOption'];
+                            $scope.admission = data['Admissions']['Admission'];
+                            $scope.interview = data['Admissions']['Interviews'];
+                            $scope.recommendation = data['Admissions']['Recommendations'];
+                            $scope.intramurals = data['Sports']['intramurals'];
+                            $scope.admissionCode = data.Admissions.AdmissionCodes;
+
+                            $scope.SatData = data.TestScoresAndGrades.SAT;
+                            $scope.ActData = data.TestScoresAndGrades.ACT;
+                            // $scope.averageScore =  data.TestScoresAndGrades.TestScoresAndGrades;
+
+                            $scope.testScoreAvg = data.TestScoresAndGrades.Averages;
 
 
-                        $scope.weatherObj.weatherId = data['Weather'].weatherId;
-                        $scope.weatherObj.avgFallLowTemp = data['Weather'].averageFallLowTemp;
-                        $scope.weatherObj.avgFallHighTemp = data['Weather'].averageFallHighTemp;
-                        $scope.weatherObj.avgFallPrecipitation = data['Weather'].averageFallPrecipitation;
-                        $scope.weatherObj.avgWinterLowTemp = data['Weather'].averageWinterLowTemp;
-                        $scope.weatherObj.avgWinterHighTemp = data['Weather'].averageWinterHighTemp;
-                        $scope.weatherObj.avgWinterPrecipitation = data['Weather'].averageWinterPrecipitation;
-                        $scope.weatherObj.avgSummerLowTemp = data['Weather'].averageSummerLowTemp;
-                        $scope.weatherObj.avgSummerHighTemp = data['Weather'].averageSummerHighTemp;
-                        $scope.weatherObj.avgSummerPrecipitation = data['Weather'].averageSummerPrecipitation;
-                        $scope.weatherObj.avgSpringLowTemp = data['Weather'].averageSpringLowTemp;
-                        $scope.weatherObj.avgSpringHighTemp = data['Weather'].averageSpringHighTemp;
-                        $scope.weatherObj.avgSpringPrecipitation = data['Weather'].averageSpringPrecipitation;
+                            $scope.sports = data.Sports;
 
-                        $scope.quickFact.quickFactsVal = data['QuickFacts'].quickFactsValue;
-                        $scope.quickFact.quickFactsID = data['QuickFacts'].quickFactsID;
+                            $scope.actScore = data['TestScoresAndGrades']['ACTSCORES'];
 
-                        $scope.feesAndFinancial = data.FeesAndFinancialAids;
-                        var dataFees = data.FeesAndFinancialAids;
+                            $scope.criticalReading = data['TestScoresAndGrades']['SATSCORES']['CriticalReading'];
+                            $scope.sATMathPercentage = data['TestScoresAndGrades']['SATSCORES']['SATMathPercentage'];
+                            $scope.sATWritingPercentage = data['TestScoresAndGrades']['SATSCORES']['SATWritingPercentage'];
 
-                        for (var i = 0; i < dataFees.length; i++) {
-                            tempFees[dataFees[i].sysFeesStructureID] = dataFees[i].fees;
-                        };
+                            $scope.gpaScore = data['TestScoresAndGrades']['GPASCORES'];
 
+                            $scope.weatherObj.weatherId = data['Weather'].weatherId;
+                            $scope.weatherObj.avgFallLowTemp = data['Weather'].averageFallLowTemp;
+                            $scope.weatherObj.avgFallHighTemp = data['Weather'].averageFallHighTemp;
+                            $scope.weatherObj.avgFallPrecipitation = data['Weather'].averageFallPrecipitation;
+                            $scope.weatherObj.avgWinterLowTemp = data['Weather'].averageWinterLowTemp;
+                            $scope.weatherObj.avgWinterHighTemp = data['Weather'].averageWinterHighTemp;
+                            $scope.weatherObj.avgWinterPrecipitation = data['Weather'].averageWinterPrecipitation;
+                            $scope.weatherObj.avgSummerLowTemp = data['Weather'].averageSummerLowTemp;
+                            $scope.weatherObj.avgSummerHighTemp = data['Weather'].averageSummerHighTemp;
+                            $scope.weatherObj.avgSummerPrecipitation = data['Weather'].averageSummerPrecipitation;
+                            $scope.weatherObj.avgSpringLowTemp = data['Weather'].averageSpringLowTemp;
+                            $scope.weatherObj.avgSpringHighTemp = data['Weather'].averageSpringHighTemp;
+                            $scope.weatherObj.avgSpringPrecipitation = data['Weather'].averageSpringPrecipitation;
 
-                        $scope.test = data.Calender;
-                        $scope.collegeRanking = data.CollegeRanking;
-                        $scope.prominentAlumni = data.ProminentAlumini;
-                        $scope.similerSchool = data.similarSchool;
-                        $scope.linkAndAddress = data.LinksAndAddresses;
-                        //$scope.webDetailID = data['LinksAndAddresses'][0].websiteDetailsId;
-                        //$scope.websiteName = data['websiteName'].websiteName;
-                        //console.log(' $scope.webDetailID', $scope.webDetailID);
-                        // $scope.data.quickFactsValue = data.QuickFacts[0].quickFactsValue;
+                            $scope.feesAndFinancial = data.FeesAndFinancialAids.Fees;
 
-                        //----------- Fees and financial Aid
-                        // var feesAndFinancialAids = data['FeesAndFinancialAids'];
-                        // feesAndFinancialAids.push({
-                        //     percentangeInState: 81,
-                        //     percentangeOutState: 90,
-                        //     avgInState: 200,
-                        //     avgOutState: 41555
-                        // });
-                        // var feesAndFinancialAidsLength = feesAndFinancialAids.length;
+                            $scope.AvgFees = data.FeesAndFinancialAids;
 
 
-                        // for (var i = 0; i < feesAndFinancialAidsLength; i++) {
-                        //     var obj = feesAndFinancialAids[i];
-                        //     if (obj.inState == true) {
-                        //         $scope.inStateData.push(obj);
-                        //         $scope.inStateTotal = $scope.inStateTotal + obj.fees;
-                        //     } else if (obj.inState == false) {
-                        //         $scope.outStateData.push(obj);
-                        //         $scope.outStateTotal = $scope.outStateTotal + obj.fees;
-                        //     } else {
-                        //         $scope.financialAid = obj;
-                        //     }
-                        // }
+                            var dataFees = data.FeesAndFinancialAids.Fees;
 
-                        $scope.sports.Men.NCAADIVISION1.forEach(function (item) {
-                            $scope.selectedSportsDiv1.push(item.syssportsId);
-                        });
-                        $scope.sports.Men.NCAADIVISION2.forEach(function (item) {
-                            $scope.selectedSportsDiv2.push(item.syssportsId);
-                        });
-                        $scope.sports.Men.NCAADIVISION3.forEach(function (item) {
-                            $scope.selectedSportsDiv3.push(item.syssportsId);
-                        });
+                            for (var i = 0; i < dataFees.length; i++) {
+                                tempFees[dataFees[i].sysFeesStructureID] = dataFees[i].fees;
+                            };
 
-                        $scope.sports.Women.NCAADIVISION1.forEach(function (item) {
-                            $scope.selectedSportsDiv11.push(item.syssportsId);
-                        });
-                        $scope.sports.Women.NCAADIVISION2.forEach(function (item) {
-                            $scope.selectedSportsDiv22.push(item.syssportsId);
-                        });
-                        $scope.sports.Women.NCAADIVISION3.forEach(function (item) {
-                            $scope.selectedSportsDiv33.push(item.syssportsId);
-                        });
 
-                        $rootScope.sysSports.forEach(function (item){
-                            item['isChecked'] = false;
-                            item['sysSportsDivisionID'] = 1;
-                            item['collegeId'] = $rootScope.colgData.collegeId;
-                            item['genderId'] = 1;
-                             $scope.selectedSportsDiv1.forEach(function (i) {
-                                if (item.syssportsId == i) {
-                                    item.isChecked = true;
+                            $scope.test = data.Calender;
+                            $scope.similarArray = [];
+                            $scope.collegeRanking = data.CollegeRanking;
+                            $scope.prominentAlumni = data.ProminentAlumini;
+                            $scope.similerSchool = data.SimilarSchools;
+                            $scope.similerSchool.forEach(function(item) {
+                                $scope.similarArray.push(item.similarSchoolsID);
+                                // console.log('$scope.similarArray',$scope.similarArray);
+                            })
+
+
+                            // console.log('scope.similarCollegeDatasimilarCollegeDatasimilarCollegeDatasimilarCollegeData', $scope.similarCollegeData);
+                            $scope.linkAndAddress = data.LinksAndAddresses;
+
+
+
+                            $scope.sportsChecked = {
+                                'menChecked': {},
+                                'womenChecked': {},
+                                'men': {},
+                                'women': {},
+                                'menDivisions': [],
+                                'womenDivisions': []
+                            };
+
+
+                            // for(var key in data.Sports.Divisions.Men) {
+                            //     // console.log('--->',key);
+                            //     $scope.sportsChecked.men[key] = [];
+                            //     $scope.sportsChecked.menChecked[key] = [];
+
+                            //     // $scope.sportsChecked.menDivisions.push(key);
+                            //     data.Sports.Divisions.Men[key].forEach(function (i) {
+                            //         $scope.sportsChecked.menChecked[key].push(i.syssportsId);
+                            //     })
+                            //     // data.Sports.Divisions.Men[key];
+                            // }
+                            $rootScope.sportsDivisions.forEach(function(div) {
+
+                                $scope.sportsChecked.men[div.divisionName] = [];
+                                $scope.sportsChecked.menChecked[div.divisionName] = [];
+                                if (data.Sports.Divisions.Men[div.divisionName]) {
+                                    data.Sports.Divisions.Men[div.divisionName].forEach(function(i) {
+                                        $scope.sportsChecked.menChecked[div.divisionName].push(i.syssportsId);
+                                    })
                                 }
-                             })
-                        });
-                        $rootScope.sysSports2.forEach(function (item){
-                            item['isChecked'] = false;
-                            item['sysSportsDivisionID'] = 2;
-                            item['collegeId'] = $rootScope.colgData.collegeId;
-                            item['genderId'] = 1;
-                             $scope.selectedSportsDiv2.forEach(function (i) {
-                                if (item.syssportsId == i) {
-                                    item.isChecked = true;
-                                }
-                             })
-                        });
-                        $rootScope.sysSports3.forEach(function (item){
-                            item['isChecked'] = false;
-                            item['sysSportsDivisionID'] = 3;
-                            item['collegeId'] = $rootScope.colgData.collegeId;
-                            item['genderId'] = 1;
-                             $scope.selectedSportsDiv3.forEach(function (i) {
-                                if (item.syssportsId == i) {
-                                    item.isChecked = true;
-                                }
-                             })
-                        });
+                                $scope.sportsChecked.menDivisions.push({
+                                    'name': div.divisionName,
+                                    'divisionID': div.sysSportsDivisionID
+                                });
 
-                        $rootScope.sysSports4.forEach(function (item){
-                            item['isChecked'] = false;
-                            item['sysSportsDivisionID'] = 1;
-                            item['collegeId'] = $rootScope.colgData.collegeId;
-                            item['genderId'] = 2;
-                             $scope.selectedSportsDiv11.forEach(function (i) {
-                                if (item.syssportsId == i) {
-                                    item.isChecked = true;
+                                $scope.sportsChecked.women[div.divisionName] = [];
+                                $scope.sportsChecked.womenChecked[div.divisionName] = [];
+                                if (data.Sports.Divisions.Women[div.divisionName]) {
+                                    data.Sports.Divisions.Women[div.divisionName].forEach(function(i) {
+                                        $scope.sportsChecked.womenChecked[div.divisionName].push(i.syssportsId);
+                                    })
                                 }
-                             })
-                        });
+                                $scope.sportsChecked.womenDivisions.push({
+                                    'name': div.divisionName,
+                                    'divisionID': div.sysSportsDivisionID
+                                });
+                            })
 
-                        $rootScope.sysSports5.forEach(function (item){
-                            item['isChecked'] = false;
-                            item['sysSportsDivisionID'] = 2;
-                            item['collegeId'] = $rootScope.colgData.collegeId;
-                            item['genderId'] = 2;
-                             $scope.selectedSportsDiv22.forEach(function (i) {
-                                if (item.syssportsId == i) {
-                                    item.isChecked = true;
-                                }
-                             })
-                        });
+                            $scope.sportsChecked.menDivisions.forEach(function(divisions) {
+                                // console.log('divison', divisions);
+                                $scope.sportsChecked.men[divisions.name] = [];
+                                $rootScope.sysSports.forEach(function(sports) {
+                                    $scope.sportsChecked.men[divisions.name].push({
+                                        'syssportsId': sports.syssportsId,
+                                        'syssportsName': sports.syssportsName,
+                                        'is_checked': false,
+                                        'sysSportsDivisionID': divisions.divisionID,
+                                        'genderId': '1',
+                                        'collegeId': $rootScope.colgData.collegeId
+                                    });
+                                    $scope.sportsChecked.men[divisions.name].forEach(function(customSports) {
+                                        if ($scope.sportsChecked.menChecked[divisions.name].indexOf(customSports.syssportsId) > -1) {
+                                            customSports.is_checked = true;
+                                        }
+                                    })
+                                })
+                            })
 
-                        $rootScope.sysSports6.forEach(function (item){
-                            item['isChecked'] = false;
-                            item['sysSportsDivisionID'] = 3;
-                            item['collegeId'] = $rootScope.colgData.collegeId;
-                            item['genderId'] = 2;
-                             $scope.selectedSportsDiv33.forEach(function (i) {
-                                if (item.syssportsId == i) {
-                                    item.isChecked = true;
-                                }
-                             })
-                        });
+                            $scope.sportsChecked.womenDivisions.forEach(function(divisions) {
+                                // console.log('divison', divisions);
+                                $scope.sportsChecked.women[divisions.name] = [];
+                                $rootScope.sysSports.forEach(function(sports) {
+                                    $scope.sportsChecked.women[divisions.name].push({
+                                        'syssportsId': sports.syssportsId,
+                                        'syssportsName': sports.syssportsName,
+                                        'is_checked': false,
+                                        'sysSportsDivisionID': divisions.divisionID,
+                                        'genderId': '2',
+                                        'collegeId': $rootScope.colgData.collegeId
+                                    });
+                                    $scope.sportsChecked.women[divisions.name].forEach(function(customSports) {
+                                        if ($scope.sportsChecked.womenChecked[divisions.name].indexOf(customSports.syssportsId) > -1) {
+                                            customSports.is_checked = true;
+                                        }
+                                    })
+                                })
+                            })
+
+                            // console.log('root sportsDivisions----->>', $rootScope.sportsDivisions);
+                            // console.log('root sysSports----->>', $rootScope.sysSports);
 
 
-                        console.log('$scope.selectedSportsDiv1',$scope.selectedSportsDiv1);
+                            // console.log('----->>', $scope.sportsChecked);
+
+
+                        } catch (e) {
+                            console.log('exception ', e);
+                        }
 
                     }
-
-                }
-            );
+                    usSpinnerService.stop('spinner-1');
+                });
     }
+
+    $scope.$watch('similarCollegeData', function(newValue) {
+        if (newValue && k == 0) {
+            k = 1;
+            $scope.similarCollegeData = _.filter($scope.similarCollegeData, function(i) {
+                return $scope.similarArray.indexOf(i.schoolID) == -1;
+            });
+        }
+    }, true);
+    /* Toggle Button for Sports and Intended Study*/
+    $scope.toggalBtn = function() {
+        
+        var objIntendedStudyOption = $scope.intendedStudyOption;
+        for (var i = 0; i < objIntendedStudyOption.length; i++) {
+            var obj = objIntendedStudyOption[i],
+                ele = obj.sysIntendedStudyOptionName.slice(0, -1).split(' ').join(''),
+                value = obj.optionValue;
+            if (value === 'YES') {
+                $('#' + ele).bootstrapToggle('on');
+            } else {
+                $('#' + ele).bootstrapToggle('off');
+            }
+            (function(i) {
+                $('#' + ele).change(function() {
+                    $scope.intendedStudyOption[i].optionValue = $(this).prop('checked') ? 'YES' : 'NO';
+                    // console.log('Value Changed ', $scope.intendedStudyOption[i].optionValue);
+                    if ($scope.intendedStudyOption[i].optionValue == 'YES') {
+                        $scope.intendedStudyOption[i].optionValueID = 1;
+                    } else {
+                        $scope.intendedStudyOption[i].optionValueID = 2;
+                    }
+                    // console.log('which one?? ',$scope.intendedStudyOption[i]);
+
+                })
+            })(i);
+        }
+
+        var intramuralsFlag = $scope.sports.intramurals,
+            intramurals = $('#intramurals');
+        if (intramuralsFlag) {
+            intramurals.bootstrapToggle('on');
+        } else {
+            intramurals.bootstrapToggle('off');
+        }
+
+        intramurals.change(function() {
+            $scope.sports.intramurals = $(this).prop('checked') ? true : false;
+            // console.log('Value Changed ', $scope.sports.Intramurals);
+        })
+
+    }
+
+    // $scope.$watch('college',function (newValue) {
+    //     console.log('newValue',newValue);
+    // },true);
     $scope.saveCollege = function() {
         //debugger
         //$('body').addClass('page-loader');
-        console.log('save detail====>', $rootScope.colgData);
+        // console.log('save detail====>', $scope.saveCollegeForm.$valid);
+        usSpinnerService.spin('spinner-1');
+        if (!$scope.saveCollegeForm.$valid) {
+            return false;
+        }
 
         var data = {
             'collegeId': $rootScope.colgData['collegeId'] ? $rootScope.colgData['collegeId'] : null,
             'collegeName': $scope.college.colgName ? $scope.college.colgName : null,
-            'collegeTypeId': $rootScope.colgData['collegeTypeId'] ? $rootScope.colgData['collegeTypeId'] : null,
+            'collegeTypeId': $scope.college.colgType ? $scope.college.colgType : null,
+
+            // 'collegeTypeId': $rootScope.colgData['collegeTypeId'] ? $rootScope.colgData['collegeTypeId'] : null,
             'city': $scope.college.colgCity ? $scope.college.colgCity : null,
             'collegeLatitude': $scope.college.colgLatitude ? $scope.college.colgLatitude : null,
             'collegeLongitude': $scope.college.colgLongitude ? $scope.college.colgLongitude : null,
-            'accessTypeID': $scope.college.colgAccessTypeID ? $scope.college.colgAccessTypeID : null,
-            'collegeAreaID': $scope.college.colgAreaID ? $scope.college.colgAreaID : null
+            'accessTypeID': $scope.college.accessType ? $scope.college.accessType : null,
+            'collegeAreaID': $scope.college.colgArea ? $scope.college.colgArea : null
         };
 
-        console.log('data finally data', data);
+        // console.log('data finally data', data);
         editCollegeAPI.saveCollegeDetail(data)
             .then(
                 function(data) {
                     console.log('save detail====>', data);
+                    usSpinnerService.stop('spinner-1');
                 });
         //$('body').removeClass('page-loader');
 
     }
 
+    $scope.addCollege = function(addNew) {
+        //debugger
+        //$('body').addClass('page-loader');
+        usSpinnerService.spin('spinner-1');
+        // console.log('save detail====>', $rootScope.colgData);
+        var data;
+
+        if (addNew == 'new') {
+            data = {
+                'collegeId': null,
+                'collegeName': $scope.addCollegeName ? $scope.addCollegeName : null,
+                'collegeTypeId': $scope.addCollegeTypeId ? $scope.addCollegeTypeId : null,
+                'city': $scope.addCollegeCity ? $scope.addCollegeCity : null,
+                'collegeLatitude': $scope.addCollegeLatitude ? $scope.addCollegeLatitude : null,
+                'collegeLongitude': $scope.addCollegeLongitude ? $scope.addCollegeLongitude : null,
+                'accessTypeID': $scope.addCollegeAccessTypeID ? $scope.addCollegeAccessTypeID : null,
+                'collegeAreaID': $scope.addCollegeAreaID ? $scope.addCollegeAreaID : null
+            }
+        } else {
+            data = {
+                'collegeId': $rootScope.colgData['collegeId'] ? $rootScope.colgData['collegeId'] : null,
+                'collegeName': $scope.college.colgName ? $scope.college.colgName : null,
+                'collegeTypeId': $rootScope.colgData['collegeTypeId'] ? $rootScope.colgData['collegeTypeId'] : null,
+                'city': $scope.college.colgCity ? $scope.college.colgCity : null,
+                'collegeLatitude': $scope.college.colgLatitude ? $scope.college.colgLatitude : null,
+                'collegeLongitude': $scope.college.colgLongitude ? $scope.college.colgLongitude : null,
+                'accessTypeID': $scope.college.colgAccessTypeID ? $scope.college.colgAccessTypeID : null,
+                'collegeAreaID': $scope.college.colgAreaID ? $scope.college.colgAreaID : null
+            };
+        }
+
+
+        // console.log('data finally data', data);
+        editCollegeAPI.addCollegeDetail(data)
+            .then(
+                function(data) {
+                    console.log('save detail====>', data);
+                });
+        //$('body').removeClass('page-loader');
+        usSpinnerService.sptop('spinner-1');
+
+    }
+
+    $scope.searchCollege = function(data) {
+        $scope.colgList = true;
+        $scope.editList = true;
+        $scope.searchList = false;
+       
+        var data = {
+            collegeName: data
+        };
+        editCollegeAPI.searchCollegeDetail(data)
+            .then(
+                function(data) {
+                    console.log('save detail====>', data);
+                    $scope.fetchedCollegedata = data;
+                });
+        
+    }
+
+$scope.searchUser = function(data) {
+        $scope.userList = true;
+        $scope.userSearch = false;
+       
+        var data = {
+            "string": data
+        };
+        editCollegeAPI.searchUserDetail(data)
+            .then(
+                function(data) {
+                    console.log('save detail====>', data);
+                    $scope.userdata = data;
+                });
+        
+    }
+    
     $scope.saveQuickFact = function() {
         //debugger
-        console.log('save saveQuickFact====>', $rootScope.colgData);
+        usSpinnerService.spin('spinner-1');
+        // console.log('save saveQuickFact====>', $rootScope.colgData);
         var qukFact = {
-
-            'quickFactsValue': $scope.quickFact.quickFactsVal ? $scope.quickFact.quickFactsVal : null,
-            'quickFactsID': $scope.quickFact.quickFactsID ? $scope.quickFact.quickFactsID : null
+            'collegeId': $rootScope.colgData['collegeId'] ? $rootScope.colgData['collegeId'] : null,
+            'quickFactsValue': $scope.quickfact.quickFactsValue ? $scope.quickfact.quickFactsValue : null,
+            'quickFactsID': $scope.quickfact.quickFactsID ? $scope.quickfact.quickFactsID : null
 
         };
 
-        console.log('data saveQuickFact', qukFact);
+        // console.log('data saveQuickFact', qukFact);
         editCollegeAPI.saveQuickFactsDetail(qukFact)
             .then(
                 function(data) {
                     console.log('save saveQuickFact====>', data);
+                    usSpinnerService.stop('spinner-1');
                 });
     }
 
 
 
     $scope.saveFreshman = function() {
+        usSpinnerService.spin('spinner-1');
         // $scope.enrollmentID = $scope.enrollmentStatusId
-        console.log('testData', $scope.geoData);
-        console.log('testData for ethecity', $scope.clgEthenicity);
+        // console.log('testData', $scope.geoData);
+        // console.log('testData for ethecity', $scope.clgEthenicity);
         var finalGeoData = [];
 
         for (var count = 0; count < $scope.geoData.length; count++) {
@@ -720,9 +936,9 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
             finalGeoObject['geographicsPercentage'] = $scope.geoData[count].geographicsPercentage;
             finalGeoData.push(finalGeoObject);
         }
-        console.log('final geographical array', finalGeoData);
+        // console.log('final geographical array', finalGeoData);
 
-        console.log('data finally geographical data', finalGeoData);
+        // console.log('data finally geographical data', finalGeoData);
         editCollegeAPI.saveGeographicDetail(finalGeoData)
             .then(
                 function(data) {
@@ -740,13 +956,13 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
             finalethEncityData.push(finalEthencityObject);
         }
 
-        console.log('data finally Ethenicity data', finalethEncityData);
+        // console.log('data finally Ethenicity data', finalethEncityData);
         editCollegeAPI.saveEthenicityDetail(finalethEncityData)
             .then(
                 function(data) {
                     console.log('save Ethenicity detail====>', data);
                 });
-        console.log('data finally Ethenicity data', finalethEncityData);
+        // console.log('data finally Ethenicity data', finalethEncityData);
 
         //var enrollmentID = $scope.enrollmentStatusId;
         var freshmanData = {
@@ -762,88 +978,90 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
             'percentageEnrolledOutofState': $scope.freshman.outFState ? $scope.freshman.outFState : null,
             'percentageEnrolledPublicHs': $scope.freshman.ernPiblicHS ? $scope.freshman.ernPiblicHS : null,
             'averageFinancialAid': $scope.freshman.avgFinanceAid ? $scope.freshman.avgFinanceAid : null,
+            'religiousAffiliation': $scope.freshman.religiousAffiliation ? $scope.freshman.religiousAffiliation : null,
             'percentageReceivingFinancialAid': $scope.freshman.rcvFinanceAid ? $scope.freshman.rcvFinanceAid : null,
             'malePercentage': $scope.freshman.malePer ? $scope.freshman.malePer : null,
             'femalePercentage': $scope.freshman.femalePer ? $scope.freshman.femalePer : null
         };
-        //console.log('enrollmentStatusId============>', enrollmentStatusId)
-        //console.log('freshmanData========>', freshmanData);
-
-        console.log('data finally Freshman Common data', freshmanData);
+        // console.log('data finally Freshman Common data', freshmanData);
         editCollegeAPI.saveFreshmanDetail(freshmanData)
             .then(
                 function(data) {
                     console.log('save detail====>', data);
                 });
 
+        var mostRepresentedStt = {
+            'collegeId': $rootScope.colgData['collegeId'] ? $rootScope.colgData['collegeId'] : null,
+            'mostRepresentedStateID': $scope.mostRepresentedState.mostRepresentedStateID ? $scope.mostRepresentedState.mostRepresentedStateID : null,
+            'stateId1': $scope.mostRepresentedState.stateId1 ? $scope.mostRepresentedState.stateId1 : null,
+            'stateId2': $scope.mostRepresentedState.stateId2 ? $scope.mostRepresentedState.stateId2 : null,
+            'stateId3': $scope.mostRepresentedState.stateId3 ? $scope.mostRepresentedState.stateId3 : null,
+            'stateId4': $scope.mostRepresentedState.stateId4 ? $scope.mostRepresentedState.stateId4 : null,
+            'stateId5': $scope.mostRepresentedState.stateId5 ? $scope.mostRepresentedState.stateId5 : null,
+
+        }
+
+        // console.log('data finally mostRepresentedStt Common data', mostRepresentedStt);
+        editCollegeAPI.saveMostRepStateDetail(mostRepresentedStt)
+            .then(
+                function(data) {
+                    console.log('save detail====>', data);
+                    usSpinnerService.stop('spinner-1');
+                });
+
+
+
     };
 
-    // $scope.saveCalendar = function() {
-    //     //console.log('testData Calendar data',$scope.test);
-    //     var finalCalendarData = [];
-
-    //     for (var count = 0; count < $scope.test.length; count++) {
-    //         var finalCalendarObject = {};
-    //         finalCalendarObject['collegeCalendarId'] = $scope.test[count].collegeCalendarId;
-    //         finalCalendarObject['eventName'] = $scope.test[count].eventName;
-    //         finalCalendarObject['eventDate'] = $scope.test[count].eventDate;
-    //         finalCalendarData.push(finalCalendarObject);
-    //     }
-
-    //     console.log('final array for calendar', finalCalendarData);
-
-    //     editCollegeAPI.saveCalendarDetail(finalCalendarData)
-    //         .then(
-    //             function(data) {
-    //                 // console.log('save detail====>', data);
-    //             });
-
-    // };
-
     $scope.saveCollegeRanking = function() {
-        console.log('testData College ranking data', $scope.collegeRanking);
+        usSpinnerService.spin('spinner-1');
+        // console.log('testData College ranking data', $scope.collegeRanking);
         var finalColegeRankingData = [],
             collegeId = $scope.collegeRanking[0].collegeId;
         /* Scope Data */
         for (var count = 0; count < $scope.collegeRanking.length; count++) {
             var finalColegeRankingObject = {};
             // finalColegeRankingObject['collegeId'] = collegeId;
+            finalColegeRankingObject['collegeId'] = $rootScope.colgData['collegeId'];
             finalColegeRankingObject['collegeRankingId'] = $scope.collegeRanking[count].collegeRankingId;
-            finalColegeRankingObject['ranking'] = $scope.collegeRanking[count].ranking;
+            finalColegeRankingObject['rankingUrl'] = $scope.collegeRanking[count].rankingUrl;
             finalColegeRankingObject['rankingPoints'] = $scope.collegeRanking[count].rankingPoints;
             finalColegeRankingData.push(finalColegeRankingObject);
         }
         /* Custom Array from Directive */
-        var clgRankingArray = $scope.clgRankingArray;
-        var clgRankingPointsArray = $scope.clgRankingPointsArray;
+        // var clgRankingArray = $scope.clgRankingArray;
+        // var clgRankingPointsArray = $scope.clgRankingPointsArray;
 
-        for (var i = 1; i < clgRankingArray.length; i++) {
-            if (clgRankingArray[i] != undefined) {
-                var finalColegeRankingObject = {};
-                finalColegeRankingObject['collegeId'] = $rootScope.colgData['collegeId']
-                finalColegeRankingObject['ranking'] = clgRankingArray[i];
-                finalColegeRankingObject['rankingPoints'] = clgRankingPointsArray[i];
-                finalColegeRankingData.push(finalColegeRankingObject);
-            }
-        }
+        // for (var i = 1; i < clgRankingArray.length; i++) {
+        //     if (clgRankingArray[i] != undefined) {
+        //         var finalColegeRankingObject = {};
+        //         finalColegeRankingObject['collegeId'] = $rootScope.colgData['collegeId'];
+        //         finalColegeRankingObject['ranking'] = clgRankingArray[i];
+        //         finalColegeRankingObject['rankingPoints'] = clgRankingPointsArray[i];
+        //         finalColegeRankingData.push(finalColegeRankingObject);
+        //     }
+        // }
 
-        console.log('final saveColegeRanking array', finalColegeRankingData);
+        // console.log('final saveColegeRanking array', finalColegeRankingData);
 
         editCollegeAPI.saveCollegeRankingDetail(finalColegeRankingData)
             .then(
                 function(data) {
                     console.log('save detail saveCollegeRankingDetail====>', data);
+                    usSpinnerService.stop('spinner-1');
                 });
 
     };
 
     $scope.saveProminentAlumni = function() {
-        console.log('testData Prominent Alumni data', $scope.prominentAlumni);
+        usSpinnerService.spin('spinner-1');
+        // console.log('testData Prominent Alumni data', $scope.prominentAlumni);
         var finalProminentAlumniData = [],
             collegeId = $scope.prominentAlumni[0].collegeId;
         /* Scope Data */
         for (var count = 0; count < $scope.prominentAlumni.length; count++) {
             var finalProminentAlumniObject = {};
+            finalProminentAlumniObject['collegeId'] = $rootScope.colgData['collegeId']
             finalProminentAlumniObject['alumniId'] = $scope.prominentAlumni[count].alumniId;
             finalProminentAlumniObject['alumniName'] = $scope.prominentAlumni[count].alumniName;
             // finalProminentAlumniObject['collegeId'] = collegeId;
@@ -857,31 +1075,34 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
         for (var i = 1; i < prominentArray.length; i++) {
             if (prominentArray[i] != undefined) {
                 var finalProminentAlumniObject = {};
-                finalProminentAlumniObject['collegeId'] = $rootScope.colgData['collegeId']
+                finalProminentAlumniObject['collegeId'] = $rootScope.colgData['collegeId'];
                 finalProminentAlumniObject['alumniName'] = prominentArray[i];
 
                 finalProminentAlumniData.push(finalProminentAlumniObject);
             }
         }
 
-        console.log('final array', finalProminentAlumniData);
+        // console.log('final array', finalProminentAlumniData);
 
         editCollegeAPI.saveProminentAlumniDetail(finalProminentAlumniData)
             .then(
                 function(data) {
                     console.log('save detail Prominent Alumni====>', data);
+                    usSpinnerService.stop('spinner-1');
                 });
 
     };
 
     $scope.saveAddress = function() {
-        console.log('Save Address data', $scope.linkAndAddress);
+        usSpinnerService.spin('spinner-1');
+        // console.log('Save Address data', $scope.linkAndAddress);
         var finalLinkAndAddressData = [],
             collegeId = $scope.linkAndAddress[0].collegeId;
 
         /* Scope Data */
         for (var count = 0; count < $scope.linkAndAddress.length; count++) {
             var finalLinkAndAddressObject = {};
+            finalLinkAndAddressObject['collegeId'] = $rootScope.colgData['collegeId'];
             finalLinkAndAddressObject['websiteName'] = $scope.linkAndAddress[count].websiteName;
             finalLinkAndAddressObject['websiteUrl'] = $scope.linkAndAddress[count].websiteUrl;
             finalLinkAndAddressObject['websiteDetailsId'] = $scope.linkAndAddress[count].websiteDetailsId;
@@ -891,19 +1112,19 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
 
 
         /* Custom Array from Directive */
-        var websiteNameArray = $scope.websiteNameArray;
-        for (var i = 1; i < websiteNameArray.length; i++) {
-            if (websiteNameArray[i] != undefined) {
-                var finalLinkAndAddressObject = {};
-                finalLinkAndAddressObject['collegeId'] = $rootScope.colgData['collegeId']
-                finalLinkAndAddressObject['websiteName'] = $scope.websiteNameArray[i];
-                finalLinkAndAddressObject['websiteUrl'] = $scope.websiteURLArray[i];
+        // var websiteNameArray = $scope.websiteNameArray;
+        // for (var i = 1; i < websiteNameArray.length; i++) {
+        //     if (websiteNameArray[i] != undefined) {
+        //         var finalLinkAndAddressObject = {};
+        //         finalLinkAndAddressObject['collegeId'] = $rootScope.colgData['collegeId']
+        //         finalLinkAndAddressObject['websiteName'] = $scope.websiteNameArray[i];
+        //         finalLinkAndAddressObject['websiteUrl'] = $scope.websiteURLArray[i];
 
-                finalLinkAndAddressData.push(finalLinkAndAddressObject);
-            }
-        }
+        //         finalLinkAndAddressData.push(finalLinkAndAddressObject);
+        //     }
+        // }
 
-        console.log('final array', finalLinkAndAddressData);
+        // console.log('final array', finalLinkAndAddressData);
 
         editCollegeAPI.saveLinkAndAddressDetail(finalLinkAndAddressData)
             .then(
@@ -923,21 +1144,24 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
             'officeEmailAddress': $scope.college.colgOfficeEmailAddress ? $scope.college.colgOfficeEmailAddress : null
         };
 
-        console.log('data finally data', data);
+        // console.log('data finally data', data);
         editCollegeAPI.saveCollegeDetail(data)
             .then(
                 function(data) {
                     console.log('save detail====>', data);
+                    usSpinnerService.stop('spinner-1');
                 });
 
     };
 
     $scope.saveIntendedStudy = function() {
-        console.log('testData saveIntendedStudy data', $scope.intendedStudy);
+        usSpinnerService.spin('spinner-1');
+        // console.log('testData saveIntendedStudy data', $scope.intendedStudy);
         var finalIntendedStudyData = [];
 
         for (var count = 0; count < $scope.intendedStudy.length; count++) {
             var finalIntendedStudyObject = {};
+            finalIntendedStudyObject['collegeID'] = $rootScope.colgData['collegeId'];
             finalIntendedStudyObject['collegeIntendedStudyID'] = $scope.intendedStudy[count].collegeIntendedStudyID;
             finalIntendedStudyObject['intendedStudyName'] = $scope.intendedStudy[count].intendedStudyName;
             finalIntendedStudyObject['intendedStudyType'] = $scope.intendedStudy[count].intendedStudyType;
@@ -945,27 +1169,69 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
 
             finalIntendedStudyData.push(finalIntendedStudyObject);
         }
-        console.log('final array IntendedStudy', finalIntendedStudyData);
+
+        var finalIntendedStudyoptionData = [];
+
+        // for (var count = 0; count < $scope.intendedStudyOption.length; count++) {
+        //     var finalIntendedStudyOptionObject = {};
+        //     finalIntendedStudyOptionObject['collegeID'] = $rootScope.colgData['collegeId'];
+        //     finalIntendedStudyOptionObject['intendedStudyOptionID'] = $scope.intendedStudyOption[count].intendedStudyOptionID;
+        //     finalIntendedStudyOptionObject['optionValueID'] = $scope.intendedStudyOption[count].optionValueID;
+        //     finalIntendedStudyOptionObject['optionBadgeID'] = $scope.intendedStudyOption[count].optionBadgeID;
+
+        //     finalIntendedStudyoptionData.push(finalIntendedStudyOptionObject);
+        // }
+        var intendedOptions = angular.copy($scope.intendedStudyOption);
+        intendedOptions = _.forEach(intendedOptions, function(item) {
+            delete item.badgeValue;
+            delete item.optionValue;
+            delete item.sysIntendedStudyOptionID;
+            delete item.sysIntendedStudyOptionName;
+        });
+
+        // console.log('intendedOptions', intendedOptions);
+
+        editCollegeAPI.saveIntendedStudyOptionDetail(intendedOptions)
+            .then(
+                function(data) {
+                    console.log('save geographic detail====>', data);
+                });
+
+
+
+        var stuFacRatio = {
+            'collegeID': $rootScope.colgData['collegeId'] ? $rootScope.colgData['collegeId'] : null,
+            'collegeIntendedStudyID': $scope.intendedStudy[0].collegeIntendedStudyID,
+            // 'collegeIntendedStudyID': $scope.intendedStudy.collegeIntendedStudyID ? $scope.intendedStudy.collegeIntendedStudyID : null,
+            'studentFacultyRatio': parseInt($scope.studentFacultyRatio.studentFacultyRatio, 10) ? parseInt($scope.studentFacultyRatio.studentFacultyRatio, 10) : 0
+
+
+
+        }
+        finalIntendedStudyData.push(stuFacRatio);
+
+        // console.log('final array IntendedStudy', finalIntendedStudyData);
 
         editCollegeAPI.saveIntendedStudyDetail(finalIntendedStudyData)
             .then(
                 function(data) {
                     console.log('save detail IntendedStudy====>', data);
+                    usSpinnerService.stop('spinner-1');
                 });
 
     };
 
-   $scope.uploadSportsfileupload = function(event){
+    $scope.uploadSportsfileupload = function(event) {
         var file = $scope.myFile;
         $scope.selectedUploadFile = 'sportsfileupload';
-        console.log('file is ' + $scope.selectedUploadFile);
+        // console.log('file is ' + $scope.selectedUploadFile);
         editCollegeAPI.uploadFileToUrl(file, $scope.selectedUploadFile);
     };
 
-    $scope.uploadFile = function(event){
+    $scope.uploadFile = function(event) {
         var file = $scope.myFile;
         $scope.selectedUploadFile = 'uploadFile';
-        console.log('file is ' + $scope.selectedUploadFile);
+        // console.log('file is ' + $scope.selectedUploadFile);
         editCollegeAPI.uploadFileUrl(file, $scope.selectedUploadFile);
     };
     // $scope.$watch('sports',function (newValue,oldValue){
@@ -973,59 +1239,67 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
     // },true);
 
     $scope.saveSports = function() {
-        console.log('Sports $scope.menSports', $scope.menSports);
-        // console.log('Sports data2', $rootScope.sysSports2);
-        // console.log('Sports data3', $rootScope.sysSports3);
+        usSpinnerService.spin('spinner-1');
 
-        var finalSportsData = [];
-
-        $rootScope.sysSports.forEach(function (i){
-            if (i.isChecked) {
-                finalSportsData.push(i);
-            }
-        });
-        $rootScope.sysSports2.forEach(function (i){
-            if (i.isChecked) {
-                finalSportsData.push(i);
-            }
-        });
-        $rootScope.sysSports3.forEach(function (i){
-            if (i.isChecked) {
-                finalSportsData.push(i);
-            }
-        });
-        $rootScope.sysSports4.forEach(function (i){
-            if (i.isChecked) {
-                finalSportsData.push(i);
-            }
-        });
-        $rootScope.sysSports5.forEach(function (i){
-            if (i.isChecked) {
-                finalSportsData.push(i);
-            }
-        });
-        $rootScope.sysSports6.forEach(function (i){
-            if (i.isChecked) {
-                finalSportsData.push(i);
+        var finalSportsCheckedDataMen = angular.copy($scope.sportsChecked.men);
+        var finalSportsCheckedDataWomen = angular.copy($scope.sportsChecked.women);
+        var sportsUpdateArray = [];
+        // MEN
+        for (var key in finalSportsCheckedDataMen) {
+            finalSportsCheckedDataMen[key] = _.filter(finalSportsCheckedDataMen[key], function(item) {
+                return item.is_checked;
+            })
+        }
+        finalSportsCheckedDataMen = _.filter(finalSportsCheckedDataMen, function(item) {
+            if (item.length) {
+                item.forEach(function(i) {
+                    sportsUpdateArray.push(i);
+                    return item;
+                })
             }
         });
 
-        console.log('finalSportsData -- >', finalSportsData);
-        // for (var count = 0; count < $scope.intendedStudy.length; count++) {
-        //     var finalIntendedStudyObject = {};
-        //     finalIntendedStudyObject['collegeIntendedStudyID'] = $scope.intendedStudy[count].collegeIntendedStudyID;
-        //     finalIntendedStudyObject['intendedStudyName'] = $scope.intendedStudy[count].intendedStudyName;
-        //     finalIntendedStudyObject['intendedStudyType'] = $scope.intendedStudy[count].intendedStudyType;
-        //     finalIntendedStudyObject['intendedStudyPercentage'] = $scope.intendedStudy[count].intendedStudyPercentage;
+        // WOMEN
+        for (var key in finalSportsCheckedDataWomen) {
+            finalSportsCheckedDataWomen[key] = _.filter(finalSportsCheckedDataWomen[key], function(item) {
+                return item.is_checked;
+            })
+        }
+        finalSportsCheckedDataWomen = _.filter(finalSportsCheckedDataWomen, function(item) {
+            if (item.length) {
+                item.forEach(function(i) {
+                    sportsUpdateArray.push(i);
+                    return item;
+                })
+            }
+        });
 
-        //     finalIntendedStudyData.push(finalIntendedStudyObject);
-        // }
-        // console.log('final array IntendedStudy', finalIntendedStudyData);
 
-        editCollegeAPI.saveSportsDetail(finalSportsData)
+        sportsUpdateArray.forEach(function(arr) {
+                delete arr.is_checked;
+                delete arr.syssportsName;
+            })
+             console.log('sportsUpdateArray',sportsUpdateArray);
+             console.log('------>>>',$scope.sports);
+
+             var teamName = {
+            'collegeId': $rootScope.colgData['collegeId'] ? $rootScope.colgData['collegeId'] : null,
+            'teamName': $scope.sports['teamName'] ? $scope.sports['teamName'] : null,
+            'intramurals': $scope.sports['Intramurals'] ? $scope.sports['Intramurals'] : null
+            // 'syssportsId': $scope.sports['syssportsId'] ? $scope.sports['syssportsId'] : null,
+            
+            
+        }
+
+         console.log('teamName',teamName);
+
+        sportsUpdateArray.push(teamName);
+        
+        editCollegeAPI.saveSportsDetail(sportsUpdateArray)
             .then(
                 function(data) {
-                    console.log('save detail IntendedStudy====>', data);
+                    //console.log('save detail IntendedStudy====>', data);
+                    usSpinnerService.stop('spinner-1');
                 });
 
     };
@@ -1035,92 +1309,130 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
     // },true);
 
 
-    $scope.saveTestScore = function() {      
+    $scope.saveTestScore = function() {
+        usSpinnerService.spin('spinner-1');
         var testScoreSatCriticalReading = {
-          
+            'collegeId': $rootScope.colgData['collegeId'] ? $rootScope.colgData['collegeId'] : null,
             'collegeScoreId': $scope.SatData.CriticalReading.collegeScoreId ? $scope.SatData.CriticalReading.collegeScoreId : null,
-            'scoreLowerLimit': parseInt($scope.SatData.CriticalReading.scoreLowerLimit,10) ? parseInt($scope.SatData.CriticalReading.scoreLowerLimit,10) : 0,
-            'scoreHigherLimit': parseInt($scope.SatData.CriticalReading.scoreHigherLimit,10) ? parseInt($scope.SatData.CriticalReading.scoreHigherLimit,10) : 0
+            'scoreLowerLimit': parseInt($scope.SatData.CriticalReading.scoreLowerLimit, 10) ? parseInt($scope.SatData.CriticalReading.scoreLowerLimit, 10) : 0,
+            'scoreHigherLimit': parseInt($scope.SatData.CriticalReading.scoreHigherLimit, 10) ? parseInt($scope.SatData.CriticalReading.scoreHigherLimit, 10) : 0
         }
         var testScoreSatMath = {
+            'collegeId': $rootScope.colgData['collegeId'] ? $rootScope.colgData['collegeId'] : null,
             'collegeScoreId': $scope.SatData.math.collegeScoreId ? $scope.SatData.math.collegeScoreId : null,
-            'scoreLowerLimit': parseInt($scope.SatData.math.scoreLowerLimit,10) ? parseInt($scope.SatData.math.scoreLowerLimit,10) : 0,
-            'scoreHigherLimit': parseInt($scope.SatData.math.scoreHigherLimit,10) ? parseInt($scope.SatData.math.scoreHigherLimit,10) : 0
+            'scoreLowerLimit': parseInt($scope.SatData.math.scoreLowerLimit, 10) ? parseInt($scope.SatData.math.scoreLowerLimit, 10) : 0,
+            'scoreHigherLimit': parseInt($scope.SatData.math.scoreHigherLimit, 10) ? parseInt($scope.SatData.math.scoreHigherLimit, 10) : 0
         }
         var testScoreSatWriting = {
+            'collegeId': $rootScope.colgData['collegeId'] ? $rootScope.colgData['collegeId'] : null,
             'collegeScoreId': $scope.SatData.Writing.collegeScoreId ? $scope.SatData.Writing.collegeScoreId : null,
-            'scoreLowerLimit': parseInt($scope.SatData.Writing.scoreLowerLimit,10) ? parseInt($scope.SatData.Writing.scoreLowerLimit,10) : 0,
-            'satHighWriting': parseInt($scope.SatData.Writing.scoreHigherLimit,10) ? parseInt($scope.SatData.Writing.scoreHigherLimit,10) : 0
+            'scoreLowerLimit': parseInt($scope.SatData.Writing.scoreLowerLimit, 10) ? parseInt($scope.SatData.Writing.scoreLowerLimit, 10) : 0,
+            'satHighWriting': parseInt($scope.SatData.Writing.scoreHigherLimit, 10) ? parseInt($scope.SatData.Writing.scoreHigherLimit, 10) : 0
+        }
+        var testScoreSatAvg = {
+            'collegeId': $rootScope.colgData['collegeId'] ? $rootScope.colgData['collegeId'] : null,
+            'collegeScoreId': $scope.SatData.Writing.collegeScoreId ? $scope.SatData.Writing.collegeScoreId : null,
+            'TotalLow': parseInt($scope.SatData.TotalLow, 10) ? parseInt($scope.SatData.TotalLow, 10) : 0,
+            'TotalHigh': parseInt($scope.SatData.TotalHigh, 10) ? parseInt($scope.SatData.TotalHigh, 10) : 0
+
+        }
+        var testScoreActAvg = {
+            'collegeId': $rootScope.colgData['collegeId'] ? $rootScope.colgData['collegeId'] : null,
+            'collegeScoreId': $scope.SatData.Writing.collegeScoreId ? $scope.SatData.Writing.collegeScoreId : null,
+            'CompositeLow': parseInt($scope.ActData.CompositeLow, 10) ? parseInt($scope.ActData.CompositeLow, 10) : 0,
+            'CompositeHigh': parseInt($scope.ActData.CompositeHigh, 10) ? parseInt($scope.ActData.CompositeHigh, 10) : 0
+
         }
         var testScoreActEnglish = {
+            'collegeId': $rootScope.colgData['collegeId'] ? $rootScope.colgData['collegeId'] : null,
             'collegeScoreId': $scope.ActData.English.collegeScoreId ? $scope.ActData.English.collegeScoreId : null,
-            'scoreLowerLimit': parseInt($scope.ActData.English.scoreLowerLimit,10) ? parseInt($scope.ActData.English.scoreLowerLimit,10) : 0,
-            'scoreHigherLimit': parseInt($scope.ActData.English.scoreHigherLimit,10) ? parseInt($scope.ActData.English.scoreHigherLimit,10) : 0
+            'scoreLowerLimit': parseInt($scope.ActData.English.scoreLowerLimit, 10) ? parseInt($scope.ActData.English.scoreLowerLimit, 10) : 0,
+            'scoreHigherLimit': parseInt($scope.ActData.English.scoreHigherLimit, 10) ? parseInt($scope.ActData.English.scoreHigherLimit, 10) : 0
         }
         var testScoreActMath = {
+            'collegeId': $rootScope.colgData['collegeId'] ? $rootScope.colgData['collegeId'] : null,
             'collegeScoreId': $scope.ActData.math.collegeScoreId ? $scope.ActData.math.collegeScoreId : null,
-            'scoreLowerLimit': parseInt($scope.ActData.math.scoreLowerLimit,10) ? parseInt($scope.ActData.math.scoreLowerLimit,10) : 0,
-            'scoreHigherLimit': parseInt($scope.ActData.math.scoreHigherLimit,10) ? parseInt($scope.ActData.math.scoreHigherLimit,10) : 0
+            'scoreLowerLimit': parseInt($scope.ActData.math.scoreLowerLimit, 10) ? parseInt($scope.ActData.math.scoreLowerLimit, 10) : 0,
+            'scoreHigherLimit': parseInt($scope.ActData.math.scoreHigherLimit, 10) ? parseInt($scope.ActData.math.scoreHigherLimit, 10) : 0
         }
         var testScoreAverage = {
-
-        }
-
+                'collegeId': $rootScope.colgData['collegeId'] ? $rootScope.colgData['collegeId'] : null,
+                'collegeScoreId': $scope.ActData.math.collegeScoreId ? $scope.ActData.math.collegeScoreId : null,
+                'averageGPA': $scope.testScoreAvg.averageGPA ? $scope.testScoreAvg.averageGPA : null,
+                'averageSAT': parseInt($scope.testScoreAvg.averageSAT, 10) ? parseInt($scope.testScoreAvg.averageSAT, 10) : 0,
+                'averageACT': parseInt($scope.testScoreAvg.averageACT, 10) ? parseInt($scope.testScoreAvg.averageACT, 10) : 0
+            }
+            // console.log("testScoreAverage====>", testScoreAverage);
         var finalTestScoreData = [];
-
+        finalTestScoreData.push(testScoreSatAvg);
+        finalTestScoreData.push(testScoreActAvg);
+        finalTestScoreData.push(testScoreAverage);
         finalTestScoreData.push(testScoreSatCriticalReading);
         finalTestScoreData.push(testScoreSatMath);
         finalTestScoreData.push(testScoreSatWriting);
         finalTestScoreData.push(testScoreActEnglish);
         finalTestScoreData.push(testScoreActMath);
 
-        $scope.satScore.forEach(function (item) {
-            console.log('item',item);
-            item.percentage = parseInt(item.percentage,10);
+        $scope.criticalReading.forEach(function(item) {
+            console.log('item', item);
+            item.percentage = parseInt(item.percentage, 10);
             finalTestScoreData.push(item);
         });
-        $scope.actScore.forEach(function (item) {
-            console.log('item',item);
-            item.percentage = parseInt(item.percentage,10);
+        $scope.sATMathPercentage.forEach(function(item) {
+            console.log('item', item);
+            item.percentage = parseInt(item.percentage, 10);
             finalTestScoreData.push(item);
         });
-        $scope.gpaScore.forEach(function (item) {
-            console.log('item',item);
-            item.percentage = parseInt(item.percentage,10);
+        $scope.sATWritingPercentage.forEach(function(item) {
+            console.log('item', item);
+            item.percentage = parseInt(item.percentage, 10);
+            finalTestScoreData.push(item);
+        });
+        $scope.actScore.forEach(function(item) {
+            console.log('item', item);
+            item.percentage = parseInt(item.percentage, 10);
+            finalTestScoreData.push(item);
+        });
+        $scope.gpaScore.forEach(function(item) {
+            console.log('item', item);
+            item.percentage = parseInt(item.percentage, 10);
             finalTestScoreData.push(item);
         });
 
-        console.log('testData $scope.satScore data', $scope.satScore);
-        console.log("finalTestScoreData===========>",finalTestScoreData);
+        // console.log('testData $scope.satScore data', $scope.satScore);
+        // console.log("finalTestScoreData===========>", finalTestScoreData);
 
         editCollegeAPI.saveTestScoreDetail(finalTestScoreData)
             .then(
                 function(data) {
                     console.log('save detail Test And Score====>', data);
+                    usSpinnerService.stop('spinner-1');
                 });
 
     };
 
     $scope.saveAdmission = function() {
-        console.log('testData Admission data', $scope.admission);
+        usSpinnerService.spin('spinner-1');
+        // console.log('testData Admission data', $scope.admission);
         var finalAdmissionData = [];
 
         for (var count = 0; count < $scope.admission.length; count++) {
             var finalAdmissionObject = {};
-
+            finalAdmissionObject['collegeId'] = $rootScope.colgData['collegeId'];
             finalAdmissionObject['admissionsOptionID'] = $scope.admission[count].admissionsOptionID;
             finalAdmissionObject['optionNameID'] = $scope.admission[count].optionNameID;
             finalAdmissionObject['optionValueID'] = $scope.admission[count].optionValueID;
             finalAdmissionObject['badgeID'] = $scope.admission[count].badgeID;
 
-            console.log(finalAdmissionObject);
+            // console.log(finalAdmissionObject);
             finalAdmissionData.push(finalAdmissionObject);
         }
 
-        console.log('final array admission', finalAdmissionData);
+        // console.log('final array admission', finalAdmissionData);
 
         for (var count = 0; count < $scope.interview.length; count++) {
             var finalInterviewObject = {};
+            finalInterviewObject['collegeId'] = $rootScope.colgData['collegeId'];
             finalInterviewObject['admissionsOptionID'] = $scope.interview[count].admissionsOptionID;
             finalInterviewObject['optionNameID'] = $scope.interview[count].optionNameID;
             finalInterviewObject['optionValueID'] = $scope.interview[count].optionValueID;
@@ -1130,12 +1442,13 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
             finalAdmissionData.push(finalInterviewObject);
         }
 
-        console.log('final array interview', finalAdmissionData);
+        // console.log('final array interview', finalAdmissionData);
 
 
 
-        for (var count = 0; count < $scope.interview.length; count++) {
+        for (var count = 0; count < $scope.recommendation.length; count++) {
             var finalRecommendationObject = {};
+            finalRecommendationObject['collegeId'] = $rootScope.colgData['collegeId'];
             finalRecommendationObject['admissionsOptionID'] = $scope.recommendation[count].admissionsOptionID;
             finalRecommendationObject['optionNameID'] = $scope.recommendation[count].optionNameID;
             finalRecommendationObject['optionValueID'] = $scope.recommendation[count].optionValueID;
@@ -1145,43 +1458,63 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
             finalAdmissionData.push(finalRecommendationObject);
         }
 
-        console.log('final array recommendation', finalAdmissionData);
+        var admCode = {
+            'collegeId': $rootScope.colgData['collegeId'] ? $rootScope.colgData['collegeId'] : null,
+            'admissionsOptionID': $scope.admission[0].admissionsOptionID,
+            'satCode': parseInt($scope.admissionCode.satCode, 10) ? parseInt($scope.admissionCode.satCode, 10) : 0,
+            'actCode': parseInt($scope.admissionCode.actCode, 10) ? parseInt($scope.admissionCode.actCode, 10) : 0
+        }
+        finalAdmissionData.push(admCode);
+        // console.log('final array recommendation', finalAdmissionData);
         editCollegeAPI.saveAdmissionDetail(finalAdmissionData)
             .then(
                 function(data) {
                     console.log('save detail finalAdmissionData====>', data);
+                    usSpinnerService.stop('spinner-1');
                 });
 
     };
 
     $scope.saveFeesAndFinancial = function() {
-        console.log('testData saveFeesAndFinancial data', $scope.feesAndFinancial);
+        usSpinnerService.spin('spinner-1');
+        // console.log('testData saveFeesAndFinancial data', $scope.feesAndFinancial);
         var finalFeesAndFinancialData = [];
 
         for (var count = 0; count < $scope.feesAndFinancial.length; count++) {
             var finalFeesAndFinancialObject = {};
+            finalFeesAndFinancialObject['collegeID'] = $rootScope.colgData['collegeId'];
             finalFeesAndFinancialObject['collegeFeesID'] = $scope.feesAndFinancial[count].collegeFeesID;
-            finalFeesAndFinancialObject['fees'] = $scope.feesAndFinancial[count].fees;
+            finalFeesAndFinancialObject['fees'] = parseInt($scope.feesAndFinancial[count].fees);
 
 
             finalFeesAndFinancialData.push(finalFeesAndFinancialObject);
         }
-        console.log('final array FeesAndFinancial', finalFeesAndFinancialData);
+        // console.log('final array FeesAndFinancial', finalFeesAndFinancialData);
 
+        var averageFees = {
+            'collegeID': $rootScope.colgData['collegeId'] ? $rootScope.colgData['collegeId'] : null,
+            'collegeFeesID': $scope.feesAndFinancial[0].collegeFeesID,
+            'averageFinancialAid': parseInt($scope.AvgFees.averageFinancialAid, 10) ? parseInt($scope.AvgFees.averageFinancialAid, 10) : 0,
+            'receivingFinancialAid': parseInt($scope.AvgFees.receivingFinancialAid, 10) ? parseInt($scope.AvgFees.receivingFinancialAid, 10) : 0
+        }
+        finalFeesAndFinancialData.push(averageFees);
         editCollegeAPI.saveFeesAndFinancialDetail(finalFeesAndFinancialData)
             .then(
                 function(data) {
-                    console.log('save detail FeesAndFinancial====>', data);
+                    // console.log('save detail FeesAndFinancial====>', data);
+                    usSpinnerService.stop('spinner-1');
                 });
 
     };
 
     $scope.saveCalendar = function() {
-        //console.log('testData Calendar data',$scope.test);
+        usSpinnerService.spin('spinner-1');
+        // console.log('testData Calendar data', $scope.test);
         var finalCalendarData = [];
 
         for (var count = 0; count < $scope.test.length; count++) {
             var finalCalendarObject = {};
+            finalCalendarObject['collegeId'] = $rootScope.colgData['collegeId'];
             finalCalendarObject['collegeCalendarId'] = $scope.test[count].collegeCalendarId;
             finalCalendarObject['eventName'] = $scope.test[count].eventName;
             finalCalendarObject['eventDate'] = $scope.test[count].eventDate;
@@ -1189,33 +1522,35 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
         }
 
         /* Custom Array from Directive */
-        var calendarEventNameArray = $scope.calendarEventNameArray;
-        var calendarEventDateArray = $scope.calendarEventDateArray;
-        for (var i = 1; i < calendarEventNameArray.length; i++) {
-            if (calendarEventNameArray[i] != undefined) {
-                var finalCalendarObject = {};
-                finalCalendarObject['collegeId'] = $rootScope.colgData['collegeId'];
-                finalCalendarObject['eventName'] = calendarEventNameArray[i];
-                finalCalendarObject['eventDate'] = calendarEventDateArray[i];
+        // var calendarEventNameArray = $scope.calendarEventNameArray;
+        // var calendarEventDateArray = $scope.calendarEventDateArray;
+        // for (var i = 1; i < calendarEventNameArray.length; i++) {
+        //     if (calendarEventNameArray[i] != undefined) {
+        //         var finalCalendarObject = {};
+        //         finalCalendarObject['collegeId'] = $rootScope.colgData['collegeId'];
+        //         finalCalendarObject['eventName'] = calendarEventNameArray[i];
+        //         finalCalendarObject['eventDate'] = calendarEventDateArray[i];
 
-                finalCalendarData.push(finalCalendarObject);
-            }
-        }
+        //         finalCalendarData.push(finalCalendarObject);
+        //     }
+        // }
 
-        console.log('final array for calendar', finalCalendarData);
+        // console.log('final array for calendar', finalCalendarData);
 
         editCollegeAPI.saveCalendarDetail(finalCalendarData)
             .then(
                 function(data) {
                     // console.log('save detail====>', data);
+                    usSpinnerService.stop('spinner-1');
                 });
 
     };
 
 
     $scope.saveWeather = function() {
-
+        usSpinnerService.spin('spinner-1');
         var finalWeatherData = {
+            'collegeId': $rootScope.colgData['collegeId'] ? $rootScope.colgData['collegeId'] : null,
             'weatherId': $scope.weatherObj.weatherId ? $scope.weatherObj.weatherId : null,
             'averageFallLowTemp': $scope.weatherObj.avgFallLowTemp ? $scope.weatherObj.avgFallLowTemp : null,
             'averageFallHighTemp': $scope.weatherObj.avgFallHighTemp ? $scope.weatherObj.avgFallHighTemp : null,
@@ -1235,15 +1570,17 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
             .then(
                 function(data) {
                     console.log('save detail weather====>', data);
+                    usSpinnerService.stop('spinner-1');
                 });
     }
 
 
 
     $scope.backCollegeList = function() {
-
+        usSpinnerService.spin('spinner-1');
         $scope.colgList = false;
         $scope.editList = true;
+        usSpinnerService.stop('spinner-1');
 
     };
     $scope.winter = function() {
@@ -1279,12 +1616,15 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
 
         $scope.menSports = false;
         $scope.womenSports = true;
+        event.target.style.backgroundColor = "#ccc";
+
     }
 
     $scope.womenSport = function() {
 
         $scope.menSports = true;
         $scope.womenSports = false;
+        event.target.style.backgroundColor = "#ccc";
     }
 
     $scope.outStates = function() {
@@ -1294,61 +1634,61 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
     }
 
     $scope.inStates = function() {
-        alert("im in instate");
+
         $scope.outState = true;
         $scope.inState = false;
     }
     $scope.deleteAns = function(count) {
-        console.log('count is', count);
+        // console.log('count is', count);
         $scope.address.splice(count, 1);
-        console.log('$scope.address ---->', $scope.address);
+        // console.log('$scope.address ---->', $scope.address);
     }
     $scope.deleteProminent = function(count) {
-        console.log('coutn is', count);
+        // console.log('coutn is', count);
         //for(counter = 0; counter < $scope.address.length; counter++) {
         //if(values.surveyAnswersID == $scope.address[counter].surveyAnswersID) {
         //  console.log('counter is',counter,$scope.address[counter].surveyAnswersID);
         $scope.prominentAlumni.splice(count, 1);
-        console.log('$scope.prominentAlumni ---->', $scope.prominentAlumni);
+        // console.log('$scope.prominentAlumni ---->', $scope.prominentAlumni);
         //}
         //}
     }
 
     $scope.deleteCollegeRanking = function(count) {
-        console.log('coutn is', count);
+        // console.log('coutn is', count);
         //for(counter = 0; counter < $scope.address.length; counter++) {
         //if(values.surveyAnswersID == $scope.address[counter].surveyAnswersID) {
         //  console.log('counter is',counter,$scope.address[counter].surveyAnswersID);
         $scope.collegeRanking.splice(count, 1);
-        console.log('$scope.collegeRanking ---->', $scope.collegeRanking);
+        // console.log('$scope.collegeRanking ---->', $scope.collegeRanking);
         //}
         //}
     };
 
     $scope.deleteAddress = function(count) {
-        console.log('coutn is', count);
+        // console.log('coutn is', count);
         //for(counter = 0; counter < $scope.address.length; counter++) {
         //if(values.surveyAnswersID == $scope.address[counter].surveyAnswersID) {
         //  console.log('counter is',counter,$scope.address[counter].surveyAnswersID);
         $scope.linkAndAddress.splice(count, 1);
-        console.log('$scope.linkAndAddress ---->', $scope.linkAndAddress);
+        // console.log('$scope.linkAndAddress ---->', $scope.linkAndAddress);
         //}
         //}
     }
 
     $scope.deleteCalendar = function(count) {
-        console.log('coutn is', count);
+        // console.log('coutn is', count);
         //for(counter = 0; counter < $scope.address.length; counter++) {
         //if(values.surveyAnswersID == $scope.address[counter].surveyAnswersID) {
         //  console.log('counter is',counter,$scope.address[counter].surveyAnswersID);
         $scope.test.splice(count, 1);
-        console.log('$scope.test ---->', $scope.test);
+        // console.log('$scope.test ---->', $scope.test);
         //}
         //}
     }
 
     $scope.changeAmount = function(ele) {
-        console.log(tempFees + '' + $scope.feesAndFinancial);
+        // console.log(tempFees + '' + $scope.feesAndFinancial);
         var sysFeesStructureID = ele.data.sysFeesStructureID;
 
         //var inStateData = [1,3,4,5,6];
@@ -1393,89 +1733,123 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
 
     //create global array of similarSchools
     $scope.similarSchoolsArray = [];
+    $scope.schoolArrayId = [];
     $scope.addSimilarSchools = function(data, event) {
-        console.log('addSimilarSchools======>', data + event);
-        //console.log($scope.similarSchoolsArray.indexOf(data.collegeId));
-        var index = $scope.similarSchoolsArray.indexOf(data.collegeId);
+        // console.log('addSimilarSchools======>', data);
+        // debugger;
+
+        if ($scope.similarSchoolsArray) {
+            $scope.similarSchoolsArray.forEach(function(item) {
+                // console.log('item',item);
+                if (item.schoolID == data.schoolID) {
+                    var nIndex = $scope.similarSchoolsArray.indexOf(item);
+                    // console.log('------true---->', nIndex);
+                    $scope.similarSchoolsArray.splice(nIndex, 1);
+                }
+            });
+        }
+
+        var index = $scope.schoolArrayId.indexOf(data.schoolID);
+
         if (index == -1) {
-            // push to array
-            $scope.similarSchoolsArray.push(data.collegeId);
-            console.log('pushing in similarSchoolsArray===> ', data.collegeId);
-            console.log('similarSchoolsArray===> ', $scope.similarSchoolsArray);
-            // background color
+            $scope.schoolArrayId.push(data.schoolID);
+            $scope.similarSchoolsArray.push({
+                'collegeName': data.collegeName,
+                'college': $rootScope.colgData.collegeId,
+                'schoolID': data.schoolID
+            });
             event.target.style.backgroundColor = "#ccc";
         } else {
-            // element to remove from array
+            $scope.schoolArrayId.splice(index, 1);
             $scope.similarSchoolsArray.splice(index, 1);
-            // background color
             event.target.style.backgroundColor = "transparent";
-
-            console.log('pop in similarSchoolsArray===> ', data.collegeId);
-            console.log('similarSchoolsArray===> ', $scope.similarSchoolsArray);
         }
+
     }
 
     $scope.similarSchoolsSelectedArray = [];
     //Right Button Clicked
 
     $scope.selectedSimilarSchools = function() {
+        // console.log('$scope.schoolArrayId = [];', $scope.schoolArrayId);
 
-        var similarSchoolsArray = $scope.similarSchoolsArray;
-        console.log('selectedSimilarSchools ======>', similarSchoolsArray);
+        var ind;
+        // console.log('similarSchoolsArray',$scope.similarSchoolsArray);
 
-        var similarSchoolColgData = $scope.similarSchoolColgData;
-
-        for (var i = 0; i < similarSchoolsArray.length; i++) {
-
-            console.log('Checking for collegeID ===> ', similarSchoolsArray[i]); // number
-
-            for (var j = 0; j < similarSchoolColgData.length; j++) {
-                //console.log(similarSchoolColgData[j].collegeId);
-                if (similarSchoolColgData[j].collegeId == similarSchoolsArray[i]) {
-                    console.log('Matched ===> ', similarSchoolColgData[j].collegeId + ' ===== ' + similarSchoolsArray[i]);
-                    console.log('Matched ===> ', similarSchoolColgData[j].collegeName + ' ===== ' + similarSchoolsArray[i]);
-                    // var obj = {};
-                    // obj.collegeId = similarSchoolsArray[i];
-                    // obj.collegeName = similarSchoolColgData[j].collegeName;
-
-                    $scope.similarSchoolsSelectedArray.push(similarSchoolColgData[j]);
-                    $scope.similarSchoolColgData.splice(j, 1);
-                }
-            };
+        if ($scope.similarSchoolsArray) {
+            $scope.similarSchoolsArray.forEach(function(item1) {
+                $scope.similerSchool.push(item1);
+                $scope.similarCollegeData = _.filter($scope.similarCollegeData, function(i) {
+                    return i.schoolID != item1.schoolID;
+                })
+            })
+            $scope.similarSchoolsArray = [];
+            $scope.schoolArrayId = [];
+            // console.log('similarSchoolsArray', $scope.similarSchoolsArray);
         }
-
-        $scope.similarSchoolsArray = [];
-    };
-    // Sed=nd this in APi call -similarSchoolsSelectedArray
-    $scope.deleteSelectedSchool = function(item) {
-        //alert('delete selected school==>'+ item.collegeId);
-
-        for (var i = 0; i < $scope.similarSchoolsSelectedArray.length; i++) {
-            if ($scope.similarSchoolsSelectedArray[i].collegeId == item.collegeId) {
-                $scope.similarSchoolsSelectedArray.splice(i, 1);
-                $scope.similarSchoolColgData.push(item);
-            }
-        };
+        console.log('origninal', $scope.similarCollegeData);
 
     };
 
     $scope.saveSimilarSchool = function() {
-        //debugger
-        //$('body').addClass('page-loader');
+            // console.log('1', $scope.similerSchool);
 
+            $scope.similerSchool = _.each($scope.similerSchool, function(item, key) {
 
-        console.log('data finally data', data);
-        editCollegeAPI.saveCollegeDetail(similarSchoolsSelectedArray)
-            .then(
-                function(data) {
-                    console.log('save detail====>', data);
-                });
-        //$('body').removeClass('page-loader');
+                if (item.schoolID) {
+                    item['similarSchoolsID'] = item.schoolID;
+                    delete item.schoolID;
+                }
 
+            });
+            // $scope.similerSchool = _.each($scope.similerSchool,function (item){
+            //     console.log('--',item);
+            // });
+
+            // console.log('new 1', $scope.similerSchool);
+
+            editCollegeAPI.saveSimilarSchoolDetail($scope.similerSchool)
+                .then(
+                    function(data) {
+                        // console.log('save detail similarschool====>', data);
+                    });
+
+        }
+        // Sed=nd this in APi call -similarSchoolsSelectedArray
+    $scope.deleteSelectedSchool = function(item) {
+        //alert('delete selected school==>'+ item.collegeId);
+        // console.log('collegeid', item);
+
+        $scope.similarCollegeData.push(item);
+        $scope.similarCollegeData = _.sortByOrder($scope.similarCollegeData, ['collegeName'], ['asc']);
+        var index = $scope.similerSchool.indexOf(item);
+        $scope.similerSchool.splice(index, 1);
+
+    };
+    $scope.selectedFilter = 'all';
+    $scope.$watch('selectedFilter', function(newValue) {
+        // console.log('new',newValue);
+        selectFilter(newValue);
+    });
+    $scope.$watch('query', function(newValue) {
+        // console.log('new',newValue);
+        // $scope.query = newValue[$scope.queryBy]
+    });
+
+    var selectFilter = function(field) {
+        // console.log('field',field);
+        if (field == 'collegeName') {
+            $scope.queryBy = 'collegeName'
+        } else if (field == 'city') {
+            $scope.queryBy = 'city';
+        } else {
+            $scope.queryBy = '$';
+        }
     }
 
+
     $scope.getNCAA1SportsData = function(data) {
-        console.log('data', data);
+        // console.log('data', data);
     }
 
 
@@ -1483,109 +1857,6 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
 }]);
 
 /*-----  End of Controller = CollegeCtrl  ------*/
-
-/*================================================================
-Controller = CoursesCtrl
-==================================================================*/
-
-app.controller('CoursesCtrl', ['$scope', 'coursesAPI', 'FileuploadAPI', function ($scope,coursesAPI,FileuploadAPI) {
-
-'use strict';
-// for tool tip
-$('[data-toggle="tooltip"]').tooltip();
-$scope.courseName = {};
-$scope.courseId = null;
-$scope.courseCount = null;
-$scope.myFile = '';
-// hide and show the side menu options
-$scope.displayAddCourse = false;
-$scope.displayUploadCourse = false;
-
-$scope.getForm = function(values) {
-	console.log('values',values);
-	if(values === 1) {
-		$scope.displayAddCourse = true;	
-		$scope.displayUploadCourse = false;
-	} else {
-		$scope.displayUploadCourse = true;
-		$scope.displayAddCourse = false;
-	}
-	$('#overlay').addClass('overlay');
-	$('#popup3').removeClass('side-menu-close').addClass('side-menu-open');
-};
-
-
-var getCourses = function () {
-	console.log('getClasses-------->');
-	$('#loading').addClass('page-loader');
-	coursesAPI.getcourseslist()
-	.then(
-		function (data) {
-          if (data !== null) {
-
-            console.log('filter infodata---->',data.length);
-            $scope.courseCount = data.length;
-            $scope.coursesdata = data;
-            $('#loading').removeClass('page-loader');
-          }
-      }
-     );
-}();
-
-// open edit list item data
-$scope.editListItem = function (listItemValue) {
-	console.log('listItemValue',listItemValue);
-	$('#overlay').addClass('overlay');
-	$('#popup3').removeClass('side-menu-close').addClass('side-menu-open');
-	if(listItemValue != null) {
-		 $scope.displayAddCourse = true;
-		 $scope.courseId = listItemValue.courseId;
-		 $scope.courseName.course = listItemValue.courseName;
-		 $scope.courseName.courseDetail = listItemValue.courseDesc;
-	}
-}
-
-//submit edited list item data
-$scope.submitEditList = function () {
-var data = 	
-	{
-		"courseId"   :$scope.courseId,
-		"courseName" : $scope.courseName.course,
-		"courseDesc" : $scope.courseName.courseDetail
-	}
-	coursesAPI.editCourseList(data)
-	.then(
-		function (data) {
-          if (data !== null) {
-            console.log('filter infodata---->',data);
-            $scope.coursesdata = data;
-          }
-      	}
-	);
-}
-
-
-$scope.uploadFile = function($files){
-    var file = $scope.myFile;
-    console.log('file is ' + JSON.stringify(file));
-    FileuploadAPI.uploadFileToUrl();
-};
-
-//hide overlay and hide side menu
-$scope.hideSideMenu = function() {
-	$('#overlay').removeClass('overlay');
-	$('#popup3').removeClass('side-menu-open').addClass('side-menu-close');
-};
-$scope.editCourse = function() {
-	$('#overlay').addClass('overlay');
-	$('#popup3').removeClass('side-menu-close').addClass('side-menu-open');
-};
-console.log('Controller ===  CoursesCtrl');
-}]);
-
-/*-----  End of Controller = CoursesCtrl  ------*/
-
-
 
 /*================================================================
 Controller = DashboardCtrl
@@ -1596,7 +1867,7 @@ app.controller('DashboardCtrl', ['$scope', '$location', '$rootScope', 'logoutAPI
 
 'use strict';
 
-	console.log('Controller ===  DashboardCtrl');
+	// console.log('Controller ===  DashboardCtrl');
 	$scope.labels = ['Download Sales', 'In-Store Sales', 'Mail-Order Sales'];
   	$scope.data = [300, 500, 100];
   	$scope.name="admin@sourcebits.com";
@@ -1653,18 +1924,18 @@ app.controller('DashboardCtrl', ['$scope', '$location', '$rootScope', 'logoutAPI
 
   	/*File Upload*/
   	$scope.onFileSelect = function($files) {
-  		console.log('$files=====>',$scope.test);
+  		// console.log('$files=====>',$scope.test);
       	var data, xhr;
       	data = new FormData();
 		data.append( 'file', $( '#file' )[0].files[0] );
-		console.log('data',data);
+		// console.log('data',data);
 		var request = new XMLHttpRequest();
 		if(data !== null) {
 		    request.open('POST', 'http://httpbin.org/post', /* async = */ false);
 		    var formData = data;
-		    console.log('formdata---->',formData);
+		    // console.log('formdata---->',formData);
 		    request.send(formData);
-		    console.log('output is---->',request.response);
+		    // console.log('output is---->',request.response);
 		}
 	};
 	/*Display side panel for home page*/
@@ -1714,7 +1985,7 @@ app.controller('editCollege', ['$scope', 'editCollegeAPI', function ($scope, edi
 'use strict';
 
 	$scope.editCollege = function(data) {
-	console.log('data is====>',data.collegeId);
+	// console.log('data is====>',data.collegeId);
 	
 
 	editCollegeAPI.adminlogin(data.collegeId)
@@ -1722,7 +1993,7 @@ app.controller('editCollege', ['$scope', 'editCollegeAPI', function ($scope, edi
     		function (data) {
     			console.log('data====>',data);
               if (data !== null) {
-                console.log('get college details',data);
+                // console.log('get college details',data);
 	          }
 
 	        }
@@ -1732,91 +2003,64 @@ app.controller('editCollege', ['$scope', 'editCollegeAPI', function ($scope, edi
 }]);
 
 /*-----  End of controller = activeMenu  ------*/
-
 /*================================================================
 =>                  Controller = Forgotpwd
 ==================================================================*/
 /*global app*/
 
-app.controller('ForgotpwdCtrl', ['$scope', 'loginAPI', 'ngProgress', function ($scope, loginAPI, ngProgress) {
-	'use strict';
-    $scope.resetPassword = { visible: false };
-	$scope.statusMsg = '';
+app.controller('ForgotpwdCtrl', ['$rootScope', '$scope', 'loginAPI', 'ngProgress', 'ngDialog', 'usSpinnerService', function($rootScope, $scope, loginAPI, ngProgress, ngDialog, usSpinnerService) {
+    'use strict';
 
-    $scope.email = { 
-        emailId : ''
+    // $scope.resetPassword = {
+    //     visible: false
+    // };
+    $scope.statusMsg = '';
+
+    $scope.email = {
+        emailId: ''
     }
     $scope.email = /^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/;
 
-    //2nd Form Data
-    $scope.newAccessPasswordModel = '';
-    $scope.newPasswordModel = '';
-    $scope.newConfirmPasswordModel = '';
-    $scope.passwordMatch = ($scope.newConfirmPasswordModel == $scope.newPasswordModel)? true : false;
-    
 
-    $scope.$watch(function () { return $scope.newPasswordModel }, changePassword);
-    $scope.$watch(function () { return $scope.newConfirmPasswordModel }, changePassword);
-
-    function changePassword(newVal, oldVal) {
-        if (newVal != '') {
-          $scope.passwordMatch = ($scope.newConfirmPasswordModel == $scope.newPasswordModel)? true : false;
-        }
-    }
-
-    /* Call Rest Password API from here and pass data  */
-    // $scope.newAccessPasswordModel = '';
-    // $scope.newPasswordModel = '';
-    // $scope.newConfirmPasswordModel = '';
-    $scope.setNewPassword = function(){
-
-    }
-
-
-	 $scope.getPassword = function(isValid) {
-
+    $scope.getPassword = function(isValid) {
         if (!isValid) { //not valid
             //$scope.formValidations1 = true;
             //$scope.statusMsg = '';
             alert('Enter Correct Credentials !!');
-        }
-        else {
-            console.log('$scope.email.emailId',$scope.email.emailId);
-            
+        } else {
+            // console.log('$scope.email.emailId', $scope.email.emailId);
+
             ngProgress.start();
             var data = {
-                            "emailID" : $scope.email.emailId
-                        }
+                "emailId": $scope.email.emailId
+            }
 
             loginAPI.fgtPwd(data).then(
-                function (data) {
+                function(data) {
                     if (data) {
-                        console.log('success',data);
+                        // console.log('success', data);
                         //console.log('success',data.statusMsg); not passing status message only passing string
-                    //$location.url('/dashboard/home');
-                    if(data == "Email doesn't Exixts") {
-                        $scope.statusMsg = 'Email Address That you Entered is invalid';
-                    } else {
-                    	$scope.statusMsg = 'Reset Password Link Sent to your Email Address';
-                        $scope.resetPassword.visible   = true; 
-                    }
-                    ngProgress.complete();
-                    };             
+                        //$location.url('/dashboard/home');
+                        if (data == "Email doesn't Exixts") {
+                            $scope.statusMsg = 'Email Address That you Entered is invalid';
+                        } else {
+                            $scope.statusMsg = 'Reset Password Link Sent to your Email Address';
+                            //$scope.resetPassword.visible = true;
+                        }
+                        ngProgress.complete();
+                    };
                 },
-	            function (err) {
-					console.log('err',err);
-				});
+                function(err) {
+                    console.log('err', err);
+                });
         }
     };
-	console.log('Controller ===  ForgotpwdCtrl');
-   
+    // console.log('Controller ===  ForgotpwdCtrl');
+
 }]);
 
 
 /*-----  End of Controller = Forgotpwd  ------*/
-
-
-
 
 /*================================================================
 Controller = HomeCtrl
@@ -1838,12 +2082,12 @@ app.controller('HomeCtrl', ['$scope', '$location', 'DashboardAPI', '$rootScope',
 		DashboardAPI.getdashboardlist()
 		.then(
 			function (data) {
-				console.log(data)
+				// console.log(data)
 	          if (data !== null) {
 	            $scope.dashboarddata = data;
 	            $scope.name = $.cookie('name');
-	            console.log('=====>',$.cookie('name'));
-	            console.log('values',$scope.dashboarddata);
+	            // console.log('=====>',$.cookie('name'));
+	            // console.log('values',$scope.dashboarddata);
 	          //  $('#loading').removeClass('page-loader');
 	          }
 	        }
@@ -1860,68 +2104,19 @@ app.controller('HomeCtrl', ['$scope', '$location', 'DashboardAPI', '$rootScope',
 
 
 /*================================================================
-Controller = LcCtrl
-==================================================================*/
-
-app.controller('LcCtrl', ['$scope', 'LearninglistAPI', function ($scope, LearninglistAPI) {
-	'use strict';
-
-	var getlearningcircle = function () {
-		$('#loading').addClass('page-loader');
-		LearninglistAPI.getLearninglist ()
-		.then(
-			function (data){
-				if(data !== null){
-					console.log('lc data',data);
-					$scope.learningcircle = data;
-					$scope.noOfLc = data.length;
-					$('#loading').removeClass('page-loader');
-				}
-			}
-		);
-	}();
-
-
-
-
-	$scope.getForm = function() {
-		$('#overlay').addClass('overlay');
-		$('#popup6').removeClass('side-menu-close').addClass('side-menu-open');
-	};
-
-	//hide overlay and hide side menu
-	$scope.hideSideMenu = function() {
-		$('#overlay').removeClass('overlay');
-		$('#popup6').removeClass('side-menu-open').addClass('side-menu-close');
-	};
-
-
-	$scope.editLearning = function() {
-		$('#overlay').addClass('overlay');
-		$('#popup6').removeClass('side-menu-close').addClass('side-menu-open');
-	};
-
-	console.log('Controller ===  LcCtrl');
-}]);
-
-/*-----  End of Controller = LcCtrl  ------*/
-
-
-
-/*================================================================
 Controller = LoginCtrl
 ==================================================================*/
 
-app.controller('LoginCtrl', ['$scope', '$rootScope', '$location', 'loginAPI', 'MasterAPI', 'ngProgress', function ($scope, $rootScope, $location, loginAPI, MasterAPI, ngProgress) {
+app.controller('LoginCtrl', ['$scope', '$rootScope', '$location', 'loginAPI', 'MasterAPI', 'ngProgress', 'usSpinnerService', function ($scope, $rootScope, $location, loginAPI, MasterAPI, ngProgress, usSpinnerService) {
     'use strict';
-    console.log('Controller ===  LoginCtrl');
+    // console.log('Controller ===  LoginCtrl');
     $scope.class_status = 0;
     $rootScope.isSuperAdmin = false;
     $rootScope.isAdmin = false;
     $scope.submitForm = function() {
         if ($scope.user != null) {
             $rootScope.userName = $scope.user.userName;
-            $.cookie('name', $rootScope.userName);
+            // $.cookie('name', $rootScope.userName);
         }
         // console.log('$scope.user',$rootScope.userName);
         //Login API
@@ -1929,7 +2124,9 @@ app.controller('LoginCtrl', ['$scope', '$rootScope', '$location', 'loginAPI', 'M
             $scope.formValidations = true;
         }
         else {
-            ngProgress.start();
+            // ngProgress.start();
+            //debugger;
+            usSpinnerService.spin('spinner-1');
             loginAPI.adminlogin($scope.user)
             .then(function (data) {
                // console.log('stipend login data====>',data);
@@ -1939,9 +2136,17 @@ app.controller('LoginCtrl', ['$scope', '$rootScope', '$location', 'loginAPI', 'M
                 } else {
                    // console.log('data after login',data);
                     // MasterAPI Start
+                    // localStorage.setItem('userId',data.adminID);
+
+                    // $rootScope.userEmailId = data.emailID;
+
+                    $.cookie('NAME',data.firstName);
+                    $.cookie('EMAIL',data.emailID);
+                    $rootScope.userFirstName = $.cookie('NAME');
+                    $rootScope.userEmailId = $.cookie('EMAIL');
                     MasterAPI.getdropdowndata()
                     .then(function (data) {
-                        console.log('data master API Success====>',data);
+                        // console.log('data master API Success====>',data);
                          //var test = JSON.stringify(data);
                         //$.cookie('dropDownData',test);
                     $rootScope.dropDownData = data;
@@ -1955,6 +2160,7 @@ app.controller('LoginCtrl', ['$scope', '$rootScope', '$location', 'loginAPI', 'M
                 //$scope.loginFailed = 'Server is Down';     
                 console.log('error');
             });
+        usSpinnerService.stop('spinner-1');
         }
     };
 
@@ -1975,11 +2181,15 @@ app.controller('LoginCtrl', ['$scope', '$rootScope', '$location', 'loginAPI', 'M
 Controller = MainCtrl
 ==================================================================*/
 
-app.controller('MainCtrl', ['$scope', '$location', 'MasterAPI', '$rootScope', function ($scope, $location, MasterAPI, $rootScope) {
+app.controller('MainCtrl', ['$scope', '$location', 'MasterAPI', '$rootScope', '$state', function ($scope, $location, MasterAPI, $rootScope, $state) {
 'use strict';
 
-	console.log('Controller ===  MainCtrl');
+	// console.log('Controller ===  MainCtrl');
 	$rootScope.dropDownData = '';
+
+    console.log('statee-e----e-e---',$location.url());
+    if (!$location.url().match('resetPassword')) {
+        // console.log('true');
 	 MasterAPI.getdropdowndata()
                     .then(function (data) {
                         console.log('data master API Success====>',data);
@@ -1987,31 +2197,39 @@ app.controller('MainCtrl', ['$scope', '$location', 'MasterAPI', '$rootScope', fu
                         //$.cookie('dropDownData',test);
                     $rootScope.dropDownData = data;
                     $rootScope.colgType = data['SysCollegetype'];
-                    console.log('$rootScope.colgType',$rootScope.colgType);
+                    // console.log('$rootScope.colgType',$rootScope.colgType);
                     $rootScope.colgArea = data['SysCollegeArea'];
-                    console.log('$rootScope.colgArea',$rootScope.colgArea);
+                    // console.log('$rootScope.colgArea',$rootScope.colgArea);
                     $rootScope.accessType = data['SysAccessType'];
-                    console.log('$rootScope.accessType',$rootScope.accessType);
+                    // console.log('$rootScope.accessType',$rootScope.accessType);
                     $rootScope.admissionVal = data['SysAdmissionOptionValue'];
-                    console.log('$rootScope.admissionVal',$rootScope.admissionVal);
+                    // console.log('$rootScope.admissionVal',$rootScope.admissionVal);
                     $rootScope.admissionBadge = data['SysAdmissionBadge'];
-                    console.log('$rootScope.admissionBadge',$rootScope.admissionBadge);
+                    // console.log('$rootScope.admissionBadge',$rootScope.admissionBadge);
                     $rootScope.sysSports = data['SysSports'];
                     $rootScope.sysSports2 = angular.copy(data['SysSports']);
                     $rootScope.sysSports3 = angular.copy(data['SysSports']);
                     $rootScope.sysSports4 = angular.copy(data['SysSports']);
                     $rootScope.sysSports5 = angular.copy(data['SysSports']);
                     $rootScope.sysSports6 = angular.copy(data['SysSports']);
+                    $rootScope.sportsDivisions = data.SysSportsDivision;
+                    $rootScope.sportsDivisions.forEach(function (item) {
+                        item['divisionName'] = item.sysSportsDivisionName.split(' ').join('');
+                    })
+                    // console.log('$rootScope.sysSports ',$rootScope.sysSports) ;
+                    $rootScope.userFirstName = $.cookie('NAME');
+                    $rootScope.userEmailId = $.cookie('EMAIL');
 
-                    console.log('$rootScope.sysSports',$rootScope.sysSports);
 
                     });
-  $scope.labelsOfGraph =["Eating", "Drinking", "Sleeping", "Designing", "Coding", "Cycling", "Running"];
+    }
+    // }
+ 
 
-  $scope.dataOfGraph = [
-    [65, 59, 90, 81, 56, 55, 40],
-    [28, 48, 40, 19, 96, 27, 100]
-  ];
+  $scope.logout = function() {
+    $.removeCookie('NAME');
+    location.href = '/';
+  }
 	// $scope.getPage = function(values) {
 	// 	console.log('values is ',values);
 	// 	switch(values){
@@ -2037,30 +2255,52 @@ app.directive('activeMenu', ['$rootScope', function ($rootScope) {
 	return {
 		restrict: 'A',
 		link: function (scope, element, attrs) {
-			$(element).on('click', function () {
-				//debugger;
-				// $(element).siblings().removeClass('active_menu');
-				// $(element).addClass('active_menu');
-				var prevClassName = $(element).siblings().find('li.active_menu>div').attr('class');
-				//$(element).siblings().find('li.active_menu>div').removeClass(prevClassName+'-active').addClass(currentClass);
-				$(element).siblings().find('li').removeClass('active_menu');
-				$(element).find('li').addClass('active_menu');
-				//var prevClassName = $(element).find('li>div').attr('class');
-				console.log('currentClassName -->', currentClassName);
-				var checkImageStatus = currentClassName.search("-active");
-				
-				console.log('prevClassName',prevClassName);
-				//$(element).siblings().find('li>div').
-				//debugger;
-				if(checkImageStatus == -1) {
-					$(element).find('div').removeClass(currentClassName).addClass(currentClassName+'-active');
-				} else {
-					var currentClass = currentClassName.substr(0,checkImageStatus);
-					
-				}
-				
+			var popupStatus = 0;
 
-			});
+
+    $(".Login_PopUp_Link").click(function() {
+
+        //Aligning our box in the middle
+        var windowWidth = document.documentElement.clientWidth;
+        var windowHeight = document.documentElement.clientHeight;
+        var popupHeight = $("#popupLogin").height();
+        var popupWidth = $("#popupLogin").width();
+        //centering
+        $("#popupLogin").css({
+            "position": "absolute",
+            "top": windowHeight / 2 - popupHeight / 2,
+            "left": windowWidth / 2 - popupWidth / 2
+        });
+
+        //aligning our full bg 
+        $("#LoginBackgroundPopup").css({
+            "height": windowHeight
+        });
+
+
+        // Pop up the div and Bg
+        if (popupStatus == 0) {
+            $("#LoginBackgroundPopup").css({
+                "opacity": "0.7"
+            });
+            $("#LoginBackgroundPopup").fadeIn("slow");
+            $("#popupLogin").fadeIn("slow");
+            popupStatus = 1;
+        }
+
+
+    });
+
+
+    //Close Them
+    $("#popupLoginClose").click(function() {
+        if (popupStatus == 1) {
+            $("#LoginBackgroundPopup").fadeOut("slow");
+            $("#popupLogin").fadeOut("slow");
+            popupStatus = 0;
+        }
+    });
+
 		}
 	};
 
@@ -2143,7 +2383,7 @@ app.directive('addAnswer', ['$rootScope', '$compile', function($rootScope, $comp
     		});*/
 
             $('div').on('click', '.test', function($event) {
-                console.log('$event', $event);
+                // console.log('$event', $event);
                 // $event.preventDefault();
                 //  $(this).parent().prev().prev().remove();
                 //  $(this).parent().prev().remove();
@@ -2152,7 +2392,7 @@ app.directive('addAnswer', ['$rootScope', '$compile', function($rootScope, $comp
 
 
 
-            console.log('Directive === addAnswer');
+            // console.log('Directive === addAnswer');
         }
     };
 
@@ -2195,7 +2435,7 @@ app.directive('addCalendar', ['$rootScope', '$compile', function($rootScope, $co
 
 
             $('div').on('click', '.test', function($event) {
-                console.log('$event', $event);
+                // console.log('$event', $event);
                 // $event.preventDefault();
                 //  $(this).parent().prev().prev().remove();
                 //  $(this).parent().prev().remove();
@@ -2204,7 +2444,7 @@ app.directive('addCalendar', ['$rootScope', '$compile', function($rootScope, $co
 
 
 
-            console.log('Directive === addCalendar');
+            // console.log('Directive === addCalendar');
         }
     };
 
@@ -2279,7 +2519,7 @@ app.directive('addProminent', ['$rootScope', '$compile', function($rootScope, $c
             });
 
             $('div').on('click', '.test', function($event) {
-                console.log('$event', $event);
+                // console.log('$event', $event);
                 // $event.preventDefault();
                 //  $(this).parent().prev().prev().remove();
                 //  $(this).parent().prev().remove();
@@ -2288,13 +2528,38 @@ app.directive('addProminent', ['$rootScope', '$compile', function($rootScope, $c
 
 
 
-            console.log('Directive === addProminent');
+            // console.log('Directive === addProminent');
         }
     };
 
 }]);
 
 /*-----  End of Directive = addProminent  ------*/
+
+app.directive('afterRepeatDirective', ['$rootScope', function($rootScope) {
+    'use strict';
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs) {
+            if (scope.$last) {
+                // iteration is complete, do whatever post-processing is necessary
+                //element.parent().css('border', '1px solid black');
+                // var objIntendedStudyOption = scope.$parent.intendedStudyOption;
+                // for (var i = 0; i < objIntendedStudyOption.length; i++) {
+                //     var obj = objIntendedStudyOption[i];
+                //     var ele = obj.sysIntendedStudyOptionName.slice(0,-1).split(' ').join('');
+                //     debugger;
+                //     //console.log(obj.sysIntendedStudyOptionName);
+                //     $('#'+ele).bootstrapToggle();
+                //     console.log(document.getElementById(ele));//.bootstrapToggle();
+                // }
+                //element.bootstrapToggle();
+                scope.$evalAsync(attrs.afterRepeatDirective);
+                //scope.$parent.intendedStudyOption[0].sysIntendedStudyOptionName
+            }
+        }
+    };
+}]);
 
 // /*================================================================
 // Directive = datepicker
@@ -2376,9 +2641,10 @@ app.directive('editcollege', ['$rootScope', function ($rootScope) {
 			    });
 			  })();
 			
-			console.log('Directive === edit_college');
+			// console.log('Directive === edit_college');
 			$(function() {
 			    $( "#tabs" ).tabs();
+			    $( "#tabs_sports" ).tabs();
 			  });
 		}
 
@@ -2404,6 +2670,48 @@ app.directive('fileModel', ['$parse', function ($parse) {
         }
     };
 }]);
+app.directive('ngEnter', function () {
+    return function (scope, element, attrs) {
+        element.bind("keydown keypress", function (event) {
+            if(event.which === 13) {
+                scope.$apply(function (){
+                    scope.$eval(attrs.ngEnter);
+                });
+ 
+                event.preventDefault();
+            }
+        });
+    };
+});
+/*================================================================
+Directive = afterRepeatDirective
+==================================================================*/
+/*global app,$*/
+app.directive('afterRepeatDirective', ['$rootScope', function($rootScope) {
+    'use strict';
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs) {
+            if (scope.$last) {
+                // iteration is complete, do whatever post-processing is necessary
+                //element.parent().css('border', '1px solid black');
+                // var objIntendedStudyOption = scope.$parent.intendedStudyOption;
+                // for (var i = 0; i < objIntendedStudyOption.length; i++) {
+                // var obj = objIntendedStudyOption[i];
+                // var ele = obj.sysIntendedStudyOptionName.slice(0,-1).split(' ').join('');
+                // debugger;
+                // //console.log(obj.sysIntendedStudyOptionName);
+                // $('#'+ele).bootstrapToggle();
+                // console.log(document.getElementById(ele));//.bootstrapToggle();
+                // }
+                //element.bootstrapToggle();
+                scope.$evalAsync(attrs.afterRepeatDirective);
+                //scope.$parent.intendedStudyOption[0].sysIntendedStudyOptionName
+            }
+        }
+    };
+}]);
+/*-----  End of Directive = afterRepeatDirective  ------*/
 /*================================================================
 Filter = convertMiliSecondsIntoDate
 ==================================================================*/
@@ -2453,6 +2761,30 @@ app.filter('convertMiliSecondsIntoDate1', function () {
 /*-----  End of Filter = convertMiliSecondsIntoDate  ------*/
 
 /*================================================================
+=>                   Filter = genderFilter
+==================================================================*/
+/*global app*/
+
+app.filter('genderFilter', function () {
+	
+	'use strict';
+
+	return function (data) {
+		//var dateDiff = 0;
+		// console.log('data',data);
+		if (data == 1) {
+			return 'male';
+		}else if (data == 2) {
+			return 'female';
+		} else {
+			return data;
+		}
+	};
+});
+
+
+/*-----  End of Filter = genderFilter  ------*/
+/*================================================================
 =>                   Filter = remainingTime
 ==================================================================*/
 /*global app*/
@@ -2481,6 +2813,39 @@ app.filter('remainingTime', function () {
 
 
 /*-----  End of Filter = remainingTime  ------*/
+/*================================================================
+=>                   Filter = userTypeFilter
+==================================================================*/
+/*global app*/
+
+app.filter('userTypeFilter', function() {
+
+    'use strict';
+
+    return function(data) {
+        //var dateDiff = 0;
+        // console.log('data', data);
+        if (data == 1) {
+            return 'Freshman';
+        } else if (data == 2) {
+            return 'Sophomore';
+        } else if (data == 3) {
+            return 'Junior';
+        } else if (data == 4) {
+            return 'Senior';
+        } else if (data == 5) {
+            return 'Parent';
+        } else if (data == 6) {
+            return 'Counselor';
+        }else {
+            return data;
+        }
+    };
+});
+
+
+/*-----  End of Filter = userTypeFilter  ------*/
+
 /*!
  * jQuery Cookie Plugin v1.4.1
  * https://github.com/carhartl/jquery-cookie
@@ -2601,26 +2966,75 @@ app.filter('remainingTime', function () {
 ==================================================================*/
 /*global app, $http*/
 
-app.service('CollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', function ($rootScope, $q, appConfig, $http) {
+app.service('CollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', 'ngDialog','usSpinnerService', function ($rootScope, $q, appConfig, $http, ngDialog, usSpinnerService) {
 
 	'use strict';
 
-	this.getcollegelist = function () {
+	this.getcollegelist = function (page) {
 
 		var deferred = $q.defer();
-		var serviceUrl = appConfig.baseURL + '/listOfColleges';
+		var serviceUrl = appConfig.baseURL + '/getCollegesInPages/'+page.off+'/'+page.size;
 	
 		$http.get(serviceUrl)
 			.success(function (data) {
 				deferred.resolve(data);
 			})
 			.error(function (err) {
-				alert('Unable to load list of colleges..');
+				// alert('Unable to load list of colleges..');
+				ngDialog.open({
+                template: '<p>Unable to load list of colleges..</p>',
+                plain: true
+            });
 				deferred.reject(err);
 			});
 
 		return deferred.promise;
 	};
+
+	this.getSimilarSchoollist = function (page) {
+
+		var deferred = $q.defer();
+		var serviceUrl = appConfig.baseURL + '/getCollegesInPages/'+page.off+'/'+page.size;
+	
+		$http.get(serviceUrl)
+			.success(function (data) {
+				deferred.resolve(data);
+			})
+			.error(function (err) {
+				// alert('Unable to load list of similar school colleges..');
+				ngDialog.open({
+                template: '<p>Unable to load list of similar school colleges..</p>',
+                plain: true
+            });
+				deferred.reject(err);
+			});
+
+		return deferred.promise;
+	};
+
+	this.getUserslist = function (page) {
+		console.log('page',page)
+
+		var deferred = $q.defer();
+		var serviceUrl = appConfig.baseURL + '/usersList/'+page.off+'/'+page.size;
+	
+		$http.get(serviceUrl)
+			.success(function (data) {
+				deferred.resolve(data);
+			})
+			.error(function (err) {
+				// alert('Unable to load list of Users..');
+				ngDialog.open({
+                template: '<p>Unable to load list of Users..</p>',
+                plain: true
+            });
+				deferred.reject(err);
+			});
+
+		return deferred.promise;
+	};
+
+	
 
 }]);
 
@@ -2667,7 +3081,7 @@ app.service('DashboardAPI', ['$rootScope', '$q', 'appConfig', '$http', function 
 ==================================================================*/
 /*global app, $http*/
 
-app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', function($rootScope, $q, appConfig, $http) {
+app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', 'ngDialog', 'usSpinnerService', function($rootScope, $q, appConfig, $http, ngDialog, usSpinnerService) {
 
     'use strict';
 
@@ -2681,11 +3095,40 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', functio
                 deferred.resolve(data);
             })
             .error(function(err) {
+                ngDialog.open({
+                    template: '<p>Connection Error..</p>',
+                    plain: true
+                });
                 deferred.reject(err);
             });
 
         return deferred.promise;
     };
+
+    this.deleteUserList = function(data) {
+
+        var deferred = $q.defer();
+        var serviceUrl = appConfig.baseURL + '/deleteUser';
+
+        $http.post(serviceUrl, data)
+            .success(function(data) {
+                ngDialog.open({
+                    template: '<p>User deleteted successfully</p>',
+                    plain: true
+                });
+                deferred.resolve(data);
+            })
+            .error(function(err) {
+                ngDialog.open({
+                    template: '<p>Connection Error..</p>',
+                    plain: true
+                });
+                deferred.reject(err);
+            });
+
+        return deferred.promise;
+    };
+
 
     this.saveCollegeDetail = function(data) {
 
@@ -2694,16 +3137,93 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', functio
 
         $http.post(serviceUrl, data)
             .success(function(data) {
-                alert('College Details Uploaded Successfully');
+                ngDialog.open({
+                    template: '<p>College Details Uploaded Successfully.</p>',
+                    plain: true
+                });
+                // alert('College Details Uploaded Successfully');
                 deferred.resolve(data);
             })
             .error(function(err) {
-                alert('College Details Failed to Upload');
+                ngDialog.open({
+                    template: '<p>College Details Failed to Upload.</p>',
+                    plain: true
+                });
+                // alert('College Details Failed to Upload');
                 deferred.reject(err);
             });
 
         return deferred.promise;
     };
+
+    this.addCollegeDetail = function(data) {
+
+        var deferred = $q.defer();
+        var serviceUrl = appConfig.baseURL + '/registerCollege';
+
+        $http.post(serviceUrl, data)
+            .success(function(data) {
+                ngDialog.open({
+                    template: '<p>College Details Uploaded Successfully.</p>',
+                    plain: true
+                });
+                // alert('College Details Uploaded Successfully');
+                deferred.resolve(data);
+            })
+            .error(function(err) {
+                ngDialog.open({
+                    template: '<p>College Details Failed to Upload.</p>',
+                    plain: true
+                });
+                // alert('College Details Failed to Upload');
+                deferred.reject(err);
+            });
+
+        return deferred.promise;
+    };
+
+
+    this.searchCollegeDetail = function(data) {
+
+        var deferred = $q.defer();
+        var serviceUrl = appConfig.baseURL + '/searchCollege';
+        console.log('DATA', data);
+        $http.post(serviceUrl, data)
+            .success(function(data) {
+
+                // alert('College Details Uploaded Successfully');
+                deferred.resolve(data);
+            })
+            .error(function(err) {
+
+                // alert('College Details Failed to Upload');
+                deferred.reject(err);
+            });
+
+        return deferred.promise;
+    };
+
+    this.searchUserDetail = function(data) {
+
+        var deferred = $q.defer();
+        var serviceUrl = appConfig.baseURL + '/searchUsers';
+        console.log('DATA', data);
+        $http.post(serviceUrl, data)
+            .success(function(data) {
+
+                // alert('College Details Uploaded Successfully');
+                deferred.resolve(data);
+            })
+            .error(function(err) {
+
+                // alert('College Details Failed to Upload');
+                deferred.reject(err);
+            });
+
+        return deferred.promise;
+    };
+
+    
 
     this.saveFreshmanDetail = function(data) {
 
@@ -2713,12 +3233,20 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', functio
         $http.post(serviceUrl, data)
 
         .success(function(data) {
-                alert('Freshman Details Uploaded Successfully');
+                ngDialog.open({
+                    template: '<p>Freshman Details Uploaded Successfully.</p>',
+                    plain: true
+                });
+                // alert('Freshman Details Uploaded Successfully');
                 console.log('Freshman save data=======>', data)
                 deferred.resolve(data);
             })
             .error(function(err) {
-                alert('Freshman Details Failed to Upload');
+                ngDialog.open({
+                    template: '<p>Freshman Details Failed to Upload.</p>',
+                    plain: true
+                });
+                // alert('Freshman Details Failed to Upload');
                 deferred.reject(err);
             });
 
@@ -2733,11 +3261,19 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', functio
         $http.post(serviceUrl, data)
 
         .success(function(data) {
+                // ngDialog.open({
+                //     template: '<p>Geographic Details Uploaded Successfully.</p>',
+                //     plain: true
+                //     });
                 //alert('Geographic Details Uploaded Successfully');
                 console.log('geographics save data=======>', data)
                 deferred.resolve(data);
             })
             .error(function(err) {
+                //  ngDialog.open({
+                // template: '<p>Geographic Details Uploaded Successfully.</p>',
+                // plain: true
+                // });
                 //alert('Geographic Details Failed to Upload');
                 deferred.reject(err);
             });
@@ -2763,6 +3299,24 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', functio
         return deferred.promise;
     };
 
+    this.saveMostRepStateDetail = function(data) {
+
+        var deferred = $q.defer();
+        var serviceUrl = appConfig.baseURL + '/saveOrUpdateStates';
+
+        $http.post(serviceUrl, data)
+
+        .success(function(data) {
+                console.log('Most Represented States save data=======>', data)
+                deferred.resolve(data);
+            })
+            .error(function(err) {
+                deferred.reject(err);
+            });
+
+        return deferred.promise;
+    };
+
     this.saveCalendarDetail = function(data) {
 
         var deferred = $q.defer();
@@ -2770,13 +3324,21 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', functio
 
         $http.post(serviceUrl, data)
             .success(function(data) {
-                alert('Calendar Details Uploaded Successfully');
+                ngDialog.open({
+                    template: '<p>Calendar Details Uploaded Successfully.</p>',
+                    plain: true
+                });
+                // alert('Calendar Details Uploaded Successfully');
                 console.log('Calendar save data=======>', data)
 
                 deferred.resolve(data);
             })
             .error(function(err) {
-                alert('Calendar Details Failed to Upload');
+                ngDialog.open({
+                    template: '<p>Calendar Details Failed to Upload.</p>',
+                    plain: true
+                });
+                // alert('Calendar Details Failed to Upload');
                 deferred.reject(err);
             });
 
@@ -2791,12 +3353,20 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', functio
         $http.post(serviceUrl, data)
             .success(function(data) {
                 console.log('sucess weather', data);
-                alert('Weather Details Uploaded Successfully');
+                ngDialog.open({
+                    template: '<p>Weather Details Uploaded Successfully.</p>',
+                    plain: true
+                });
+                // alert('Weather Details Uploaded Successfully');
                 deferred.resolve(data);
             })
             .error(function(err) {
                 console.log('error');
-                alert('Weather Details Failed to Upload');
+                ngDialog.open({
+                    template: '<p>Weather Details Failed to Upload.</p>',
+                    plain: true
+                });
+                // alert('Weather Details Failed to Upload');
                 deferred.reject(err);
             });
         console.log('promise');
@@ -2811,12 +3381,20 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', functio
         $http.post(serviceUrl, data)
             .success(function(data) {
                 console.log('sucess saveProminentAlumniDetail', data);
-                alert('Prominent Alumni Details Uploaded Successfully');
+                ngDialog.open({
+                    template: '<p>Prominent Alumni Details Uploaded Successfully.</p>',
+                    plain: true
+                });
+                // alert('Prominent Alumni Details Uploaded Successfully');
                 deferred.resolve(data);
             })
             .error(function(err) {
                 console.log('error');
-                alert('Prominent Alumni Details Failed to Upload');
+                ngDialog.open({
+                    template: '<p>Prominent Alumni Details Failed to Upload.</p>',
+                    plain: true
+                });
+                // alert('Prominent Alumni Details Failed to Upload');
                 deferred.reject(err);
             });
         console.log('promise');
@@ -2831,12 +3409,20 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', functio
         $http.post(serviceUrl, data)
             .success(function(data) {
                 console.log('sucess college ranking', data);
-                alert('College Ranking Details Uploaded Successfully');
+                ngDialog.open({
+                    template: '<p>College Ranking Details Uploaded Successfully.</p>',
+                    plain: true
+                });
+                // alert('College Ranking Details Uploaded Successfully');
                 deferred.resolve(data);
             })
             .error(function(err) {
                 console.log('error');
-                alert('College Ranking Details Failed to Upload');
+                ngDialog.open({
+                    template: '<p>College Ranking Details Failed to Upload.</p>',
+                    plain: true
+                });
+                // alert('College Ranking Details Failed to Upload');
                 deferred.reject(err);
             });
         console.log('promise');
@@ -2851,17 +3437,54 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', functio
         $http.post(serviceUrl, data)
             .success(function(data) {
                 console.log('sucess intended Study', data);
-                alert('Intended Study Details Uploaded Successfully');
+                ngDialog.open({
+                    template: '<p>Intended Study Details Uploaded Successfully.</p>',
+                    plain: true
+                });
+                // alert('Intended Study Details Uploaded Successfully');
                 deferred.resolve(data);
             })
             .error(function(err) {
                 console.log('error');
-                alert('Intended Study Details Failed to Upload');
+                ngDialog.open({
+                    template: '<p>Intended Study Details Failed to Upload.</p>',
+                    plain: true
+                });
+                // alert('Intended Study Details Failed to Upload');
                 deferred.reject(err);
             });
         console.log('promise');
         return deferred.promise;
     };
+
+    this.saveIntendedStudyOptionDetail = function(data) {
+
+        var deferred = $q.defer();
+        var serviceUrl = appConfig.baseURL + '/addCollegeIntendedStudyOption';
+
+        $http.post(serviceUrl, data)
+            .success(function(data) {
+                console.log('sucess intended Study', data);
+                // ngDialog.open({
+                // template: '<p>Intended Study Details Uploaded Successfully.</p>',
+                // plain: true
+                // });
+                // alert('Intended Study Details Uploaded Successfully');
+                deferred.resolve(data);
+            })
+            .error(function(err) {
+                console.log('error');
+                // ngDialog.open({
+                // template: '<p>Intended Study Details Failed to Upload.</p>',
+                // plain: true
+                // });
+                // alert('Intended Study Details Failed to Upload');
+                deferred.reject(err);
+            });
+        console.log('promise');
+        return deferred.promise;
+    };
+
     this.saveQuickFactsDetail = function(data) {
 
         var deferred = $q.defer();
@@ -2870,12 +3493,20 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', functio
         $http.post(serviceUrl, data)
             .success(function(data) {
                 console.log('sucess addQuickFactsForWeb', data);
-                alert('Quick Facts Details Uploaded Successfully');
+                ngDialog.open({
+                    template: '<p>Quick Facts Details Uploaded Successfully.</p>',
+                    plain: true
+                });
+                // alert('Quick Facts Details Uploaded Successfully');
                 deferred.resolve(data);
             })
             .error(function(err) {
                 console.log('error');
-                alert('Quick Facts Details Failed to Upload');
+                ngDialog.open({
+                    template: '<p>Quick Facts Details Failed to Upload.</p>',
+                    plain: true
+                });
+                // alert('Quick Facts Details Failed to Upload');
                 deferred.reject(err);
             });
         console.log('promise');
@@ -2890,12 +3521,20 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', functio
         $http.post(serviceUrl, data)
             .success(function(data) {
                 console.log('sucess aaddCollegeAddressForWeb', data);
-                alert('Link And Address Details Uploaded Successfully');
+                ngDialog.open({
+                    template: '<p>Link And Address Details Uploaded Successfully.</p>',
+                    plain: true
+                });
+                // alert('Link And Address Details Uploaded Successfully');
                 deferred.resolve(data);
             })
             .error(function(err) {
                 console.log('error');
-                alert('Link And Address Details Failed to Upload');
+                ngDialog.open({
+                    template: '<p>Link And Address Details Failed to Upload.</p>',
+                    plain: true
+                });
+                // alert('Link And Address Details Failed to Upload');
                 deferred.reject(err);
             });
         console.log('promise');
@@ -2910,12 +3549,20 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', functio
         $http.post(serviceUrl, data)
             .success(function(data) {
                 console.log('sucess aaddCollegeAddressForWeb', data);
-                alert('Fees And Financial Details Uploaded Successfully');
+                ngDialog.open({
+                    template: '<p>Fees And Financial Details Uploaded Successfully.</p>',
+                    plain: true
+                });
+                // alert('Fees And Financial Details Uploaded Successfully');
                 deferred.resolve(data);
             })
             .error(function(err) {
                 console.log('error');
-                alert('Fees And Financial Details Failed to Upload');
+                ngDialog.open({
+                    template: '<p>Fees And Financial Details Failed to Upload.</p>',
+                    plain: true
+                });
+                // alert('Fees And Financial Details Failed to Upload');
                 deferred.reject(err);
             });
         console.log('promise');
@@ -2930,39 +3577,55 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', functio
         $http.post(serviceUrl, data)
             .success(function(data) {
                 console.log('sucess updateAdmissionOptionForWeb', data);
-                alert('Admissions Details Uploaded Successfully');
+                ngDialog.open({
+                    template: '<p>Admissions Details Uploaded Successfully.</p>',
+                    plain: true
+                });
+                // alert('Admissions Details Uploaded Successfully');
                 deferred.resolve(data);
             })
             .error(function(err) {
                 console.log('error');
-                alert('Admissions Details Failed to Upload');
+                ngDialog.open({
+                    template: '<p>Admissions Details Failed to Upload.</p>',
+                    plain: true
+                });
+                // alert('Admissions Details Failed to Upload');
                 deferred.reject(err);
             });
         console.log('promise');
         return deferred.promise;
     };
 
-     this.saveSimilarSchoolDetail = function(data) {
+    this.saveSimilarSchoolDetail = function(data) {
 
         var deferred = $q.defer();
-        var serviceUrl = appConfig.baseURL + '/updateAdmissionOptionForWeb';
+        var serviceUrl = appConfig.baseURL + '/addSimilarSchools';
 
         $http.post(serviceUrl, data)
             .success(function(data) {
-                console.log('sucess updateAdmissionOptionForWeb', data);
-                alert('Admissions Details Uploaded Successfully');
+                console.log('sucess addSimilarSchools', data);
+                ngDialog.open({
+                    template: '<p>Similar School Details Uploaded Successfully.</p>',
+                    plain: true
+                });
+                // alert('Admissions Details Uploaded Successfully');
                 deferred.resolve(data);
             })
             .error(function(err) {
                 console.log('error');
-                alert('Admissions Details Failed to Upload');
+                ngDialog.open({
+                    template: '<p>Similar School Details Failed to Upload.</p>',
+                    plain: true
+                });
+                // alert('Admissions Details Failed to Upload');
                 deferred.reject(err);
             });
         console.log('promise');
         return deferred.promise;
     };
 
-     this.saveTestScoreDetail = function(data) {
+    this.saveTestScoreDetail = function(data) {
 
         var deferred = $q.defer();
         var serviceUrl = appConfig.baseURL + '/addCollegeScore';
@@ -2970,12 +3633,20 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', functio
         $http.post(serviceUrl, data)
             .success(function(data) {
                 console.log('sucess addCollegeScore', data);
-                alert('Test Score Details Uploaded Successfully');
+                ngDialog.open({
+                    template: '<p>Test Score Details Uploaded Successfully.</p>',
+                    plain: true
+                });
+                // alert('Test Score Details Uploaded Successfully');
                 deferred.resolve(data);
             })
             .error(function(err) {
                 console.log('error');
-                alert('Test Score Details Failed to Upload');
+                ngDialog.open({
+                    template: '<p>Test Score Details Failed to Upload.</p>',
+                    plain: true
+                });
+                // alert('Test Score Details Failed to Upload');
                 deferred.reject(err);
             });
         console.log('promise');
@@ -2989,75 +3660,87 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', functio
         $http.post(serviceUrl, data)
             .success(function(data) {
                 console.log('sucess addCollegeSportsForWeb', data);
-                alert('Sports Details Uploaded Successfully');
+                ngDialog.open({
+                    template: '<p>Sports Details Uploaded Successfully.</p>',
+                    plain: true
+                });
+                // alert('Sports Details Uploaded Successfully');
                 deferred.resolve(data);
             })
             .error(function(err) {
                 console.log('error');
-                alert('Sports Details Failed to Upload');
+                ngDialog.open({
+                    template: '<p>Sports Details Failed to Upload.</p>',
+                    plain: true
+                });
+                // alert('Sports Details Failed to Upload');
                 deferred.reject(err);
             });
         console.log('promise');
         return deferred.promise;
     };
-    this.uploadFileToUrl = function(file, uploadFile){
-        
+    this.uploadFileToUrl = function(file, uploadFile) {
+
         var deferred = $q.defer();
         var fd = new FormData();
         fd.append('file', file);
 
-        var uploadUrl = appConfig.baseURL + '/' +uploadFile;
-        console.log('uploadFile',uploadFile);
+        var uploadUrl = appConfig.baseURL + '/' + uploadFile;
+        console.log('uploadFile', uploadFile);
         $http.post(uploadUrl, fd, {
-            transformRequest: angular.identity,
-            headers: {'Content-Type': undefined}
-        })
-        .success(function (data){
-            console.log('success data',data);
+                transformRequest: angular.identity,
+                headers: {
+                    'Content-Type': undefined
+                }
+            })
+            .success(function(data) {
+                console.log('success data', data);
 
-            alert(data.statusMsg);
-            deferred.resolve(data);
-        })
-        .error(function (err){
-            deferred.reject(err);
-        });
+                alert(data.statusMsg);
+                deferred.resolve(data);
+            })
+            .error(function(err) {
+                deferred.reject(err);
+            });
     }
 
-     this.uploadFileUrl = function(file, uploadFile){
-        
-        var deferred = $q.defer();
-        var fd = new FormData();
-        fd.append('file', file);
+    this.uploadFileUrl = function(file, uploadFile) {
 
-        var uploadUrl = appConfig.baseURL + '/' +uploadFile;
-        console.log('uploadFile',uploadFile);
-        $http.post(uploadUrl, fd, {
-            transformRequest: angular.identity,
-            headers: {'Content-Type': undefined}
-        })
-        .success(function (data){
-            console.log('success data',data);
+            var deferred = $q.defer();
+            var fd = new FormData();
+            fd.append('file', file);
 
-            alert(data.statusMsg);
-            deferred.resolve(data);
-        })
-        .error(function (err){
-            deferred.reject(err);
-        });
-    }
-    // this.editFacultyList = function (contentdata) {
-    // 	console.log('contentdata======>',contentdata);
-    // 	var deferred = $q.defer();
-    // 	var serviceUrl = appConfig.baseURL + '/jsonEditFaculty';
-    // 	$http.post(serviceUrl,contentdata)
-    // 		.success(function (data) {
-    // 			deferred.resolve(data);
-    // 		})
-    // 		.error(function (err) {
-    // 			deferred.reject(err);
-    // 		});
+            var uploadUrl = appConfig.baseURL + '/' + uploadFile;
+            console.log('uploadFile', uploadFile);
+            $http.post(uploadUrl, fd, {
+                    transformRequest: angular.identity,
+                    headers: {
+                        'Content-Type': undefined
+                    }
+                })
+                .success(function(data) {
+                    console.log('success data', data);
 
-    // 	return deferred.promise;
+                    alert(data.statusMsg);
+                    deferred.resolve(data);
+                })
+                .error(function(err) {
+                    deferred.reject(err);
+                });
+        }
+        // this.editFacultyList = function (contentdata) {
+        //  console.log('contentdata======>',contentdata);
+        //  var deferred = $q.defer();
+        //  var serviceUrl = appConfig.baseURL + '/jsonEditFaculty';
+        //  $http.post(serviceUrl,contentdata)
+        //      .success(function (data) {
+        //          deferred.resolve(data);
+        //      })
+        //      .error(function (err) {
+        //          deferred.reject(err);
+        //      });
+
+    //  return deferred.promise;
     // };
 
 }]);
@@ -3146,7 +3829,7 @@ app.service('loginAPI', ['$rootScope', '$q', 'appConfig', '$http', function ($ro
 	this.fgtPwd = function (data) {
 		console.log('data',data);
 		var deferred = $q.defer();
-		var serviceUrl = appConfig.baseURL + '/forgotPassword/'+ data.emailID +'/';
+		var serviceUrl = appConfig.baseURL + '/forgotPasswordForAdmin/'+ data.emailID +'/';
 
 		$http.get(serviceUrl)
 			.success(function (data) {
@@ -3163,7 +3846,53 @@ app.service('loginAPI', ['$rootScope', '$q', 'appConfig', '$http', function ($ro
 
 		return deferred.promise;
 	};
+	
 
+	// var data = {
+	 //                'emailId': emailId,
+	 //                'authCode': authCode,
+	 //                'password': userData.newPassword
+	 //            }
+	this.changePasswordAdmin = function (data) {
+		console.log('data',data);
+		var deferred = $q.defer();
+		var serviceUrl = appConfig.baseURL + '/changePasswordForAdmin/';
+
+		$http.post(serviceUrl, data)//get
+			.success(function (data) {
+				console.log('Controller ===  apisuccess');
+				
+				deferred.resolve(data);
+
+			})
+			.error(function (err) {
+				console.log('Controller =====>apifail');
+				
+				deferred.reject(err);
+			});
+
+		return deferred.promise;
+	};
+// this.changePassword = function (data) {
+// 		console.log('data',data);
+// 		var deferred = $q.defer();
+// 		var serviceUrl = appConfig.baseURL + '/changePassword/';
+
+// 		$http.post(serviceUrl, data)//get
+// 			.success(function (data) {
+// 				console.log('Controller ===  apisuccess');
+				
+// 				deferred.resolve(data);
+
+// 			})
+// 			.error(function (err) {
+// 				console.log('Controller =====>apifail');
+				
+// 				deferred.reject(err);
+// 			});
+
+// 		return deferred.promise;
+// 	};
 
 
 }]);

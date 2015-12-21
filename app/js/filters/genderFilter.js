@@ -9,7 +9,7 @@ app.filter('genderFilter', function () {
 
 	return function (data) {
 		//var dateDiff = 0;
-		console.log('data',data);
+		// console.log('data',data);
 		if (data == 1) {
 			return 'male';
 		}else if (data == 2) {

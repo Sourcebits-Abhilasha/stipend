@@ -6,7 +6,7 @@ app.controller('editCollege', ['$scope', 'editCollegeAPI', function ($scope, edi
 'use strict';
 
 	$scope.editCollege = function(data) {
-	console.log('data is====>',data.collegeId);
+	// console.log('data is====>',data.collegeId);
 	
 
 	editCollegeAPI.adminlogin(data.collegeId)
@@ -14,7 +14,7 @@ app.controller('editCollege', ['$scope', 'editCollegeAPI', function ($scope, edi
     		function (data) {
     			console.log('data====>',data);
               if (data !== null) {
-                console.log('get college details',data);
+                // console.log('get college details',data);
 	          }
 
 	        }

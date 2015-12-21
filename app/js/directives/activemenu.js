@@ -8,30 +8,52 @@ app.directive('activeMenu', ['$rootScope', function ($rootScope) {
 	return {
 		restrict: 'A',
 		link: function (scope, element, attrs) {
-			$(element).on('click', function () {
-				//debugger;
-				// $(element).siblings().removeClass('active_menu');
-				// $(element).addClass('active_menu');
-				var prevClassName = $(element).siblings().find('li.active_menu>div').attr('class');
-				//$(element).siblings().find('li.active_menu>div').removeClass(prevClassName+'-active').addClass(currentClass);
-				$(element).siblings().find('li').removeClass('active_menu');
-				$(element).find('li').addClass('active_menu');
-				//var prevClassName = $(element).find('li>div').attr('class');
-				console.log('currentClassName -->', currentClassName);
-				var checkImageStatus = currentClassName.search("-active");
-				
-				console.log('prevClassName',prevClassName);
-				//$(element).siblings().find('li>div').
-				//debugger;
-				if(checkImageStatus == -1) {
-					$(element).find('div').removeClass(currentClassName).addClass(currentClassName+'-active');
-				} else {
-					var currentClass = currentClassName.substr(0,checkImageStatus);
-					
-				}
-				
+			var popupStatus = 0;
 
-			});
+
+    $(".Login_PopUp_Link").click(function() {
+
+        //Aligning our box in the middle
+        var windowWidth = document.documentElement.clientWidth;
+        var windowHeight = document.documentElement.clientHeight;
+        var popupHeight = $("#popupLogin").height();
+        var popupWidth = $("#popupLogin").width();
+        //centering
+        $("#popupLogin").css({
+            "position": "absolute",
+            "top": windowHeight / 2 - popupHeight / 2,
+            "left": windowWidth / 2 - popupWidth / 2
+        });
+
+        //aligning our full bg 
+        $("#LoginBackgroundPopup").css({
+            "height": windowHeight
+        });
+
+
+        // Pop up the div and Bg
+        if (popupStatus == 0) {
+            $("#LoginBackgroundPopup").css({
+                "opacity": "0.7"
+            });
+            $("#LoginBackgroundPopup").fadeIn("slow");
+            $("#popupLogin").fadeIn("slow");
+            popupStatus = 1;
+        }
+
+
+    });
+
+
+    //Close Them
+    $("#popupLoginClose").click(function() {
+        if (popupStatus == 1) {
+            $("#LoginBackgroundPopup").fadeOut("slow");
+            $("#popupLogin").fadeOut("slow");
+            popupStatus = 0;
+        }
+    });
+
 		}
 	};
 

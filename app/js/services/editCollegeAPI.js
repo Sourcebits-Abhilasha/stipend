@@ -3,7 +3,7 @@
 ==================================================================*/
 /*global app, $http*/
 
-app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', 'ngDialog','usSpinnerService', function($rootScope, $q, appConfig, $http, ngDialog, usSpinnerService) {
+app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', 'ngDialog', 'usSpinnerService', function($rootScope, $q, appConfig, $http, ngDialog, usSpinnerService) {
 
     'use strict';
 
@@ -18,14 +18,39 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', 'ngDial
             })
             .error(function(err) {
                 ngDialog.open({
-                template: '<p>Connection Error..</p>',
-                plain: true
-            });
+                    template: '<p>Connection Error..</p>',
+                    plain: true
+                });
                 deferred.reject(err);
             });
 
         return deferred.promise;
     };
+
+    this.deleteUserList = function(data) {
+
+        var deferred = $q.defer();
+        var serviceUrl = appConfig.baseURL + '/deleteUser';
+
+        $http.post(serviceUrl, data)
+            .success(function(data) {
+                ngDialog.open({
+                    template: '<p>User deleteted successfully</p>',
+                    plain: true
+                });
+                deferred.resolve(data);
+            })
+            .error(function(err) {
+                ngDialog.open({
+                    template: '<p>Connection Error..</p>',
+                    plain: true
+                });
+                deferred.reject(err);
+            });
+
+        return deferred.promise;
+    };
+
 
     this.saveCollegeDetail = function(data) {
 
@@ -34,18 +59,18 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', 'ngDial
 
         $http.post(serviceUrl, data)
             .success(function(data) {
-                 ngDialog.open({
-                template: '<p>College Details Uploaded Successfully.</p>',
-                plain: true
-            });
+                ngDialog.open({
+                    template: '<p>College Details Uploaded Successfully.</p>',
+                    plain: true
+                });
                 // alert('College Details Uploaded Successfully');
                 deferred.resolve(data);
             })
             .error(function(err) {
-                 ngDialog.open({
-                template: '<p>College Details Failed to Upload.</p>',
-                plain: true
-            });
+                ngDialog.open({
+                    template: '<p>College Details Failed to Upload.</p>',
+                    plain: true
+                });
                 // alert('College Details Failed to Upload');
                 deferred.reject(err);
             });
@@ -60,24 +85,67 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', 'ngDial
 
         $http.post(serviceUrl, data)
             .success(function(data) {
-                 ngDialog.open({
-                template: '<p>College Details Uploaded Successfully.</p>',
-                plain: true
-            });
+                ngDialog.open({
+                    template: '<p>College Details Uploaded Successfully.</p>',
+                    plain: true
+                });
                 // alert('College Details Uploaded Successfully');
                 deferred.resolve(data);
             })
             .error(function(err) {
-                 ngDialog.open({
-                template: '<p>College Details Failed to Upload.</p>',
-                plain: true
-            });
+                ngDialog.open({
+                    template: '<p>College Details Failed to Upload.</p>',
+                    plain: true
+                });
                 // alert('College Details Failed to Upload');
                 deferred.reject(err);
             });
 
         return deferred.promise;
     };
+
+
+    this.searchCollegeDetail = function(data) {
+
+        var deferred = $q.defer();
+        var serviceUrl = appConfig.baseURL + '/searchCollege';
+        console.log('DATA', data);
+        $http.post(serviceUrl, data)
+            .success(function(data) {
+
+                // alert('College Details Uploaded Successfully');
+                deferred.resolve(data);
+            })
+            .error(function(err) {
+
+                // alert('College Details Failed to Upload');
+                deferred.reject(err);
+            });
+
+        return deferred.promise;
+    };
+
+    this.searchUserDetail = function(data) {
+
+        var deferred = $q.defer();
+        var serviceUrl = appConfig.baseURL + '/searchUsers';
+        console.log('DATA', data);
+        $http.post(serviceUrl, data)
+            .success(function(data) {
+
+                // alert('College Details Uploaded Successfully');
+                deferred.resolve(data);
+            })
+            .error(function(err) {
+
+                // alert('College Details Failed to Upload');
+                deferred.reject(err);
+            });
+
+        return deferred.promise;
+    };
+
+    
 
     this.saveFreshmanDetail = function(data) {
 
@@ -87,18 +155,18 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', 'ngDial
         $http.post(serviceUrl, data)
 
         .success(function(data) {
-             ngDialog.open({
-                template: '<p>Freshman Details Uploaded Successfully.</p>',
-                plain: true
+                ngDialog.open({
+                    template: '<p>Freshman Details Uploaded Successfully.</p>',
+                    plain: true
                 });
                 // alert('Freshman Details Uploaded Successfully');
                 console.log('Freshman save data=======>', data)
                 deferred.resolve(data);
             })
             .error(function(err) {
-                 ngDialog.open({
-                template: '<p>Freshman Details Failed to Upload.</p>',
-                plain: true
+                ngDialog.open({
+                    template: '<p>Freshman Details Failed to Upload.</p>',
+                    plain: true
                 });
                 // alert('Freshman Details Failed to Upload');
                 deferred.reject(err);
@@ -115,10 +183,10 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', 'ngDial
         $http.post(serviceUrl, data)
 
         .success(function(data) {
-            // ngDialog.open({
-            //     template: '<p>Geographic Details Uploaded Successfully.</p>',
-            //     plain: true
-            //     });
+                // ngDialog.open({
+                //     template: '<p>Geographic Details Uploaded Successfully.</p>',
+                //     plain: true
+                //     });
                 //alert('Geographic Details Uploaded Successfully');
                 console.log('geographics save data=======>', data)
                 deferred.resolve(data);
@@ -135,7 +203,7 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', 'ngDial
         return deferred.promise;
     };
 
-    this.saveEthenicityDetail = function(data) { 
+    this.saveEthenicityDetail = function(data) {
 
         var deferred = $q.defer();
         var serviceUrl = appConfig.baseURL + '/addCollegeEthnicityForWeb';
@@ -153,7 +221,7 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', 'ngDial
         return deferred.promise;
     };
 
-    this.saveMostRepStateDetail = function(data) { 
+    this.saveMostRepStateDetail = function(data) {
 
         var deferred = $q.defer();
         var serviceUrl = appConfig.baseURL + '/saveOrUpdateStates';
@@ -178,9 +246,9 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', 'ngDial
 
         $http.post(serviceUrl, data)
             .success(function(data) {
-                 ngDialog.open({
-                template: '<p>Calendar Details Uploaded Successfully.</p>',
-                plain: true
+                ngDialog.open({
+                    template: '<p>Calendar Details Uploaded Successfully.</p>',
+                    plain: true
                 });
                 // alert('Calendar Details Uploaded Successfully');
                 console.log('Calendar save data=======>', data)
@@ -188,9 +256,9 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', 'ngDial
                 deferred.resolve(data);
             })
             .error(function(err) {
-                 ngDialog.open({
-                template: '<p>Calendar Details Failed to Upload.</p>',
-                plain: true
+                ngDialog.open({
+                    template: '<p>Calendar Details Failed to Upload.</p>',
+                    plain: true
                 });
                 // alert('Calendar Details Failed to Upload');
                 deferred.reject(err);
@@ -207,18 +275,18 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', 'ngDial
         $http.post(serviceUrl, data)
             .success(function(data) {
                 console.log('sucess weather', data);
-                 ngDialog.open({
-                template: '<p>Weather Details Uploaded Successfully.</p>',
-                plain: true
+                ngDialog.open({
+                    template: '<p>Weather Details Uploaded Successfully.</p>',
+                    plain: true
                 });
                 // alert('Weather Details Uploaded Successfully');
                 deferred.resolve(data);
             })
             .error(function(err) {
                 console.log('error');
-                 ngDialog.open({
-                template: '<p>Weather Details Failed to Upload.</p>',
-                plain: true
+                ngDialog.open({
+                    template: '<p>Weather Details Failed to Upload.</p>',
+                    plain: true
                 });
                 // alert('Weather Details Failed to Upload');
                 deferred.reject(err);
@@ -236,8 +304,8 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', 'ngDial
             .success(function(data) {
                 console.log('sucess saveProminentAlumniDetail', data);
                 ngDialog.open({
-                template: '<p>Prominent Alumni Details Uploaded Successfully.</p>',
-                plain: true
+                    template: '<p>Prominent Alumni Details Uploaded Successfully.</p>',
+                    plain: true
                 });
                 // alert('Prominent Alumni Details Uploaded Successfully');
                 deferred.resolve(data);
@@ -245,8 +313,8 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', 'ngDial
             .error(function(err) {
                 console.log('error');
                 ngDialog.open({
-                template: '<p>Prominent Alumni Details Failed to Upload.</p>',
-                plain: true
+                    template: '<p>Prominent Alumni Details Failed to Upload.</p>',
+                    plain: true
                 });
                 // alert('Prominent Alumni Details Failed to Upload');
                 deferred.reject(err);
@@ -264,17 +332,17 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', 'ngDial
             .success(function(data) {
                 console.log('sucess college ranking', data);
                 ngDialog.open({
-                template: '<p>College Ranking Details Uploaded Successfully.</p>',
-                plain: true
+                    template: '<p>College Ranking Details Uploaded Successfully.</p>',
+                    plain: true
                 });
                 // alert('College Ranking Details Uploaded Successfully');
                 deferred.resolve(data);
             })
             .error(function(err) {
                 console.log('error');
-                 ngDialog.open({
-                template: '<p>College Ranking Details Failed to Upload.</p>',
-                plain: true
+                ngDialog.open({
+                    template: '<p>College Ranking Details Failed to Upload.</p>',
+                    plain: true
                 });
                 // alert('College Ranking Details Failed to Upload');
                 deferred.reject(err);
@@ -292,8 +360,8 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', 'ngDial
             .success(function(data) {
                 console.log('sucess intended Study', data);
                 ngDialog.open({
-                template: '<p>Intended Study Details Uploaded Successfully.</p>',
-                plain: true
+                    template: '<p>Intended Study Details Uploaded Successfully.</p>',
+                    plain: true
                 });
                 // alert('Intended Study Details Uploaded Successfully');
                 deferred.resolve(data);
@@ -301,8 +369,8 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', 'ngDial
             .error(function(err) {
                 console.log('error');
                 ngDialog.open({
-                template: '<p>Intended Study Details Failed to Upload.</p>',
-                plain: true
+                    template: '<p>Intended Study Details Failed to Upload.</p>',
+                    plain: true
                 });
                 // alert('Intended Study Details Failed to Upload');
                 deferred.reject(err);
@@ -310,6 +378,35 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', 'ngDial
         console.log('promise');
         return deferred.promise;
     };
+
+    this.saveIntendedStudyOptionDetail = function(data) {
+
+        var deferred = $q.defer();
+        var serviceUrl = appConfig.baseURL + '/addCollegeIntendedStudyOption';
+
+        $http.post(serviceUrl, data)
+            .success(function(data) {
+                console.log('sucess intended Study', data);
+                // ngDialog.open({
+                // template: '<p>Intended Study Details Uploaded Successfully.</p>',
+                // plain: true
+                // });
+                // alert('Intended Study Details Uploaded Successfully');
+                deferred.resolve(data);
+            })
+            .error(function(err) {
+                console.log('error');
+                // ngDialog.open({
+                // template: '<p>Intended Study Details Failed to Upload.</p>',
+                // plain: true
+                // });
+                // alert('Intended Study Details Failed to Upload');
+                deferred.reject(err);
+            });
+        console.log('promise');
+        return deferred.promise;
+    };
+
     this.saveQuickFactsDetail = function(data) {
 
         var deferred = $q.defer();
@@ -319,8 +416,8 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', 'ngDial
             .success(function(data) {
                 console.log('sucess addQuickFactsForWeb', data);
                 ngDialog.open({
-                template: '<p>Quick Facts Details Uploaded Successfully.</p>',
-                plain: true
+                    template: '<p>Quick Facts Details Uploaded Successfully.</p>',
+                    plain: true
                 });
                 // alert('Quick Facts Details Uploaded Successfully');
                 deferred.resolve(data);
@@ -328,8 +425,8 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', 'ngDial
             .error(function(err) {
                 console.log('error');
                 ngDialog.open({
-                template: '<p>Quick Facts Details Failed to Upload.</p>',
-                plain: true
+                    template: '<p>Quick Facts Details Failed to Upload.</p>',
+                    plain: true
                 });
                 // alert('Quick Facts Details Failed to Upload');
                 deferred.reject(err);
@@ -346,9 +443,9 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', 'ngDial
         $http.post(serviceUrl, data)
             .success(function(data) {
                 console.log('sucess aaddCollegeAddressForWeb', data);
-                 ngDialog.open({
-                template: '<p>Link And Address Details Uploaded Successfully.</p>',
-                plain: true
+                ngDialog.open({
+                    template: '<p>Link And Address Details Uploaded Successfully.</p>',
+                    plain: true
                 });
                 // alert('Link And Address Details Uploaded Successfully');
                 deferred.resolve(data);
@@ -356,8 +453,8 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', 'ngDial
             .error(function(err) {
                 console.log('error');
                 ngDialog.open({
-                template: '<p>Link And Address Details Failed to Upload.</p>',
-                plain: true
+                    template: '<p>Link And Address Details Failed to Upload.</p>',
+                    plain: true
                 });
                 // alert('Link And Address Details Failed to Upload');
                 deferred.reject(err);
@@ -375,17 +472,17 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', 'ngDial
             .success(function(data) {
                 console.log('sucess aaddCollegeAddressForWeb', data);
                 ngDialog.open({
-                template: '<p>Fees And Financial Details Uploaded Successfully.</p>',
-                plain: true
+                    template: '<p>Fees And Financial Details Uploaded Successfully.</p>',
+                    plain: true
                 });
                 // alert('Fees And Financial Details Uploaded Successfully');
                 deferred.resolve(data);
             })
             .error(function(err) {
                 console.log('error');
-                 ngDialog.open({
-                template: '<p>Fees And Financial Details Failed to Upload.</p>',
-                plain: true
+                ngDialog.open({
+                    template: '<p>Fees And Financial Details Failed to Upload.</p>',
+                    plain: true
                 });
                 // alert('Fees And Financial Details Failed to Upload');
                 deferred.reject(err);
@@ -403,8 +500,8 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', 'ngDial
             .success(function(data) {
                 console.log('sucess updateAdmissionOptionForWeb', data);
                 ngDialog.open({
-                template: '<p>Admissions Details Uploaded Successfully.</p>',
-                plain: true
+                    template: '<p>Admissions Details Uploaded Successfully.</p>',
+                    plain: true
                 });
                 // alert('Admissions Details Uploaded Successfully');
                 deferred.resolve(data);
@@ -412,8 +509,8 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', 'ngDial
             .error(function(err) {
                 console.log('error');
                 ngDialog.open({
-                template: '<p>Admissions Details Failed to Upload.</p>',
-                plain: true
+                    template: '<p>Admissions Details Failed to Upload.</p>',
+                    plain: true
                 });
                 // alert('Admissions Details Failed to Upload');
                 deferred.reject(err);
@@ -422,7 +519,7 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', 'ngDial
         return deferred.promise;
     };
 
-     this.saveSimilarSchoolDetail = function(data) {
+    this.saveSimilarSchoolDetail = function(data) {
 
         var deferred = $q.defer();
         var serviceUrl = appConfig.baseURL + '/addSimilarSchools';
@@ -430,9 +527,9 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', 'ngDial
         $http.post(serviceUrl, data)
             .success(function(data) {
                 console.log('sucess addSimilarSchools', data);
-                 ngDialog.open({
-                template: '<p>Similar School Details Uploaded Successfully.</p>',
-                plain: true
+                ngDialog.open({
+                    template: '<p>Similar School Details Uploaded Successfully.</p>',
+                    plain: true
                 });
                 // alert('Admissions Details Uploaded Successfully');
                 deferred.resolve(data);
@@ -440,8 +537,8 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', 'ngDial
             .error(function(err) {
                 console.log('error');
                 ngDialog.open({
-                template: '<p>Similar School Details Failed to Upload.</p>',
-                plain: true
+                    template: '<p>Similar School Details Failed to Upload.</p>',
+                    plain: true
                 });
                 // alert('Admissions Details Failed to Upload');
                 deferred.reject(err);
@@ -450,7 +547,7 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', 'ngDial
         return deferred.promise;
     };
 
-     this.saveTestScoreDetail = function(data) {
+    this.saveTestScoreDetail = function(data) {
 
         var deferred = $q.defer();
         var serviceUrl = appConfig.baseURL + '/addCollegeScore';
@@ -459,8 +556,8 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', 'ngDial
             .success(function(data) {
                 console.log('sucess addCollegeScore', data);
                 ngDialog.open({
-                template: '<p>Test Score Details Uploaded Successfully.</p>',
-                plain: true
+                    template: '<p>Test Score Details Uploaded Successfully.</p>',
+                    plain: true
                 });
                 // alert('Test Score Details Uploaded Successfully');
                 deferred.resolve(data);
@@ -468,8 +565,8 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', 'ngDial
             .error(function(err) {
                 console.log('error');
                 ngDialog.open({
-                template: '<p>Test Score Details Failed to Upload.</p>',
-                plain: true
+                    template: '<p>Test Score Details Failed to Upload.</p>',
+                    plain: true
                 });
                 // alert('Test Score Details Failed to Upload');
                 deferred.reject(err);
@@ -486,8 +583,8 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', 'ngDial
             .success(function(data) {
                 console.log('sucess addCollegeSportsForWeb', data);
                 ngDialog.open({
-                template: '<p>Sports Details Uploaded Successfully.</p>',
-                plain: true
+                    template: '<p>Sports Details Uploaded Successfully.</p>',
+                    plain: true
                 });
                 // alert('Sports Details Uploaded Successfully');
                 deferred.resolve(data);
@@ -495,8 +592,8 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', 'ngDial
             .error(function(err) {
                 console.log('error');
                 ngDialog.open({
-                template: '<p>Sports Details Failed to Upload.</p>',
-                plain: true
+                    template: '<p>Sports Details Failed to Upload.</p>',
+                    plain: true
                 });
                 // alert('Sports Details Failed to Upload');
                 deferred.reject(err);
@@ -504,64 +601,68 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', 'ngDial
         console.log('promise');
         return deferred.promise;
     };
-    this.uploadFileToUrl = function(file, uploadFile){
-        
+    this.uploadFileToUrl = function(file, uploadFile) {
+
         var deferred = $q.defer();
         var fd = new FormData();
         fd.append('file', file);
 
-        var uploadUrl = appConfig.baseURL + '/' +uploadFile;
-        console.log('uploadFile',uploadFile);
+        var uploadUrl = appConfig.baseURL + '/' + uploadFile;
+        console.log('uploadFile', uploadFile);
         $http.post(uploadUrl, fd, {
-            transformRequest: angular.identity,
-            headers: {'Content-Type': undefined}
-        })
-        .success(function (data){
-            console.log('success data',data);
+                transformRequest: angular.identity,
+                headers: {
+                    'Content-Type': undefined
+                }
+            })
+            .success(function(data) {
+                console.log('success data', data);
 
-            alert(data.statusMsg);
-            deferred.resolve(data);
-        })
-        .error(function (err){
-            deferred.reject(err);
-        });
+                alert(data.statusMsg);
+                deferred.resolve(data);
+            })
+            .error(function(err) {
+                deferred.reject(err);
+            });
     }
 
-     this.uploadFileUrl = function(file, uploadFile){
-        
-        var deferred = $q.defer();
-        var fd = new FormData();
-        fd.append('file', file);
+    this.uploadFileUrl = function(file, uploadFile) {
 
-        var uploadUrl = appConfig.baseURL + '/' +uploadFile;
-        console.log('uploadFile',uploadFile);
-        $http.post(uploadUrl, fd, {
-            transformRequest: angular.identity,
-            headers: {'Content-Type': undefined}
-        })
-        .success(function (data){
-            console.log('success data',data);
+            var deferred = $q.defer();
+            var fd = new FormData();
+            fd.append('file', file);
 
-            alert(data.statusMsg);
-            deferred.resolve(data);
-        })
-        .error(function (err){
-            deferred.reject(err);
-        });
-    }
-    // this.editFacultyList = function (contentdata) {
-    // 	console.log('contentdata======>',contentdata);
-    // 	var deferred = $q.defer();
-    // 	var serviceUrl = appConfig.baseURL + '/jsonEditFaculty';
-    // 	$http.post(serviceUrl,contentdata)
-    // 		.success(function (data) {
-    // 			deferred.resolve(data);
-    // 		})
-    // 		.error(function (err) {
-    // 			deferred.reject(err);
-    // 		});
+            var uploadUrl = appConfig.baseURL + '/' + uploadFile;
+            console.log('uploadFile', uploadFile);
+            $http.post(uploadUrl, fd, {
+                    transformRequest: angular.identity,
+                    headers: {
+                        'Content-Type': undefined
+                    }
+                })
+                .success(function(data) {
+                    console.log('success data', data);
 
-    // 	return deferred.promise;
+                    alert(data.statusMsg);
+                    deferred.resolve(data);
+                })
+                .error(function(err) {
+                    deferred.reject(err);
+                });
+        }
+        // this.editFacultyList = function (contentdata) {
+        //  console.log('contentdata======>',contentdata);
+        //  var deferred = $q.defer();
+        //  var serviceUrl = appConfig.baseURL + '/jsonEditFaculty';
+        //  $http.post(serviceUrl,contentdata)
+        //      .success(function (data) {
+        //          deferred.resolve(data);
+        //      })
+        //      .error(function (err) {
+        //          deferred.reject(err);
+        //      });
+
+    //  return deferred.promise;
     // };
 
 }]);
